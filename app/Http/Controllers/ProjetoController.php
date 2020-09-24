@@ -195,7 +195,7 @@ class ProjetoController extends Controller
     {
         $user = Auth::user();
         $projetos = $this->andamentoTrait();
-        dd($projetos);
+        //dd($projetos);
         return view('projetos.em-andamento')
         ->withProjetos($projetos)
         ->withUser($user);

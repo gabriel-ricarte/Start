@@ -9,6 +9,28 @@ PROJETOS EM ANDAMENTO
 @section('local','PROJETOS EM ANDAMENTO')
 @section('conteudo')
 @include('parciais.loading-page')
+<style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
  <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -45,19 +67,21 @@ PROJETOS EM ANDAMENTO
                   <h6 class="m-0 font-weight-bold text-primary" id="quad" style="display: none"></h6>
                   <h6 class="m-0 font-weight-bold btn btn-primary" id="btnV" style="display: none" onclick="sobe()" ><span class="fas fa-arrow-left"></span></h6>
                 </div>
-
-                <div class="card-body">
-                  @if($andamento->count() > 0 )
+                <div class="card-body" id="pesquisei" style="display: none">
+                </div>	
+                <div class="card-body" id="projj">
+                  @if($projetos != null)
                   <div class="row" id="raus">
-                    @foreach($andamento as $proj)
+                    @foreach($projetos as $projeto)
                     <div class="col-xl-3 col-md-6 mb-4">
-                      <div class="card-header text-center btn-primary text-uppercase" onclick="desce({{$proj->id}},'{{$proj->nome}}')">
-                        {{$proj->nome}}
+                      <div class="card-header text-center btn-primary text-uppercase" onclick="desce({{$projeto['projeto_id']}},'{{$projeto['projeto_nome']}}')">
+                        {{$projeto['projeto_nome']}}
                       </div>
                       <div class="card">
                         <div class="progress" >
-                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{$ptarefa}}%" aria-valuenow="{{$ptarefa}}" aria-valuemin="0" aria-valuemax="100">{{$ptarefa}}%</div>
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{$projeto['percentagem']}}%" aria-valuenow="{{$projeto['percentagem']}}" aria-valuemin="0" aria-valuemax="100">{{$projeto['percentagem']}}%</div>
                         </div>
+
                       </div>
                     </div>
                     @endforeach
@@ -67,51 +91,71 @@ PROJETOS EM ANDAMENTO
                   @endif
 
                   <!-- timeline -->
-                  @if($andamento->count() > 0 )
-                    @foreach($andamento as $proj)
-                    <div class="row" id="projeto{{$proj->id}}" style="display: none">
+                  @if($projetos != null)
+                    @foreach($projetos as $projeto)
+                    <div class="row" id="projeto{{$projeto['projeto_id']}}" style="display: none">
                        
-                          @foreach($proj->kanban as $kanban)
+                          @foreach($projeto['kanban'] as $kanban)
                           <div class="col-xs-4 col-sm-6 col-md-4">
                                <div class="image-flip" >
                                         <div class="mainflip flip-0">
                                             <div class="frontside">
                                                 <div class="card">
                                                     <div class="card-body text-center">
-                                                        <p><img class=" img-fluid" src="../../images/{{$proj->imagem}}" alt="card image"></p>
-                                                        <h4 class="card-title">{{$kanban->nome}}</h4>
-                                                        <p class="card-text">{{$kanban->descricao}}.</p>
-                                                        <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                                        <p><img class=" img-fluid" src="../../images/{{$projeto['imagem']}}" alt="card image"></p>
+                                                        <h4 class="card-title">{{$kanban['kanban_nome']}}</h4>
+                                                        <p class="card-text">{{$kanban['descricao']}}.</p>
+                                                        <div class="progress" >
+                                                        	<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:{{$kanban['percentagem']}}%" aria-valuenow="{{$kanban['percentagem']}}" aria-valuemin="0" aria-valuemax="100">{{$kanban['percentagem']}}%</div>
+                                                        </div>
+                                                        @if($kanban['status'] == 2)
+                                                        	<br>
+                                                        	<span class="btn btn-primary active text-center">QUADRO FINALIZADO</span>
+                                                        @else
+                                                        <br>
+                                                        	<span class="btn btn-warning active text-center">QUADRO EM ANDAMENTO</span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="backside">
                                                 <div class="card">
                                                     <div class="card-body text-center mt-4">
-                                                        <h4 class="card-title">{{$kanban->nome}}</h4>
-                                                        <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
+                                                        <h4 class="card-title">{{$kanban['kanban_nome']}}</h4>
+                                                        @if($kanban['status'] == 2)
+                                                        <p class="card-text">Quadro teve início em {{$kanban['data_ini']}}, previsto para término em {{$kanban['data_fim']}}, foi concluído em {{$kanban['concluido']}}.</p>
+                                                        @else
+                                                        <p class="card-text">Quadro teve início em {{$kanban['data_ini']}}, previsto para término em {{$kanban['data_fim']}}, ainda está em andamento.</p>
+                                                        @endif
+                                                         @if($kanban['status'] == 2)
+                                                        	  	@if($kanban['dif'] >= 0)
+		                                                            <span class="list-inline-item alert alert-primary">
+		                                                               Entregue com <b>{{$kanban['dif']}}</b>  restantes
+		                                                            </span>
+                                                            	@else
+		                                                            <span class="list-inline-item alert alert-primary">
+		                                                               Entregue com <b>{{$kanban['dif']}}</b> 
+		                                                            </span>
+                                                            	@endif	
+                                                         @else 
+                                                         <span class="list-inline-item alert alert-primary">
+		                                                            <b>{{$kanban['dif']}}</b> restantes
+		                                                 </span>  	
+                                                         @endif
                                                         <ul class="list-inline">
+                                                        	
                                                             <li class="list-inline-item">
-                                                                <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                                    <i class="fa fa-facebook"></i>
-                                                                </a>
+                                                                Pendências <b>{{$kanban['tarefas_pendentes']}}</b>
                                                             </li>
                                                             <li class="list-inline-item">
-                                                                <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                                    <i class="fa fa-twitter"></i>
-                                                                </a>
+                                                                Tasks Realizadas <b>{{$kanban['tarefas_completas']}}</b>
                                                             </li>
                                                             <li class="list-inline-item">
-                                                                <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                                    <i class="fa fa-skype"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="list-inline-item">
-                                                                <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                                    <i class="fa fa-google"></i>
-                                                                </a>
+                                                                
                                                             </li>
                                                         </ul>
+                                                        
+                                                         <button class="btn btn-info active" onclick="pesquisaQuadro({{$kanban['kanban_id']}})"><span class=" text-center">VER</span></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,6 +203,13 @@ PROJETOS EM ANDAMENTO
   <!-- Page level custom scripts -->
 
   <!-- Scroll to Top Button-->
+  <a hidden>
+	  <form method="get" action="{{ route('busca.quadro') }}" class="form-horizontal" id="cinza" >
+	              <div id="inserir">
+
+	              </div>
+	  </form>
+	</a>
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
@@ -174,15 +225,60 @@ PROJETOS EM ANDAMENTO
      $("#projeto"+id).slideUp( "fast", function() {$("#raus").slideDown( "fast", function() {});});
      $("#quad").slideUp( "fast", function() {$("#and").slideDown( "fast", function() {});$("#btnV").slideUp( "fast", function() {});});
   }
-  function desce2(id){
-     $("#raus2").slideUp( "fast", function() {$("#projetoo"+id).slideDown( "fast", function() {});});
-     $("#and2").slideUp( "fast", function() {$("#quad2").slideDown( "fast", function() {});$("#btnV2").slideDown( "fast", function() {});});
-     $("#btnV2").attr('onclick','sobe2('+id+')');
-  }
-  function sobe2(id){
-     $("#projetoo"+id).slideUp( "fast", function() {$("#raus2").slideDown( "fast", function() {});});
-     $("#quad2").slideUp( "fast", function() {$("#and2").slideDown( "fast", function() {});$("#btnV2").slideUp( "fast", function() {});});
-  }
+  function pesquisaQuadro(data){
+
+    setTimeout(function() { $("#pesquisei").slideDown( "slow", function() { })},100);
+    document.getElementById('pesquisei').innerHTML = 
+    `
+    <center><div class="loader"></div></center>
+    `
+    ;
+    document.getElementById('inserir').innerHTML = 
+    `
+    <input type="text" name="dado"  class="form-control col-12" value="`+data+`" required>
+    
+    `
+    setTimeout(function() { executa(); },100); 
+}
+  function executa(){
+  var form = $('#cinza');
+  var post_url = form.attr('action');
+  var post_data = form.serialize();
+  var show =  $.ajax({
+    type: 'GET',
+    url: post_url, 
+    data: post_data,
+    success: function() {
+      
+      //$("#muda").load(location.href+" #muda>*","");
+      },
+      error: function(){
+        //document.getElementById('inject').innerHTML = "<span class='alert alert-warning'>SEM RESERVAS PARA ESTE DIA !</span>";
+      }
+    });
+  //console.log(show);
+//console.log(show.responseJSON());
+show.done(function(dat){ 
+   if(Object.values(dat).length == 0) {
+     // document.getElementById('inject').innerHTML = '<div class="row text-center"><span class="alert alert-warning">SEM RESERVAS PARA ESTE DIA !</span></div>';
+    }else{
+
+    	console.log(dat);
+document.getElementById('pesquisei').innerHTML = "";
+
+for (var i = 0; i < Object.values(dat).length; i++) {
+   let hora = ` <div class="col-xl-3 col-md-6 mb-4">`+  
+                  Object.values(dat)[i].task
+             +`</div>`;
+                $('#pesquisei').append(hora);
+}
+}
+
+
+
+   });
+
+}
 </script>
   <!-- Logout Modal-->
 @include('parciais.modal-logout')

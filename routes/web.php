@@ -51,6 +51,8 @@ Route::post('/alter-player', 'PlayerController@alterPlayer')->name('alterplayer'
 Route::get('buscaTask/{quadro}','TaskController@buscaTask');
 Route::post('moveTaskTecnico','TaskController@eventoTask');
 Route::get('manda','TaskController@manda')->name('mandei');
+
 Route::get('projetos-em-andamento','ProjetoController@andamento')->name('andamento');
 Route::get('criando-quadro/projeto/{id}','KanbanController@create')->name('kanban.criar');
+Route::get('busca-quadro','KanbanController@buscaK')->name('busca.quadro');
 

@@ -143,4 +143,16 @@ class KanbanController extends Controller
     {
         //
     }
+    public function buscaK(Request $request)
+    {
+        $kanban = Kanban::find($request->dado);
+        $tarefas = collect();
+        foreach ($kanban->quadros as $quadros) {
+            $quadros->tasks_all;
+            // foreach($quadros->tasks_all as $tarefas){
+            //     dd($tarefas);
+            // }
+        }
+
+    }
 }

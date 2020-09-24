@@ -13,12 +13,12 @@ window.addEventListener("beforeunload", function(e){
     <h2 style=" font-family: 'VT323', monospace;color: #212121;display: flex;
   align-items: center">CARREGANDO </h2>
       <div class="loader">
-        <div class="loader">
+        <!-- <div class="loader">
           <div class="loader">
             <div class="loader">
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
      <!--  <h2 style=" font-family: 'VT323', monospace;color: #212121;display: flex;
   align-items: center">CARREGANDO</h2> -->
