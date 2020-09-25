@@ -80,7 +80,10 @@ class KanbanController extends Controller
         $tipoKanban = $this->tipoKanban($kanban->id,$request->tipo);
 
        // $integrantes = User::all();
-
+        if($request->segundo == 1){
+            session()->flash('msg','KANBAN CRIADO COM SUCESSO !');
+            return redirect()->route('kanban.show',$kanban->id)->with('msg','KANBAN CRIADO COM SUCESSO !');
+        }
         session()->flash('msg','KANBAN CRIADO COM SUCESSO !');
        // return redirect()->route('equipe.criar');
         return redirect()->route('equipe.criando',$projeto->id)->with('msg','KANBAN CRIADO COM SUCESSO !');
@@ -146,7 +149,7 @@ class KanbanController extends Controller
     public function buscaK(Request $request)
     {
         $kanban = Kanban::find($request->dado);
-        $tarefas = collect();
+        $tarefas = collect() ;
         foreach ($kanban->quadros as $quadros) {
             $quadros->tasks_all;
             // foreach($quadros->tasks_all as $tarefas){

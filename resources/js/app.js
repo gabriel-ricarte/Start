@@ -36,45 +36,45 @@ const app = new Vue({
         tasks: [],
         tasksdois: [],
         taskslast: [],
-
+        //dado: [],
     },
+    // },
 
-    created() {
-        if( $('#todo').val() > 0){
-            this.buscaTasks();
-        }
+    // created() {
+    //     if( $('#todo').val() > 0){
+    //         this.buscaTasks();
+    //     }
 
-        Echo.private('newtask')
-        .listen('NovaTask', (e) => {
-            this.buscaTasks();
-        });
-         Echo.private('taskmovida')
-        .listen('TaskMovida', (e) => {
-            this.buscaTasks();
-        });
-    },
+    //     Echo.private('newtask')
+    //     .listen('NovaTask', (e) => {
+    //         this.buscaTasks();
+    //     });
+    //      Echo.private('taskmovida')
+    //     .listen('TaskMovida', (e) => {
+    //         this.buscaTasks();
+    //     });
+    // },
 
     methods: {
-        buscaTasks() {
+        atualiza(dado) {
+            this.tasks = dado;
+           // });
+       }
+            // axios.get('/buscaTask/'+$('#doing').val()).then(response => {
+            //     this.tasksdois = response.data;
+            // });
+            // axios.get('/buscaTask/'+$('#done').val()).then(response => {
+            //     this.taskslast = response.data;
+            // });
+        }
 
-            axios.get('/buscaTask/'+$('#todo').val()).then(response => {
-                this.tasks = response.data;
-            });
-            axios.get('/buscaTask/'+$('#doing').val()).then(response => {
-                this.tasksdois = response.data;
-            });
-            axios.get('/buscaTask/'+$('#done').val()).then(response => {
-                this.taskslast = response.data;
-            });
-        },
 
+    //     // addMessage(message) {
+    //     //     this.messages.push(message);
 
-        // addMessage(message) {
-        //     this.messages.push(message);
-
-        //     axios.post('/messages', message).then(response => {
-        //       console.log(response.data);
-        //     });
-        // }
-    }
+    //     //     axios.post('/messages', message).then(response => {
+    //     //       console.log(response.data);
+    //     //     });
+    //     // }
+    // }
 });

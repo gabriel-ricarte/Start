@@ -39,9 +39,10 @@ CRIANDO KANBAN
 									</div>
 									<form method="POST" action="{{ route('kanban.store') }}" class="user">
                   					@csrf
+                  					<input type="hidden" name="segundo" value="1">
 										<div class="form-group row">
 											<div class="col-sm-6 mb-3 mb-sm-0">
-												<input type="text" class="form-control form-control-user" id="nome" placeholder="Nome do Kanban / Estágio" name="nome" required autocomplete="off">
+												<input type="text" class="form-control form-control-user text-uppercase" id="nome" placeholder="Nome do Kanban / Estágio" name="nome" required autocomplete="off">
 											</div>
 											<div class="col-sm-6 mb-3 mb-sm-0">
 												<input type="text" class="form-control form-control-user" id="desc" placeholder="Descrição" name="descricao" required autocomplete="off">
@@ -51,10 +52,10 @@ CRIANDO KANBAN
 
 										<div class="form-group row">
 											<div class="col-sm-6 mb-3 mb-sm-0">
-												<input type="date" class="form-control " id="data_ini" value="{{$projeto->data_ini}}" name="data_ini" required readonly="">
+												<input type="date" class="form-control " id="data_ini" min="{{date('Y-m-d')}}" max="{{$projeto->data_fim}}" name="data_ini" required >
 											</div>
 											<div class="col-sm-6 mb-3 mb-sm-0">
-												<input type="text" class="form-control " id="data_fim" placeholder="Previsão de finalização" name="data_fim" required onfocus="muda(this)">
+												<input type="text" class="form-control " id="data_fim" placeholder="Previsão de finalização" name="data_fim" required onfocus="muda(this)" min="{{date('Y-m-d')}}" max="{{$projeto->data_fim}}">
 											</div>
 
 										</div>

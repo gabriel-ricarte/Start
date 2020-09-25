@@ -1961,7 +1961,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['taskslast', 'done']
+  //props: ['taskslast','done']
+  props: ['taskslast', 'done'],
+  data: function data() {
+    return {
+      quadro: this.done
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    Echo["private"]('newtask').listen('NovaTask', function (e) {
+      _this.buscaTask();
+    });
+    Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
+      _this.buscaTask();
+    });
+  },
+  computed: {
+    last: {
+      get: function get() {
+        var _this2 = this;
+
+        return axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          _this2.$emit('last', response.data);
+        });
+      },
+      set: function set() {
+        var _this3 = this;
+
+        axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          //this.tasks = response.data;
+          _this3.$emit('last', response.data);
+        }); //this.$emit('emitterdrawer', val)
+      }
+    }
+  },
+  methods: {
+    buscaTask: function buscaTask() {
+      var _this4 = this;
+
+      axios.get('/buscaTask/' + this.quadro).then(function (response) {
+        //this.tasks = response.data;
+        _this4.$emit('last', response.data);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -1995,7 +2040,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['tasks', 'todo']
+  props: ['tasks', 'todo'],
+  data: function data() {
+    return {
+      quadro: this.todo
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    Echo["private"]('newtask').listen('NovaTask', function (e) {
+      _this.buscaTask();
+    });
+    Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
+      _this.buscaTask();
+    });
+  },
+  computed: {
+    primeiro: {
+      get: function get() {
+        var _this2 = this;
+
+        return axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          _this2.$emit('primeiro', response.data);
+        });
+      },
+      set: function set() {
+        var _this3 = this;
+
+        axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          //this.tasks = response.data;
+          _this3.$emit('primeiro', response.data);
+        }); //this.$emit('emitterdrawer', val)
+      }
+    }
+  },
+  //  mounted() {
+  // 	 axios.get('/buscaTask/'+this.quadro).then(response => {
+  //             //this.tasks = response.data;
+  //             this.$emit('primeiro', response.data);
+  //         });
+  // },
+  methods: {
+    buscaTask: function buscaTask() {
+      var _this4 = this;
+
+      axios.get('/buscaTask/' + this.quadro).then(function (response) {
+        _this4.$emit('primeiro', response.data);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -2029,7 +2123,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['tasksdois', 'doing']
+  //props: ['tasksdois','doing']
+  props: ['tasksdois', 'doing'],
+  data: function data() {
+    return {
+      quadro: this.doing
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    Echo["private"]('newtask').listen('NovaTask', function (e) {
+      _this.buscaTask();
+    });
+    Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
+      _this.buscaTask();
+    });
+  },
+  computed: {
+    segundo: {
+      get: function get() {
+        var _this2 = this;
+
+        return axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          _this2.$emit('segundo', response.data);
+        });
+      },
+      set: function set() {
+        var _this3 = this;
+
+        axios.get('/buscaTask/' + this.quadro).then(function (response) {
+          //this.tasks = response.data;
+          _this3.$emit('segundo', response.data);
+        }); //this.$emit('emitterdrawer', val)
+      }
+    }
+  },
+  // mounted() {
+  // 	 axios.get('/buscaTask/'+this.quadro).then(response => {
+  //             //this.tasks = response.data;
+  //             this.$emit('segundo', response.data);
+  //         });
+  // },
+  methods: {
+    buscaTask: function buscaTask() {
+      var _this4 = this;
+
+      axios.get('/buscaTask/' + this.quadro).then(function (response) {
+        _this4.$emit('segundo', response.data);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -43731,52 +43875,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-xl-4 col-md-6 mb-4  bg-light" }, [
-    _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
-      _c(
-        "div",
-        { staticClass: "card-header btn btn-lg btn-info text-white " },
-        [_vm._v("FEITO")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "card-body connectedSortable",
-          staticStyle: { "min-height": "80px" },
-          attrs: { id: "draggablePanelList3", "data-value": _vm.done }
+  return _c(
+    "div",
+    {
+      staticClass: "col-xl-4 col-md-6 mb-4  bg-light",
+      model: {
+        value: _vm.last,
+        callback: function($$v) {
+          _vm.last = $$v
         },
-        _vm._l(_vm.taskslast, function(task) {
-          return _c(
-            "div",
-            {
-              key: task.id,
-              staticClass: "card pan dragg qitem bg-light",
-              staticStyle: { position: "relative" },
-              attrs: { id: task.id, "data-value": _vm.done }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _c("h5", { staticClass: "text-center noselect" }, [
-                  _vm._v(_vm._s(task.task))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  {
-                    staticClass: " bottom-right noselect",
-                    staticStyle: { float: "right" }
-                  },
-                  [_vm._v(_vm._s(task.dono))]
-                )
-              ])
-            ]
-          )
-        }),
-        0
-      )
-    ])
-  ])
+        expression: "last"
+      }
+    },
+    [
+      _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+        _c(
+          "div",
+          { staticClass: "card-header btn btn-lg btn-info text-white " },
+          [_vm._v("FEITO")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "card-body connectedSortable",
+            staticStyle: { "min-height": "80px" },
+            attrs: { id: "draggablePanelList3", "data-value": _vm.done }
+          },
+          _vm._l(_vm.taskslast, function(task) {
+            return _c(
+              "div",
+              {
+                key: task.id,
+                staticClass: "card pan dragg qitem bg-light",
+                staticStyle: { position: "relative" },
+                attrs: { id: task.id, "data-value": _vm.done }
+              },
+              [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "text-center noselect" }, [
+                    _vm._v(_vm._s(task.task))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: " bottom-right noselect",
+                      staticStyle: { float: "right" }
+                    },
+                    [_vm._v(_vm._s(task.dono))]
+                  )
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43800,52 +43957,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-xl-4 col-md-6 mb-4  bg-light" }, [
-    _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
-      _c(
-        "div",
-        { staticClass: "card-header btn btn-lg btn-info text-white " },
-        [_vm._v("A FAZER")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "card-body connectedSortable",
-          staticStyle: { "min-height": "80px" },
-          attrs: { id: "draggablePanelList1", "data-value": _vm.todo }
+  return _c(
+    "div",
+    {
+      staticClass: "col-xl-4 col-md-6 mb-4  bg-light",
+      model: {
+        value: _vm.primeiro,
+        callback: function($$v) {
+          _vm.primeiro = $$v
         },
-        _vm._l(_vm.tasks, function(task) {
-          return _c(
-            "div",
-            {
-              key: task.id,
-              staticClass: "card pan dragg qitem bg-warning ",
-              staticStyle: { position: "relative" },
-              attrs: { id: task.id, "data-value": _vm.todo }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _c("h5", { staticClass: "text-center noselect" }, [
-                  _vm._v(_vm._s(task.task))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  {
-                    staticClass: " bottom-right noselect",
-                    staticStyle: { float: "right" }
-                  },
-                  [_vm._v(_vm._s(task.dono))]
-                )
-              ])
-            ]
-          )
-        }),
-        0
-      )
-    ])
-  ])
+        expression: "primeiro"
+      }
+    },
+    [
+      _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+        _c(
+          "div",
+          { staticClass: "card-header btn btn-lg btn-info text-white " },
+          [_vm._v("A FAZER")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "card-body connectedSortable",
+            staticStyle: { "min-height": "80px" },
+            attrs: { id: "draggablePanelList1", "data-value": _vm.todo }
+          },
+          _vm._l(_vm.tasks, function(task) {
+            return _c(
+              "div",
+              {
+                key: task.id,
+                staticClass: "card pan dragg qitem bg-warning ",
+                staticStyle: { position: "relative" },
+                attrs: { id: task.id, "data-value": _vm.todo }
+              },
+              [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "text-center noselect" }, [
+                    _vm._v(_vm._s(task.task))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: " bottom-right noselect",
+                      staticStyle: { float: "right" }
+                    },
+                    [_vm._v(_vm._s(task.dono))]
+                  )
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43869,52 +44039,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-xl-4 col-md-6 mb-4  bg-light" }, [
-    _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
-      _c(
-        "div",
-        { staticClass: "card-header btn btn-lg btn-info text-white " },
-        [_vm._v("FAZENDO")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "card-body connectedSortable",
-          staticStyle: { "min-height": "80px" },
-          attrs: { id: "draggablePanelList2", "data-value": _vm.doing }
+  return _c(
+    "div",
+    {
+      staticClass: "col-xl-4 col-md-6 mb-4  bg-light",
+      model: {
+        value: _vm.segundo,
+        callback: function($$v) {
+          _vm.segundo = $$v
         },
-        _vm._l(_vm.tasksdois, function(task) {
-          return _c(
-            "div",
-            {
-              key: task.id,
-              staticClass: "card pan dragg qitem bg-warning",
-              staticStyle: { position: "relative" },
-              attrs: { id: task.id, "data-value": _vm.doing }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _c("h5", { staticClass: "text-center noselect " }, [
-                  _vm._v(_vm._s(task.task))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "small",
-                  {
-                    staticClass: " bottom-right noselect ",
-                    staticStyle: { float: "right" }
-                  },
-                  [_vm._v(_vm._s(task.dono))]
-                )
-              ])
-            ]
-          )
-        }),
-        0
-      )
-    ])
-  ])
+        expression: "segundo"
+      }
+    },
+    [
+      _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+        _c(
+          "div",
+          { staticClass: "card-header btn btn-lg btn-info text-white " },
+          [_vm._v("FAZENDO")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "card-body connectedSortable",
+            staticStyle: { "min-height": "80px" },
+            attrs: { id: "draggablePanelList2", "data-value": _vm.doing }
+          },
+          _vm._l(_vm.tasksdois, function(task) {
+            return _c(
+              "div",
+              {
+                key: task.id,
+                staticClass: "card pan dragg qitem bg-warning",
+                staticStyle: { position: "relative" },
+                attrs: { id: task.id, "data-value": _vm.doing }
+              },
+              [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "text-center noselect " }, [
+                    _vm._v(_vm._s(task.task))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: " bottom-right noselect ",
+                      staticStyle: { float: "right" }
+                    },
+                    [_vm._v(_vm._s(task.dono))]
+                  )
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -56126,43 +56309,41 @@ var app = new Vue({
   data: {
     tasks: [],
     tasksdois: [],
-    taskslast: []
-  },
-  created: function created() {
-    var _this = this;
+    taskslast: [] //dado: [],
 
-    if ($('#todo').val() > 0) {
-      this.buscaTasks();
-    }
-
-    Echo["private"]('newtask').listen('NovaTask', function (e) {
-      _this.buscaTasks();
-    });
-    Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
-      _this.buscaTasks();
-    });
   },
+  // },
+  // created() {
+  //     if( $('#todo').val() > 0){
+  //         this.buscaTasks();
+  //     }
+  //     Echo.private('newtask')
+  //     .listen('NovaTask', (e) => {
+  //         this.buscaTasks();
+  //     });
+  //      Echo.private('taskmovida')
+  //     .listen('TaskMovida', (e) => {
+  //         this.buscaTasks();
+  //     });
+  // },
   methods: {
-    buscaTasks: function buscaTasks() {
-      var _this2 = this;
+    atualiza: function atualiza(dado) {
+      this.tasks = dado; // });
+    } // axios.get('/buscaTask/'+$('#doing').val()).then(response => {
+    //     this.tasksdois = response.data;
+    // });
+    // axios.get('/buscaTask/'+$('#done').val()).then(response => {
+    //     this.taskslast = response.data;
+    // });
 
-      axios.get('/buscaTask/' + $('#todo').val()).then(function (response) {
-        _this2.tasks = response.data;
-      });
-      axios.get('/buscaTask/' + $('#doing').val()).then(function (response) {
-        _this2.tasksdois = response.data;
-      });
-      axios.get('/buscaTask/' + $('#done').val()).then(function (response) {
-        _this2.taskslast = response.data;
-      });
-    } // addMessage(message) {
-    //     this.messages.push(message);
-    //     axios.post('/messages', message).then(response => {
-    //       console.log(response.data);
-    //     });
-    // }
+  } //     // addMessage(message) {
+  //     //     this.messages.push(message);
+  //     //     axios.post('/messages', message).then(response => {
+  //     //       console.log(response.data);
+  //     //     });
+  //     // }
+  // }
 
-  }
 });
 
 /***/ }),

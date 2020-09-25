@@ -1,5 +1,5 @@
 <template>
-	<div class="col-xl-4 col-md-6 mb-4  bg-light" >
+	<div class="col-xl-4 col-md-6 mb-4  bg-light" v-model="primeiro" >
 		<div class="card  border-0 shadow-lg my-5" >
 			<div class="card-header btn btn-lg btn-info text-white ">A FAZER</div>
 			<div class="card-body connectedSortable" id="draggablePanelList1" :data-value="todo" style="min-height: 80px">
@@ -20,7 +20,51 @@
 	<script>
 		export default {
 			props: ['tasks','todo'],
-
+			 data() {
+    		return {
+     			 quadro : this.todo,
+    			};
+  			},
+  			created() {
+  				Echo.private('newtask')
+  				.listen('NovaTask', (e) => {
+  					this.buscaTask();
+  				});
+  				 Echo.private('taskmovida')
+			        .listen('TaskMovida', (e) => {
+			            this.buscaTask();
+			        });
+  			},
+  			computed: {
+  				primeiro: {
+  					get: function() {
+  						return axios.get('/buscaTask/'+this.quadro).then(response => {
+			                this.$emit('primeiro', response.data);
+			            });
+  					},
+  					set: function() {
+  						axios.get('/buscaTask/'+this.quadro).then(response => {
+	                //this.tasks = response.data;
+			                this.$emit('primeiro', response.data);
+			            });
+  						//this.$emit('emitterdrawer', val)
+  					}
+  				}
+  			},
+  			//  mounted() {
+	  		// 	 axios.get('/buscaTask/'+this.quadro).then(response => {
+	    //             //this.tasks = response.data;
+	    //             this.$emit('primeiro', response.data);
+	    //         });
+  			// },
+  			methods: {
+  				buscaTask() {
+  					axios.get('/buscaTask/'+this.quadro).then(response => {
+  						this.$emit('primeiro', response.data);
+  					});
+  				}
+  			}
+  
 		};
 
 	</script>

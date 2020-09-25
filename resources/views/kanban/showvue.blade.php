@@ -118,13 +118,13 @@ KANBAN
 						</div> -->
 				
 				</div>
-				<input type="hidden"  id="todo"value="{{$quadros[0]['quadro']}}">
+				<!-- <input type="hidden"  id="todo"value="{{$quadros[0]['quadro']}}">
 				<input type="hidden"  id="doing"value="{{$quadros[1]['quadro']}}">
-				<input type="hidden"  id="done"value="{{$quadros[2]['quadro']}}">
+				<input type="hidden"  id="done"value="{{$quadros[2]['quadro']}}"> -->
 				<div class="row" id="app" >
-					<quadro-um :tasks="tasks" :todo="{{$quadros[0]['quadro']}}"></quadro-um>
-					<quadro-dois :tasksdois="tasksdois" :doing="{{$quadros[1]['quadro']}}"></quadro-dois>
-					<quadro-last :taskslast="taskslast" :done="{{$quadros[2]['quadro']}}"></quadro-last>
+					<quadro-um :tasks="tasks" :todo="{{$quadros[0]['quadro']}}" @primeiro="tasks = $event"></quadro-um>
+					<quadro-dois :tasksdois="tasksdois" :doing="{{$quadros[1]['quadro']}}" @segundo="tasksdois = $event"></quadro-dois>
+					<quadro-last :taskslast="taskslast" :done="{{$quadros[2]['quadro']}}" @last="taskslast = $event"></quadro-last>
 				</div>
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
