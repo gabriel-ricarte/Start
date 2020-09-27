@@ -13,98 +13,29 @@ use App\Kanban;
 use App\EquipeUser;
 use App\Equipe;
 use DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use App\Notifications\Contato;
 use App\Notifications\Convite;
 use App\Events\NovaTask;
 use App\Events\TaskMovida;
+use App\Traits\verificaTrait;
 
 class TaskController extends Controller
 {
+    use verificaTrait;
     public function __construct()
     {
          $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
     public function newtask(Request $request)
     {
+        ///dd($request->all());
+        $request->validate([
+        'tarefa' => 'required|between:5,250',
+        'id' => 'required|exists:quadros,id',
+        'tecnico' => 'required|exists:users,id',
+        ]);
+        //dd($request->all());
         $user = Auth::user();
-
         $encoding = 'UTF-8'; 
         $quadro = Quadro::where('kanban_id',$request->id)->first();
         $kanban = Kanban::find($request->id);
@@ -125,18 +56,34 @@ class TaskController extends Controller
         $fato->save();  
         broadcast(new NovaTask($task,$user))->toOthers();
         event(new NovaTask($task,$user));
-        //return redirect()->route('mandei');
-        return $task;
+       return ['Tarefa criada com sucesso !','success'];
     }
     public function movetask(Request $request)
     {
+       
+        $request->validate([
+        'quadro' => 'required|exists:quadros,id',
+        'task' => 'required|exists:task_fatos,id',
+        'estado' => 'required|integer',
+        ]); 
+         //dd($request->all());
         $user = Auth::user();
         $task = TaskFato::findOrFail($request->task);
         $tarefa = Task::find($task->task_id);
-        if($task->user_id != $user->id){
-            $quadro = Quadro::find($request->quadro);
-            return redirect()->route('kanban.show',$quadro->kanban_id)->withErrors('Usuário não tem permissão para mover a tarefa selecionada !');
-        }else{
+        $verifica = $this->moveTarefa($user , $task);
+        //verifica se movimento é válido
+        if(!$verifica[0]){
+            return [$verifica[1],$verifica[2]];
+        }
+        $hoje = date('Y-m-d h:i:s');
+        //$onde = 
+        if($request->estado == 2){ 
+                    $datetime1 = date_create($hoje);
+                    $datetime2 = date_create($tarefa->updated_at);
+                    $interval = date_diff($datetime1, $datetime2);
+                    $tarefa->custo = $interval->format("%R%h horas");
+                    $tarefa->save();
+            }
             $quadro = Quadro::find($request->quadro);
             $task->quadro_id = $request->quadro;    
             $task->estado = $request->estado;
@@ -149,8 +96,8 @@ class TaskController extends Controller
             }
             broadcast(new TaskMovida($tarefa,$user))->toOthers();
             event(new TaskMovida($tarefa,$user));
-            return $task;
-        }
+            return ['Movido com sucesso !','success'];
+        
         
     }
     public function deltask(Request $request)
@@ -170,10 +117,40 @@ class TaskController extends Controller
         $tasks = [];
         $quadro = Quadro::find($id);
         foreach ($quadro->tasks_ativas as $ta) {
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome];
+            if($ta->prioridade == 0){
+                $cor = 'warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$ta->prioridade];
+        }
+        foreach ($quadro->tasks_em_andamento as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$ta->prioridade,'tempo'=>$ta->task->custo];
+        }
+        foreach ($quadro->tasks_em_revisao as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$ta->prioridade,'revisao'=>$ta->task->descricao];
         }
         foreach ($quadro->tasks_finalizadas as $ta) {
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome];
+            if($ta->prioridade == 0){
+                $cor = 'warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$ta->prioridade];
         }
         return $tasks;
 

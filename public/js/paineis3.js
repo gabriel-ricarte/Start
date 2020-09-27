@@ -140,12 +140,17 @@ $('#'+task).css('cursor', 'wait');
     url: post_url,
     data: post_data,
     success: function(msg) {
+
         $('#articlee').css('cursor', 'default');
         $('#'+des).css('cursor', 'move');
+        $("#some").slideDown( "fast", function() {});
+        $('#respp').attr('class','alert alert-'+msg[1]);
+        document.getElementById('respp').innerHTML = msg[0];
+        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
       },
       error: function(msg){
         $('#articlee').css('cursor', 'default');
-        alert('Falha carregando os dados!'+msg);
+        document.getElementById('respp').innerHTML = msg;
       }
     });
 

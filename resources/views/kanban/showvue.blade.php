@@ -5,25 +5,11 @@ KANBAN
 @section('js')
 <script type="text/javascript" src="{{asset('js/jquery-1.9.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jqueryui-certo.js')}}"></script>
-   	<script type="text/javascript" src="{{asset('js/paineis3.js')}}"></script>
-<style type="text/css">
-	.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
-</style>
-<!-- javascript dos cards e paineis -->
-<!-- 	<script type="text/javascript" src="{{asset('js/paineis3.js')}}"></script> -->
+<script type="text/javascript" src="{{asset('js/paineis3.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{asset('css/noselect.css')}}">
 @endsection
 @section('css')
-<!-- <link href="{{asset('css/agency.min.css')}}" rel="stylesheet"> -->
-<link rel="stylesheet" type="text/css" href="{{asset('css/wobble.css')}}">
-<!-- <link rel="stylesheet" type="text/css" href="{{asset('css/tabs.css')}}"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{{asset('css/wobble.css')}}"> -->
 @endsection
 @section('projetoA','active')
 @section('local',$kanban->nome)
@@ -31,7 +17,6 @@ KANBAN
 @include('parciais.loading-page')
 <!-- Page Wrapper -->
 <div id="wrapper">
-
 	<!-- Sidebar -->
 	@include('dashboard.side-bar')
 	<!-- End of Sidebar -->
@@ -51,15 +36,20 @@ KANBAN
 				<div class="container" style="margin-top: -18px;">
 					<br>
 					<div class="row" id="sobe">
-						
-					
 					<center>	
 					@if($permi->permissao == 0)	
-					<button type="button" class="btn btn-info btn-outline btn-lg text-white" onclick="anima()">NOVA TAREFA<!--  <i class="fa fa-plus"></i> --></button>
-					<!-- <button title="EDITE O PROJETO" type="button" class="btn btn-secondary btn-outline " style="margin-right: 8px" ><i class="far fa-edit"></i></button> -->
-						<button title="TRASH" type="button" class="btn btn-danger btn-outline " onclick="gringosTrash()" ><i class="fas fa-trash-alt"></i></button>
-						@endif
+						<button type="button" class="btn btn-info btn-outline btn-lg text-white" onclick="anima()">
+							NOVA TAREFA	
+						</button>
+						<!-- <button title="EDITE O PROJETO" type="button" class="btn btn-secondary btn-outline " style="margin-right: 8px" ><i class="far fa-edit"></i></button> -->
+						<button title="TRASH" type="button" class="btn btn-danger btn-outline " onclick="gringosTrash()" >
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					@endif
 					</center>
+					<div class="row" id="some" style="display: none">
+						<span class="" id="respp" style="float: right"></span>	
+					</div>
 						
 					</div>
 					<div class="row" id="desce" style="display: none">
@@ -196,8 +186,6 @@ KANBAN
 	}
 </style>
 <script>
-	console.log({!!$quadros[0]['quadro']!!});
-
 	$(document).ready(function(){
 		$('[data-toggle="popover"]').popover();   
 	});
@@ -218,12 +206,21 @@ KANBAN
     url: post_url, 
     data: post_data,
     success: function(msg) {
+    	$("#some").slideDown( "fast", function() {});
+        $('#respp').attr('class','alert alert-'+msg[1]);
+        document.getElementById('respp').innerHTML = msg[0];
+        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
       },
       error: function(msg){
-        alert('Falha carregando os dados!'+msg);
+        //alert('Falha carregando os dados!'+msg);
+        $("#some").slideDown( "fast", function() {});
+        $('#respp').attr('class','alert alert-danger');
+        document.getElementById('respp').innerHTML = msg.responseJSON.errors.tarefa[0];
+        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
+        //console.log();
       }
     });
-  setTimeout(function() {fecha();reset();},100);
+  setTimeout(function() {fecha();reset();},10);
 	}
 	function reset(){
 		

@@ -26,6 +26,12 @@ class Quadro extends Model
     public function tasks_ativas() {
         return $this->tasks()->where('estado','=', 0);
     }
+    public function tasks_em_andamento() {
+        return $this->tasks()->where('estado','=', 3);
+    }
+    public function tasks_em_revisao() {
+        return $this->tasks()->where('estado','=', 4);
+    }
     public function tasks_all() {
         return $this->tasks()->where('estado','!=', 1);
     }

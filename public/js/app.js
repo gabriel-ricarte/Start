@@ -43921,6 +43921,14 @@ var render = function() {
                     "small",
                     {
                       staticClass: " bottom-right noselect",
+                      staticStyle: { float: "left" }
+                    },
+                    [_vm._v(_vm._s(task.custo))]
+                  ),
+                  _c(
+                    "small",
+                    {
+                      staticClass: " bottom-right noselect",
                       staticStyle: { float: "right" }
                     },
                     [_vm._v(_vm._s(task.dono))]
@@ -56691,8 +56699,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Start\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Start\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! c:\xampp\htdocs\Start\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! c:\xampp\htdocs\Start\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
