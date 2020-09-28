@@ -72,4 +72,88 @@ trait kanbanTrait
    	}
     
     }
+
+    public function tarefasKanban($id){
+
+        $tasks = [];
+        $quadro = Quadro::findOrFail($id);
+        foreach ($quadro->tasks_ativas as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'card pan dragg qitem bg-warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'card pan dragg qitem bg-danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor];
+        }
+        foreach ($quadro->tasks_em_andamento as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'card pan dragg qitem bg-warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'card pan dragg qitem bg-danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
+        }
+        foreach ($quadro->tasks_em_revisao as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'card pan dragg qitem bg-warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'card pan dragg qitem bg-danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao];
+        }
+        foreach ($quadro->tasks_finalizadas as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'card pan dragg qitem bg-light';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
+        }
+        return $tasks;
+    }
+    public function tarefasTimeline($id){
+        $tasks = [];
+        $quadros = Quadro::where('kanban_id',$id)->get();
+        if(!$quadros){
+          return [false,'Kanban não encontrado !'];
+        }
+        foreach($quadros as $quadro){
+            foreach ($quadro->tasks_ativas as $ta) {
+            if($ta->prioridade == 0){
+                $cor = 'card bg-warning';
+            }
+            if($ta->prioridade == 1){
+                $cor = 'card bg-danger';
+            }
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor];
+            }
+            foreach ($quadro->tasks_em_andamento as $ta) {
+                if($ta->prioridade == 0){
+                    $cor = 'card bg-warning';
+                }
+                if($ta->prioridade == 1){
+                    $cor = 'card bg-danger';
+                }
+                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
+            }
+            foreach ($quadro->tasks_em_revisao as $ta) {
+                if($ta->prioridade == 0){
+                    $cor = 'card  bg-warning';
+                }
+                if($ta->prioridade == 1){
+                    $cor = 'card bg-danger';
+                }
+                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao];
+            }
+            foreach ($quadro->tasks_finalizadas as $ta) {
+                if($ta->prioridade == 0){
+                    $cor = 'card bg-light';
+                }
+                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
+            }
+        }
+        
+        return $tasks;
+    }
 }

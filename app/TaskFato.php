@@ -11,6 +11,7 @@ class TaskFato extends Model
 		'user_id',
 		'quadro_id',
 		'projeto_id',
+		//'who_id',
 		'estado',
 		'prioridade',
 	];

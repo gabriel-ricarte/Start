@@ -294,7 +294,6 @@ DASHBOARD
   </div>
   <!-- End of Page Wrapper -->
   <!-- Page level plugins -->
-  {{-- <script src="vendor/chart.js/Chart.min.js"></script> --}}
 
 <p>
 

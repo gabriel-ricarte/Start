@@ -19,10 +19,15 @@ use App\Events\NovaTask;
 use App\Events\TaskMovida;
 use App\Events\MovimentoInvalido;
 use App\Traits\verificaTrait;
+use App\Traits\kanbanTrait;
+use App\Traits\taskTrait;
 
 class TaskController extends Controller
 {
     use verificaTrait;
+    use kanbanTrait;
+    use taskTrait;
+
     public function __construct()
     {
          $this->middleware('auth');
@@ -35,23 +40,13 @@ class TaskController extends Controller
         'tecnico' => 'required|exists:users,id',
         ]);
         $user = Auth::user();
-        $encoding = 'UTF-8'; 
-        $quadro = Quadro::where('kanban_id',$request->id)->first();
-        $kanban = Kanban::find($request->id);
-        $task = new Task();
-        $task->task = mb_convert_case($request->tarefa, MB_CASE_UPPER, $encoding);
-        $task->descricao =  'TESTE';
-        $task->save();
-
-        $tecnico = User::find($request->tecnico);
-        $fato = new Taskfato();
-        $fato->task()->associate($task->id);
-        $fato->quadro()->associate($quadro->id);
-        $fato->projeto()->associate($kanban->projeto_id);
-        $fato->user()->associate($request->tecnico);
-        $fato->save();  
-        broadcast(new NovaTask($task,$user))->toOthers();
-        event(new NovaTask($task,$user));
+        //testando retorno de erro 500
+        try{
+            $this->salvaTarefa($user , $request);
+        } catch (Exception $e) {
+            return[false,'Erro no processamento dos dados, favor contate o desenvolvedor !'];
+        }
+        
        return ['Tarefa criada com sucesso !','success'];
     }
     public function movetask(Request $request)
@@ -111,95 +106,18 @@ class TaskController extends Controller
         return $task;
     }
     public function buscaTask($id){
-
-        //$kanban = Kanban::findOrFail($kanban);
-        //$tecnico = Tecnico::findOrFail($id);
-        $tasks = [];
-        $quadro = Quadro::find($id);
-        foreach ($quadro->tasks_ativas as $ta) {
-            if($ta->prioridade == 0){
-                $cor = 'card pan dragg qitem bg-warning';
-            }
-            if($ta->prioridade == 1){
-                $cor = 'card pan dragg qitem bg-danger';
-            }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor];
-        }
-        foreach ($quadro->tasks_em_andamento as $ta) {
-            if($ta->prioridade == 0){
-                $cor = 'card pan dragg qitem bg-warning';
-            }
-            if($ta->prioridade == 1){
-                $cor = 'card pan dragg qitem bg-danger';
-            }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
-        }
-        foreach ($quadro->tasks_em_revisao as $ta) {
-            if($ta->prioridade == 0){
-                $cor = 'card pan dragg qitem bg-warning';
-            }
-            if($ta->prioridade == 1){
-                $cor = 'card pan dragg qitem bg-danger';
-            }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao];
-        }
-        foreach ($quadro->tasks_finalizadas as $ta) {
-            if($ta->prioridade == 0){
-                $cor = 'card pan dragg qitem bg-light';
-            }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
-        }
+        $tasks = $this->tarefasKanban($id);
         return $tasks;
-
     }
     public function buscaK($id){
-        $tasks = [];
-        $quadros = Quadro::where('kanban_id',$id)->get();
-        foreach($quadros as $quadro){
-            foreach ($quadro->tasks_ativas as $ta) {
-            if($ta->prioridade == 0){
-                $cor = 'card bg-warning';
-            }
-            if($ta->prioridade == 1){
-                $cor = 'card bg-danger';
-            }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor];
-            }
-            foreach ($quadro->tasks_em_andamento as $ta) {
-                if($ta->prioridade == 0){
-                    $cor = 'card bg-warning';
-                }
-                if($ta->prioridade == 1){
-                    $cor = 'card bg-danger';
-                }
-                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
-            }
-            foreach ($quadro->tasks_em_revisao as $ta) {
-                if($ta->prioridade == 0){
-                    $cor = 'card  bg-warning';
-                }
-                if($ta->prioridade == 1){
-                    $cor = 'card bg-danger';
-                }
-                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao];
-            }
-            foreach ($quadro->tasks_finalizadas as $ta) {
-                if($ta->prioridade == 0){
-                    $cor = 'card bg-light';
-                }
-                $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo'=>$ta->task->custo];
-            }
-        }
-        
+        $tasks = $this->tarefasTimeline($id);
         return $tasks;
 
     }
     public function eventoTask(Request $request){
-
         $kanban = Kanban::findOrFail($kanban);
         $tecnico = Tecnico::findOrFail($id);
         return $kanban;
-
     }
     public function manda()
     {

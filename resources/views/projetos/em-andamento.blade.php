@@ -230,7 +230,7 @@ PROJETOS EM ANDAMENTO
      $("#quad").slideUp( "fast", function() {$("#and").slideDown( "fast", function() {});$("#btnV").slideUp( "fast", function() {});});
   }
   function pesquisaQuadro(data , id){
-    $('#cinza').attr('action','http://localhost:8000/busca-quadro/'+data);
+    $('#cinza').attr('action',`{{route('busca.quadro',`+data+`)}}`);
   	$("#projeto"+id).slideUp( "slow", function() { });
     setTimeout(function() { $("#invi").slideDown( "slow", function() { })},100);
     document.getElementById('invi').innerHTML = 
