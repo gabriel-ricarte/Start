@@ -75,7 +75,7 @@ function amarelolixo(task){
 
 $('#articlee').css('cursor', 'wait');
 $('#'+task).css('cursor', 'wait');
-   document.getElementById('insertlixo').innerHTML = "";
+    document.getElementById('insertlixo').innerHTML = "";
     document.getElementById('insertlixo').innerHTML =
     `
     <input type="text" name="task"  class="form-control col-12" value="`+task+`" required="required">
@@ -98,40 +98,23 @@ $('#'+task).css('cursor', 'wait');
     success: function(msg) {
         $('#articlee').css('cursor', 'default');
         $('#'+des).css('cursor', 'move');
-        $("#roxolixo").load(location.href+" #roxolixo>*","");
+        $("#some").slideDown( "fast", function() {});
+        $('#respp').attr('class','alert alert-'+msg[1]);
+        document.getElementById('respp').innerHTML = msg[0];
+        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
       },
       error: function(msg){
         $('#articlee').css('cursor', 'default');
-        alert('Falha carregando os dados!'+msg);
+        document.getElementById('respp').innerHTML = msg;
       }
     });
-
-  $("#roxolixo").load(location.href+" #roxolixo>*","");
-  //$("#abt").load(location.href+" #abt>*","");
  }
 
 
 
-      function movido(task,quadro,estado){
-
-$('#articlee').css('cursor', 'wait');
-$('#'+task).css('cursor', 'wait');
-   document.getElementById('insert').innerHTML = "";
-    document.getElementById('insert').innerHTML =
-    `
-    <input type="text" name="quadro"  class="form-control col-12" value="`+quadro+`" required="required">
-    <input type="text" name="task"  class="form-control col-12" value="`+task+`" required="required">
-    <input type="text" name="estado"  class="form-control col-12" value="`+estado+`" required="required">
-
-    `
-    ;
-    salvaMove(task);
-    setTimeout(function() {  },1);
-  }
-
-   function salvaMove(des){
-     $('#articlee').css('cursor', 'wait');
-
+function movido(e,t,n){$("#articlee").css("cursor","wait"),$("#"+e).css("cursor","wait"),document.getElementById("insert").innerHTML="",document.getElementById("insert").innerHTML='\n        <input type="text" name="quadro"  class="form-control col-12" value="'+t+'" required="required">\n        <input type="text" name="task"  class="form-control col-12" value="'+e+'" required="required">\n        <input type="text" name="estado"  class="form-control col-12" value="'+n+'" required="required">\n\n        ',salvaMove(e),setTimeout(function(){},1)}
+function salvaMove(des){
+  $('#articlee').css('cursor', 'wait');
   var form = $('#move');
   var post_url = form.attr('action');
   var post_data = form.serialize();
@@ -153,10 +136,7 @@ $('#'+task).css('cursor', 'wait');
         document.getElementById('respp').innerHTML = msg;
       }
     });
-
- //$("#recharP").load(location.href+" #recharP>*","");
-  //$("#abt").load(location.href+" #abt>*","");
- }
+}
 
 
 
@@ -164,8 +144,6 @@ $('#'+task).css('cursor', 'wait');
 
 
  function ale(){
-  //div.style.display="none";
-
   var form = $('#cinza');
   var post_url = form.attr('action');
   var post_data = form.serialize();
@@ -186,6 +164,12 @@ $('#'+task).css('cursor', 'wait');
 
  function gringosTrash(){
    $("#gringosTrash").slideDown( "fast", function() {});
+ }
+ function fechaQuadro(){
+   $("#finaliza").slideDown( "fast", function() {});
+ }
+ function fechaQuadroUp(){
+   $("#finaliza").slideUp( "fast", function() {});
  }
   function jogaFora(){
    $("#gringosTrash").slideUp( "fast", function() {$("#recharP").slideDown( "fast", function() {});});

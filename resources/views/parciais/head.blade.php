@@ -20,10 +20,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   	<link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-  	<link href="{{ asset('css/freelancer.css') }}" rel="stylesheet">
+  	<link href="{{ asset('css/freelancer.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
   	<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/app.js')}}" defer></script>
     @yield('css')  
 
     @yield('js')

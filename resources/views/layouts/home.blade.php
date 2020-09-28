@@ -2,6 +2,7 @@
 <html lang="pt-br">
 @include('parciais.head')
 <body id="page-top">
+  <div id='app'></div>
 @include('parciais.mensagens')
 @yield('conteudo')
 
@@ -18,5 +19,8 @@
 
   <!-- Custom scripts for this template -->
   <script src="{{asset('js/freelancer.min.js')}}"></script>
+
+
+
 </body>
 </html>

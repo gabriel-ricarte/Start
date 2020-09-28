@@ -54,5 +54,6 @@ Route::get('manda','TaskController@manda')->name('mandei');
 
 Route::get('projetos-em-andamento','ProjetoController@andamento')->name('andamento');
 Route::get('criando-quadro/projeto/{id}','KanbanController@create')->name('kanban.criar');
-Route::get('busca-quadro','KanbanController@buscaK')->name('busca.quadro');
+Route::get('busca-quadro/{kanban}','TaskController@buscaK')->name('busca.quadro');
+Route::post('finaliza-quadro','KanbanController@fecharKanban')->name('finalizar.quadro');
 

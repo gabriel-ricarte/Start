@@ -4,7 +4,7 @@
 			<div class="card-header btn btn-lg btn-info text-white ">FAZENDO</div>
 			<div class="card-body connectedSortable" id="draggablePanelList2" :data-value="doing"style="min-height: 80px">
 
-	<div class="card pan dragg qitem bg-warning" :id="task.id"    :data-value="doing" style="position: relative;" v-for="task in tasksdois" v-bind:key="task.id" >	
+	<div :class="task.prioridade" :id="task.id"    :data-value="doing" style="position: relative;" v-for="task in tasksdois" v-bind:key="task.id" >	
 					<div class="card-body" >
 						<!-- <div class="container"> -->
 							<h5 class="text-center noselect ">{{task.task}}</h5>
@@ -35,6 +35,11 @@
 			        .listen('TaskMovida', (e) => {
 			             this.buscaTask();
 			        });
+			    Echo.private('invalido')
+			        .listen('MovimentoInvalido', (e) => {
+			        	this.zera();
+			            this.buscaTask();
+			        });
   			},
   			computed: {
   				segundo: {
@@ -63,6 +68,10 @@
   					axios.get('/buscaTask/'+this.quadro).then(response => {
   						this.$emit('segundo', response.data);
   					});
+  				},zera() {
+  					
+  					this.$emit('segundo',[]);
+  					
   				}
   			}
 		};

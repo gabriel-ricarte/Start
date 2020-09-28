@@ -107,7 +107,7 @@ trait projetoTrait
                     // $diff->format("%R%a dias");
                     $datetime1 = date_create($kanban->data_fim);
                     $datetime2 = date_create($kanban->updated_at);
-                    $interval = date_diff($datetime1, $datetime2);
+                    $interval = date_diff($datetime2, $datetime1);
                     $dif = $interval->format('%d');
                 }else{
                     $datetime1 = date_create($hoje);

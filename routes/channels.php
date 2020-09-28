@@ -26,3 +26,6 @@ Broadcast::channel('taskmovida', function ($user) {
 Broadcast::channel('user', function ($user) {
   return Auth::check();
 });
+Broadcast::channel('invalido', function ($user) {
+  return Auth::check();
+});

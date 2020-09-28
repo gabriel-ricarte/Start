@@ -67,7 +67,10 @@ PROJETOS EM ANDAMENTO
                   <h6 class="m-0 font-weight-bold text-primary" id="quad" style="display: none"></h6>
                   <h6 class="m-0 font-weight-bold btn btn-primary" id="btnV" style="display: none" onclick="sobe()" ><span class="fas fa-arrow-left"></span></h6>
                 </div>
-                <div class="card-body" id="pesquisei" style="display: none">
+                <div class="card-body" id="invi" style="display: none">
+                  <div class="row" id="pesquisei">
+                    
+                  </div>
                 </div>	
                 <div class="card-body" id="projj">
                   @if($projetos != null)
@@ -155,7 +158,7 @@ PROJETOS EM ANDAMENTO
                                                             </li>
                                                         </ul>
                                                         
-                                                         <button class="btn btn-info active" onclick="pesquisaQuadro({{$kanban['kanban_id']}})"><span class=" text-center">VER</span></button>
+                                                         <button class="btn btn-info active" onclick="pesquisaQuadro({{$kanban['kanban_id']}} ,{{$projeto['projeto_id']}})"><span class=" text-center">VER</span></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,7 +207,7 @@ PROJETOS EM ANDAMENTO
 
   <!-- Scroll to Top Button-->
   <a hidden>
-	  <form method="get" action="{{ route('busca.quadro') }}" class="form-horizontal" id="cinza" >
+	  <form method="get" action="#" class="form-horizontal" id="cinza" >
 	              <div id="inserir">
 
 	              </div>
@@ -223,12 +226,14 @@ PROJETOS EM ANDAMENTO
   }
   function sobe(id){
      $("#projeto"+id).slideUp( "fast", function() {$("#raus").slideDown( "fast", function() {});});
+     $("#pesquisei").slideUp( "fast", function() {});
      $("#quad").slideUp( "fast", function() {$("#and").slideDown( "fast", function() {});$("#btnV").slideUp( "fast", function() {});});
   }
-  function pesquisaQuadro(data){
-
-    setTimeout(function() { $("#pesquisei").slideDown( "slow", function() { })},100);
-    document.getElementById('pesquisei').innerHTML = 
+  function pesquisaQuadro(data , id){
+    $('#cinza').attr('action','http://localhost:8000/busca-quadro/'+data);
+  	$("#projeto"+id).slideUp( "slow", function() { });
+    setTimeout(function() { $("#invi").slideDown( "slow", function() { })},100);
+    document.getElementById('invi').innerHTML = 
     `
     <center><div class="loader"></div></center>
     `
@@ -250,29 +255,46 @@ PROJETOS EM ANDAMENTO
     data: post_data,
     success: function() {
       
-      //$("#muda").load(location.href+" #muda>*","");
+      //alert('certo');
       },
       error: function(){
-        //document.getElementById('inject').innerHTML = "<span class='alert alert-warning'>SEM RESERVAS PARA ESTE DIA !</span>";
+        //alert('errado');
       }
     });
-  //console.log(show);
-//console.log(show.responseJSON());
-show.done(function(dat){ 
+  	console.log(show);
+	show.done(function(dat){ 
+	 document.getElementById('invi').innerHTML = 
+    `
+     <div class="row" id="pesquisei">
+                    
+                  </div>
+    `
+    ;
    if(Object.values(dat).length == 0) {
-     // document.getElementById('inject').innerHTML = '<div class="row text-center"><span class="alert alert-warning">SEM RESERVAS PARA ESTE DIA !</span></div>';
+
     }else{
 
     	console.log(dat);
-document.getElementById('pesquisei').innerHTML = "";
+		document.getElementById('pesquisei').innerHTML = "";
+			for (var i = 0; i < Object.values(dat).length; i++) {
 
-for (var i = 0; i < Object.values(dat).length; i++) {
-   let hora = ` <div class="col-xl-3 col-md-6 mb-4">`+  
-                  Object.values(dat)[i].task
-             +`</div>`;
-                $('#pesquisei').append(hora);
-}
-}
+       
+			   let hora =  `
+        <div class="col-xl-3 col-md-6 mb-4 `+Object.values(dat)[i].prioridade+`"> 
+          <div class="card-body" >
+              <h5 class="text-center noselect">`+  
+                        Object.values(dat)[i].task
+                   +`</h5>
+              <small class=" bottom-right noselect" style="float: right">`+  
+                        Object.values(dat)[i].dono
+                   +`</small>
+            </div>
+          </div>
+
+        `;
+			                $('#pesquisei').append(hora);
+			}
+	}
 
 
 

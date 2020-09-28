@@ -42,7 +42,10 @@ KANBAN
 							NOVA TAREFA	
 						</button>
 						<!-- <button title="EDITE O PROJETO" type="button" class="btn btn-secondary btn-outline " style="margin-right: 8px" ><i class="far fa-edit"></i></button> -->
-						<button title="TRASH" type="button" class="btn btn-danger btn-outline " onclick="gringosTrash()" >
+						<button title="Finalizar quadro" type="button" class="btn btn-warning btn-outline btn-lg active " onclick="fechaQuadro()" >
+							<i class="fas fa-check-double"></i>
+						</button>
+						<button title="TRASH" type="button" class="btn btn-danger btn-outline btn-lg " onclick="gringosTrash()" >
 							<i class="fas fa-trash-alt"></i>
 						</button>
 					@endif
@@ -87,6 +90,21 @@ KANBAN
 								</div>
 							</div>
 						
+					</div>
+					<div class="row justify-content-center"  id="finaliza" style="margin-bottom: 10px;display: none">
+						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
+							<div class="card  border-0 shadow-lg my-5" >
+								<div class="card-header bg-primary text-white ">FINALIZAR QUADRO ? <span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fechaQuadroUp()" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-body text-center" style="min-height: 80px">
+									<form method="post" action="{{ route('finalizar.quadro') }}" class="form-horizontal" id="formF" >
+										@csrf
+										<input type="hidden" name="kanban" value="{{$kanban->id}}">
+										<button class="btn btn-success active">CONFIRMAR</button>
+									</form>
+									
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="row justify-content-center"  id="gringosTrash" style="margin-bottom: 10px;display: none">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" >

@@ -158,4 +158,18 @@ class KanbanController extends Controller
         }
 
     }
+    public function fecharKanban(Request $request)
+    {
+        $user = Auth::user();
+        $kanban = Kanban::find($request->kanban);
+        $projeto = Projeto::find($kanban->projeto_id);
+        if($projeto->user_id != $user->id){
+            return [false,'Usuário não tem permissão para fechar o quadro !','danger'];
+        }
+        
+        $kanban->status = 2;
+        $kanban->save();
+        return redirect()->route('projeto.index')->with('msg','Quadro fechado com sucesso !');
+
+    }
 }

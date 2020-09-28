@@ -4,7 +4,7 @@
 			<div class="card-header btn btn-lg btn-info text-white ">A FAZER</div>
 			<div class="card-body connectedSortable" id="draggablePanelList1" :data-value="todo" style="min-height: 80px">
 
-	<div class="card pan dragg qitem bg-warning " :id="task.id"   :data-value="todo" style="position: relative;" v-for="task in tasks" v-bind:key="task.id">	
+	<div :class="task.prioridade" :id="task.id"   :data-value="todo" style="position: relative;" v-for="task in tasks" v-bind:key="task.id">	
 					<div class="card-body" >
 						<!-- <div class="container"> -->
 							<h5 class="text-center noselect">{{task.task}}</h5>
@@ -30,8 +30,13 @@
   				.listen('NovaTask', (e) => {
   					this.buscaTask();
   				});
-  				 Echo.private('taskmovida')
+  				Echo.private('taskmovida')
 			        .listen('TaskMovida', (e) => {
+			            this.buscaTask();
+			        });
+			    Echo.private('invalido')
+			        .listen('MovimentoInvalido', (e) => {
+			        	this.zera();
 			            this.buscaTask();
 			        });
   			},
@@ -44,10 +49,8 @@
   					},
   					set: function() {
   						axios.get('/buscaTask/'+this.quadro).then(response => {
-	                //this.tasks = response.data;
 			                this.$emit('primeiro', response.data);
 			            });
-  						//this.$emit('emitterdrawer', val)
   					}
   				}
   			},
@@ -62,6 +65,10 @@
   					axios.get('/buscaTask/'+this.quadro).then(response => {
   						this.$emit('primeiro', response.data);
   					});
+  				},zera() {
+  					
+  					this.$emit('primeiro',[]);
+  					
   				}
   			}
   

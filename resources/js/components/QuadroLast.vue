@@ -4,11 +4,11 @@
 			<div class="card-header btn btn-lg btn-info text-white ">FEITO</div>
 			<div class="card-body connectedSortable" id="draggablePanelList3" :data-value="done" style="min-height: 80px">
 
-	<div class="card pan dragg qitem bg-light" :id="task.id"   :data-value="done" style="position: relative;" v-for="task in taskslast" v-bind:key="task.id">	
+	<div :class="task.prioridade" :id="task.id"   :data-value="done" style="position: relative;" v-for="task in taskslast" v-bind:key="task.id">	
 					<div class="card-body" >
 						<!-- <div class="container"> -->
 							<h5 class="text-center noselect">{{task.task}}</h5>
-							<small class=" bottom-right noselect"  style="float: left">{{task.custo}}</small><small class=" bottom-right noselect"  style="float: right">{{task.dono}}</small>
+							<small class=" bottom-right noselect"  style="float: left">{{task.tempo}}</small><small class=" bottom-right noselect"  style="float: right">{{task.dono}}</small>
 							<!-- </div> -->
 						</div>
 					</div>
@@ -33,6 +33,12 @@
   				});
   				Echo.private('taskmovida')
 			        .listen('TaskMovida', (e) => {
+			        	console.log(e);
+			            this.buscaTask();
+			        });
+			    Echo.private('invalido')
+			        .listen('MovimentoInvalido', (e) => {
+			        	this.zera();
 			            this.buscaTask();
 			        });
   			},
@@ -58,6 +64,10 @@
   						//this.tasks = response.data;
   						this.$emit('last', response.data);
   					});
+  				},zera() {
+  					
+  					this.$emit('last',[]);
+  					
   				}
   			}
 		};

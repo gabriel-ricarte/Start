@@ -1975,6 +1975,13 @@ __webpack_require__.r(__webpack_exports__);
       _this.buscaTask();
     });
     Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
+      console.log(e);
+
+      _this.buscaTask();
+    });
+    Echo["private"]('invalido').listen('MovimentoInvalido', function (e) {
+      _this.zera();
+
       _this.buscaTask();
     });
   },
@@ -2005,6 +2012,9 @@ __webpack_require__.r(__webpack_exports__);
         //this.tasks = response.data;
         _this4.$emit('last', response.data);
       });
+    },
+    zera: function zera() {
+      this.$emit('last', []);
     }
   }
 });
@@ -2055,6 +2065,11 @@ __webpack_require__.r(__webpack_exports__);
     Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
       _this.buscaTask();
     });
+    Echo["private"]('invalido').listen('MovimentoInvalido', function (e) {
+      _this.zera();
+
+      _this.buscaTask();
+    });
   },
   computed: {
     primeiro: {
@@ -2069,9 +2084,8 @@ __webpack_require__.r(__webpack_exports__);
         var _this3 = this;
 
         axios.get('/buscaTask/' + this.quadro).then(function (response) {
-          //this.tasks = response.data;
           _this3.$emit('primeiro', response.data);
-        }); //this.$emit('emitterdrawer', val)
+        });
       }
     }
   },
@@ -2088,6 +2102,9 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/buscaTask/' + this.quadro).then(function (response) {
         _this4.$emit('primeiro', response.data);
       });
+    },
+    zera: function zera() {
+      this.$emit('primeiro', []);
     }
   }
 });
@@ -2139,6 +2156,11 @@ __webpack_require__.r(__webpack_exports__);
     Echo["private"]('taskmovida').listen('TaskMovida', function (e) {
       _this.buscaTask();
     });
+    Echo["private"]('invalido').listen('MovimentoInvalido', function (e) {
+      _this.zera();
+
+      _this.buscaTask();
+    });
   },
   computed: {
     segundo: {
@@ -2172,6 +2194,9 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/buscaTask/' + this.quadro).then(function (response) {
         _this4.$emit('segundo', response.data);
       });
+    },
+    zera: function zera() {
+      this.$emit('segundo', []);
     }
   }
 });
@@ -43907,7 +43932,7 @@ var render = function() {
               "div",
               {
                 key: task.id,
-                staticClass: "card pan dragg qitem bg-light",
+                class: task.prioridade,
                 staticStyle: { position: "relative" },
                 attrs: { id: task.id, "data-value": _vm.done }
               },
@@ -43923,7 +43948,7 @@ var render = function() {
                       staticClass: " bottom-right noselect",
                       staticStyle: { float: "left" }
                     },
-                    [_vm._v(_vm._s(task.custo))]
+                    [_vm._v(_vm._s(task.tempo))]
                   ),
                   _c(
                     "small",
@@ -43997,7 +44022,7 @@ var render = function() {
               "div",
               {
                 key: task.id,
-                staticClass: "card pan dragg qitem bg-warning ",
+                class: task.prioridade,
                 staticStyle: { position: "relative" },
                 attrs: { id: task.id, "data-value": _vm.todo }
               },
@@ -44079,7 +44104,7 @@ var render = function() {
               "div",
               {
                 key: task.id,
-                staticClass: "card pan dragg qitem bg-warning",
+                class: task.prioridade,
                 staticStyle: { position: "relative" },
                 attrs: { id: task.id, "data-value": _vm.doing }
               },
@@ -56699,8 +56724,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! c:\xampp\htdocs\Start\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! c:\xampp\htdocs\Start\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Start\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Start\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
