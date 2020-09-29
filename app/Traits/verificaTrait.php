@@ -26,6 +26,9 @@ trait verificaTrait
 	    if($task->user_id != $user->id){
 	        return [false,'Usuário não tem permissão para mover a tarefa !','danger'];
 	    }
+       if($task->estado == 2){
+           return [false,'Tarefa já finalizada, se precisar de revisão utilize a função correta !','danger'];
+       }
 	    return [true];
    }
 }

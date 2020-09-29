@@ -84,11 +84,11 @@ trait kanbanTrait
             if($ta->prioridade == 1){
                 $cor = 'card pan dragg qitem bg-danger';
             }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor];
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo' => $ta->task->custo];
         }
         foreach ($quadro->tasks_em_andamento as $ta) {
             if($ta->prioridade == 0){
-                $cor = 'card pan dragg qitem bg-warning';
+                $cor = 'card pan dragg qitem bg-primary blink';
             }
             if($ta->prioridade == 1){
                 $cor = 'card pan dragg qitem bg-danger';
@@ -102,7 +102,7 @@ trait kanbanTrait
             if($ta->prioridade == 1){
                 $cor = 'card pan dragg qitem bg-danger';
             }
-            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao];
+            $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao,'tempo'=>$ta->task->custo];
         }
         foreach ($quadro->tasks_finalizadas as $ta) {
             if($ta->prioridade == 0){

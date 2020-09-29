@@ -196,8 +196,12 @@ PROJETOS EM ANDAMENTO
   </div>
   <!-- End of Page Wrapper -->
   <!-- Page level plugins -->
-  {{-- <script src="vendor/chart.js/Chart.min.js"></script> --}}
-
+<a hidden>
+  @php
+  $rota =  substr(route('busca.quadro',1),0,-1);
+  
+  @endphp
+</a>
 <p>
 
 </p>
@@ -230,7 +234,7 @@ PROJETOS EM ANDAMENTO
      $("#quad").slideUp( "fast", function() {$("#and").slideDown( "fast", function() {});$("#btnV").slideUp( "fast", function() {});});
   }
   function pesquisaQuadro(data , id){
-    $('#cinza').attr('action',`{{route('busca.quadro',`+data+`)}}`);
+    $('#cinza').attr('action',`{{$rota}}`+data);
   	$("#projeto"+id).slideUp( "slow", function() { });
     setTimeout(function() { $("#invi").slideDown( "slow", function() { })},100);
     document.getElementById('invi').innerHTML = 

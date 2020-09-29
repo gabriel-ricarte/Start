@@ -3,6 +3,7 @@
 @section('javascript')
 @endsection
 @section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 @endsection
 @section('conteudo')
 	
@@ -257,7 +258,14 @@
 
     </div>
   </section>
+<!-- START Bootstrap-Cookie-Alert -->
+<div class="alert text-center cookiealert" role="alert">
+    <b>Você gosta de cookies?</b> &#x1F36A; Nós usamos cookies para assegurar que você tenha a melhor experiência no nosso site. <a href="https://cookiesandyou.com/" target="_blank">Saiba mais</a>
 
+    <button type="button" class="btn btn-primary btn-sm acceptcookies">
+        Eu concordo
+    </button>
+</div>
   <!-- Footer -->
   <footer class="footer text-center">
     <div class="container">
@@ -554,6 +562,7 @@
       </div>
     </div>
   </div>
+<script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
 
 @endsection
 

@@ -4,13 +4,7 @@ jQuery(function($) {
         panelList.sortable({
             connectWith: ".connectedSortable",
             update: function(event,ui) {
-                //$('.pan', panelList).each(function(index, elem) {
-               //      var $listItem = $(elem),
-                 //        newIndex = $listItem.index();
                           movido(ui.item[0].id,val1,0);
-
-              //  });
-
             }
 
         }).disableSelection();
@@ -19,13 +13,7 @@ jQuery(function($) {
         panelList2.sortable({
             connectWith: ".connectedSortable",
             update: function(event,ui) {
-               // $('.pan', panelList2).each(function(index, elem) {
-                 //    var $listItem = $(elem),
-                   //      newIndex = $listItem.index();
-                   console.log(ui.item[0].id);
-                          movido(ui.item[0].id,val2,0);
-
-                //});
+                          movido(ui.item[0].id,val2,3);
             }
         }).disableSelection();
         var panelList3 = $('#draggablePanelList3');
@@ -33,12 +21,7 @@ jQuery(function($) {
         panelList3.sortable({
             connectWith: ".connectedSortable",
             update: function(event,ui) {
-                //$('.pan', panelList3).each(function(index, elem) {
-                  //   var $listItem = $(elem),
-                       //  newIndex = $listItem.index();
-                       //  movido(elem.id,val3,2);
                        movido(ui.item[0].id,val3,2);
-              //  });
 
             }
         }).disableSelection();
@@ -51,7 +34,21 @@ jQuery(function($) {
                 $('.pan', lixeira).each(function(index, elem) {
                      var $listItem = $(elem),
                          newIndex = $listItem.index();
-                          amarelolixo(elem.id,lixeira);
+                          preparaExclusao(elem.id,lixeira);
+                          //console.log(elem.id,val1)
+                });
+
+            }
+
+        }).disableSelection();
+        var revisao = $('#revisaTarefa');
+        revisao.sortable({
+            connectWith: ".connectedSortable",
+            update: function() {
+                $('.pan', revisao).each(function(index, elem) {
+                     var $listItem = $(elem),
+                         newIndex = $listItem.index();
+                          preparaRevisao(elem.id,revisao);
                           //console.log(elem.id,val1)
                 });
 
@@ -70,8 +67,20 @@ jQuery(function($) {
     //$('#tare').focus();
 setTimeout(function() { $('#tare').focus(); },900);
     }
+function preparaRevisao(task){
+$('#articlee').css('cursor', 'wait');
+$('#'+task).css('cursor', 'wait');
+    document.getElementById('insertRevisao').innerHTML = "";
+    document.getElementById('insertRevisao').innerHTML =
+    `
+    <input type="text" name="task"  class="form-control col-12" value="`+task+`" required="required">
 
-function amarelolixo(task){
+    `
+    ;
+    enviaRevisao(task);
+    setTimeout(function() {  },10);
+  }
+function preparaExclusao(task){
 
 $('#articlee').css('cursor', 'wait');
 $('#'+task).css('cursor', 'wait');
@@ -82,13 +91,35 @@ $('#'+task).css('cursor', 'wait');
 
     `
     ;
-    salvaEstado(task);
-    setTimeout(function() {  },100);
+    excluiTask(task);
+    setTimeout(function() { },100);
   }
- function salvaEstado(des){
+  function excluiTask(des){
      $('#articlee').css('cursor', 'wait');
-
   var form = $('#lixo');
+  var post_url = form.attr('action');
+  var post_data = form.serialize();
+  $.ajax({
+    type: 'GET',
+    url: post_url,
+    data: post_data,
+    success: function(msg) {
+        $('#articlee').css('cursor', 'default');
+        $('#'+des).css('cursor', 'move');
+        $("#some").slideDown( "fast", function() {});
+        $('#respp').attr('class','alert alert-'+msg[1]);
+        document.getElementById('respp').innerHTML = msg[0];
+        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
+      },
+      error: function(msg){
+        $('#articlee').css('cursor', 'default');
+        document.getElementById('respp').innerHTML = msg;
+      }
+    });
+ }
+ function enviaRevisao(des){
+  $('#articlee').css('cursor', 'wait');
+  var form = $('#revisaForm');
   var post_url = form.attr('action');
   var post_data = form.serialize();
   $.ajax({
@@ -164,6 +195,11 @@ function salvaMove(des){
 
  function gringosTrash(){
    $("#gringosTrash").slideDown( "fast", function() {});
+ }
+ function revisaTarefa(){
+   $("#revisa").slideDown( "fast", function() {});
+ }function fechaRevisa(){
+   $("#revisa").slideUp( "fast", function() {});
  }
  function fechaQuadro(){
    $("#finaliza").slideDown( "fast", function() {});

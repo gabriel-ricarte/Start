@@ -7,7 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+import moment from 'moment'
+moment.locale('pt_BR'); 
+Vue.prototype.moment = moment
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,7 +31,6 @@ Vue.component('quadro-last', require('./components/QuadroLast.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//console.log($quadros);
 const app = new Vue({
     el: '#app',
     data: {

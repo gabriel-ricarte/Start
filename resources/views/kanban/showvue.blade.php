@@ -42,10 +42,13 @@ KANBAN
 							NOVA TAREFA	
 						</button>
 						<!-- <button title="EDITE O PROJETO" type="button" class="btn btn-secondary btn-outline " style="margin-right: 8px" ><i class="far fa-edit"></i></button> -->
-						<button title="Finalizar quadro" type="button" class="btn btn-warning btn-outline btn-lg active " onclick="fechaQuadro()" >
+						<button title="Revisão de Tarefa" type="button" class="btn btn-warning btn-outline btn-lg active" onclick="revisaTarefa()" >
+							<i class="far fa-edit"></i>
+						</button>
+						<button title="Finalizar quadro" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="fechaQuadro()" >
 							<i class="fas fa-check-double"></i>
 						</button>
-						<button title="TRASH" type="button" class="btn btn-danger btn-outline btn-lg " onclick="gringosTrash()" >
+						<button title="Excluir tarefa" type="button" class="btn btn-danger btn-outline btn-lg " onclick="gringosTrash()" >
 							<i class="fas fa-trash-alt"></i>
 						</button>
 					@endif
@@ -101,6 +104,15 @@ KANBAN
 										<input type="hidden" name="kanban" value="{{$kanban->id}}">
 										<button class="btn btn-success active">CONFIRMAR</button>
 									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row justify-content-center"  id="revisa" style="margin-bottom: 10px;display: none">
+						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
+							<div class="card  border-0 shadow-lg my-5" >
+								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA REVISAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fechaRevisa()" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-body text-center connectedSortable" id="revisaTarefa" style="min-height: 80px">
 									
 								</div>
 							</div>
@@ -109,7 +121,7 @@ KANBAN
 					<div class="row justify-content-center"  id="gringosTrash" style="margin-bottom: 10px;display: none">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
 							<div class="card  border-0 shadow-lg my-5" >
-								<div class="card-header bg-primary text-white ">EXCLUIR TAREFA <span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="jogaFora()" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA EXCLUIR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="jogaFora()" ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center connectedSortable" id="roxolixo" style="min-height: 80px">
 									
 								</div>
@@ -170,7 +182,7 @@ KANBAN
 			<div class="modal-body">
 				<div class="container">
 					<div class="row" style="padding-bottom: 8px">
-						<input type="text" name="tarefa" class="form-control" id="tare" placeholder="TEREFA">
+						<input type="text" name="tarefa" class="form-control" id="tare" placeholder="TEREFA" autocomplete="off">
 
 					</div>
 
@@ -235,7 +247,6 @@ KANBAN
         $('#respp').attr('class','alert alert-danger');
         document.getElementById('respp').innerHTML = msg.responseJSON.errors.tarefa[0];
         setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
-        //console.log();
       }
     });
   setTimeout(function() {fecha();reset();},10);
@@ -246,7 +257,7 @@ KANBAN
 										<h3 style="font-family: 'VT323', monospace;">NOVA TAREFA</h3>
 										<form method="get" action="{{ route('newtask') }}"  class="user" id="form">
 											<div class="form-group">
-												<input type="text" class="form-control" name="tarefa" id="tarefa" required="" placeholder="TAREFA AQUI">
+												<input type="text" class="form-control" name="tarefa" id="tarefa" required="" placeholder="TAREFA AQUI" autocomplete="off">
 												<input type="hidden" name="id" value="{{$kanban->id}}">
 
 											</div>
@@ -274,8 +285,15 @@ KANBAN
 </a>
 
 <a hidden>
-	<form method="get" action="{{ route('amarelolixo') }}" class="form-horizontal" id="lixo" >
+	<form method="get" action="{{ route('deltask') }}" class="form-horizontal" id="lixo" >
 		<div id="insertlixo">
+
+		</div>
+	</form>
+</a>
+<a hidden>
+	<form method="get" action="{{ route('revisa.task') }}" class="form-horizontal" id="revisaForm" >
+		<div id="insertRevisao">
 
 		</div>
 	</form>
