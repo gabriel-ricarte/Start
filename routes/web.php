@@ -39,10 +39,12 @@ Route::resource('equipe','EquipeController');
 Route::get('/movetask','TaskController@movetask')->name('movetask');
 Route::get('/deltask','TaskController@deltask')->name('deltask');
 Route::get('/revisa-task','TaskController@revisatask')->name('revisa.task');
+Route::post('/revisa-task-motivo','TaskController@revisaTaskMotivo')->name('revisa.task-motivo');
+Route::get('/pausa-task','TaskController@pausatask')->name('pausa.task');
 Route::get('/newtask','TaskController@newtask')->name('newtask');
 Route::get('/admins','EquipeController@usersIndex')->name('admins.index');
 Route::get('/ativa-admin/{id}','EquipeController@ativaUser')->name('admins.activate');
-Route::get('/enviando-email/{id}','EquipeController@lembrarTecnico')->name('olaMarilene');
+//Route::get('/enviando-email/{id}','EquipeController@lembrarTecnico')->name('olaMarilene');
 Route::get('/tecnicos','EquipeController@tecnicosIndex')->name('tecnicos.index');
 Route::get('/meu-perfil','EquipeController@perfil')->name('perfil');
 

@@ -84,6 +84,18 @@ class ProjetoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+        'nome' => 'required|between:5,250',
+        'descricao' => 'required|between:5,250',
+        'data_ini' => 'required|date',
+        'data_fim' => 'required|date',
+        'po' => 'required|between:5,250',
+        'vertical' => 'required|between:5,250',
+        'spo' => 'required|between:4,250',
+        'po_id' => 'required|exists:users,id',
+        ]);
+
+        dd($request->all());
         $user = Auth::user();
         $hoje = date('Y-m-d');
         $projeto = new Projeto();
@@ -91,13 +103,13 @@ class ProjetoController extends Controller
         $projeto->po()->associate($request->po_id);
         $projeto->nome = $request->nome;
         $projeto->status = 0;
-        //$projeto->po = $request->po_id;
         $projeto->spo = $request->spo;
         $projeto->vertical = $request->vertical;
         $projeto->descricao = $request->descricao;
         $projeto->data_ini = $request->data_ini;
         $projeto->data_fim = $request->data_fim;
         $projeto->info = 'Editável';
+        $prjeto->imagem = 'gears.png';
         if($request->hasFile('imagem')){
             $image = $request->file('imagem');
             $extension = $image->getClientOriginalExtension();

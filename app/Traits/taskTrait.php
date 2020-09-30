@@ -41,9 +41,8 @@ trait taskTrait
 	}
 	public function salvaMovimento(User $user, Request $request, TaskFato $task, Task $tarefa){
 		$hoje = date('Y-m-d H:i:s');
-		
-        //$datetime2 = date_create($tarefa->updated_at);
-    	//dd($request->all());
+
+		//melhorar complexidade !
 
 		if($request->estado != $task->estado){
 			if($request->estado == 2){ 
@@ -52,22 +51,22 @@ trait taskTrait
 				$diff=date_diff($date1,$date2);
 				$horas = $diff->format("%h");
 				$minutos = $diff->format("%i");
-				if($horas > 0){
-					$tarefa->custo = "resolvido em ".$horas."Hrs ".$minutos." minutos";	
-				}else{
-					$tarefa->custo = "resolvido em ".(($horas*60)+$minutos)." minutos";	
-				}
-				
+				$tarefa->custo = (($horas*60)+$minutos);	
 				$tarefa->save();
 			}
-			if($request->estado == 3){ 
+			if($request->estado == 3 && $task->estado != 4){ 
 				$tarefa->custo = $hoje;
 				$tarefa->save();
 			}
-			$quadro = Quadro::find($request->quadro);
-			$task->quadro_id = $request->quadro;    
-			$task->estado = $request->estado;
-			$task->save(); 
+
+			// if($request->estado == 4){ 
+			// 	$tarefa->custo = $hoje;
+			// 	$tarefa->save();
+			// }
+			// $quadro = Quadro::find($request->quadro);
+			// $task->quadro_id = $request->quadro;    
+			// $task->estado = $request->estado;
+			// $task->save(); 
 			
 			if($tarefa->task == 'CLOSE-KANBAN' && $request->estado == 2){
 				$kanban = Kanban::find($quadro->kanban_id);

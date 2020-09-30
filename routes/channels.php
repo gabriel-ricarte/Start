@@ -29,3 +29,6 @@ Broadcast::channel('user', function ($user) {
 Broadcast::channel('invalido', function ($user) {
   return Auth::check();
 });
+Broadcast::channel('revisatask', function ($user) {
+  return Auth::check();
+});

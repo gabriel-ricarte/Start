@@ -32,16 +32,6 @@ class EquipeController extends Controller
     {
         $user = Auth::user();
         $projetos = $user->projeto;
-        // foreach ($projetos as $projeto) {
-        //     foreach ($projeto->equipe as $tec) {
-        //         foreach ($tec->equipeUser as $tecnico) {
-        //            // dd($tecnico->user->nome);
-        //         }
-        //         //dd($tec->equipeUser);
-        //       // dd($tec->first->equipeTecnico->equipeTecnico->first->tecnico->tecnico->nome);
-        //     }
-            
-        // }
         return view('equipes.index')->withUser($user)->withProjetos($projetos);
     }
 
@@ -73,14 +63,7 @@ class EquipeController extends Controller
              return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);
         }
         $ids = $projeto->equipe->first->id->id;
-        //dd($ids);
-       // $equipe = [];
-
         $integrantes = EquipeUser::where('equipe_id',$ids)->where('status',0)->get();
-
-        // if($projeto->status > 0){
-        //     return redirect()->back()->withErrors('projeto já possui uma equipe ou foi finalizado !');
-        // }
         return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);
     }
     /**
@@ -194,11 +177,6 @@ class EquipeController extends Controller
         $users = User::all();
         return view('users.index-admin')->withUser($user)->withUsers($users);
     }
-    // public function tecnicosIndex(){
-    //     $user = Auth::user();
-    //     $users = Tecnico::all();
-    //     return view('users.index-tecnicos')->withUser($user)->withUsers($users);
-    // }
     public function perfil(){
         $user = Auth::user();
         return view('users.perfil')->withUser($user);
@@ -211,7 +189,6 @@ class EquipeController extends Controller
        }else{
             $muda->status = 0;
        }
-        //$muda->status = 0;
         $muda->save();
         $users = User::all();
 

@@ -8,7 +8,7 @@
 						<div class="card-body" >
 						<!-- <div class="container"> -->
 							<h5 class="text-center noselect">{{task.task}}</h5>
-							<small class=" bottom-right noselect"  style="float: left">{{task.tempo}}</small><small class=" bottom-right noselect"  style="float: right">{{task.dono}}<button class="badge badge-success"><span class="fas fa-check-circle"></span></button></small>
+							<small class=" bottom-right noselect"  style="float: left">{{task.tempo}}</small><small class=" bottom-right noselect"  style="float: right">{{task.dono}}</small>
 							<!-- </div> -->
 						</div>
 					</div>

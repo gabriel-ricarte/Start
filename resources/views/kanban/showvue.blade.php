@@ -35,71 +35,51 @@ KANBAN
 			<div class="container-fluid" >
 				<div class="container" style="margin-top: -18px;">
 					<br>
-					<div class="row" id="sobe">
-					<center>	
-					@if($permi->permissao == 0)	
-						<button type="button" class="btn btn-info btn-outline btn-lg text-white" onclick="anima()">
-							NOVA TAREFA	
-						</button>
-						<!-- <button title="EDITE O PROJETO" type="button" class="btn btn-secondary btn-outline " style="margin-right: 8px" ><i class="far fa-edit"></i></button> -->
-						<button title="Revisão de Tarefa" type="button" class="btn btn-warning btn-outline btn-lg active" onclick="revisaTarefa()" >
-							<i class="far fa-edit"></i>
-						</button>
-						<button title="Finalizar quadro" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="fechaQuadro()" >
-							<i class="fas fa-check-double"></i>
-						</button>
-						<button title="Excluir tarefa" type="button" class="btn btn-danger btn-outline btn-lg " onclick="gringosTrash()" >
-							<i class="fas fa-trash-alt"></i>
-						</button>
-					@endif
-					</center>
-					<div class="row" id="some" style="display: none">
-						<span class="" id="respp" style="float: right"></span>	
-					</div>
-						
-					</div>
-					<div class="row" id="desce" style="display: none">
-						<div class="col-xl-4 col-lg-7" >
-						</div>
-						<div class="col-xl-4 col-lg-7"  >
-							<div class="card shadow mb-4">
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary" id="texto">NOVA TAREFA</h6><span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha()"><span class="far fa-times-circle"></span></button></span>
-								</div>
-								<div class="card-body" id="exibe">
-									<center>
-										<h3 style="font-family: 'VT323', monospace;">NOVA TAREFA</h3>
-										<form method="get" action="{{ route('newtask') }}"  class="user" id="form" onsubmit="event.preventDefault()">
-											<div class="form-group">
-												<input type="text" class="form-control" name="tarefa" id="tarefa" required="" placeholder="TAREFA AQUI" autocomplete="off">
-												<input type="hidden" name="id" value="{{$kanban->id}}">
+					<span><b>AÇÕES</b></span><br>
+					<div class="row" id="funcoes">
 
-											</div>
-											<div class="form-group">
-												<label for="integrante">INTEGRANTE RESPONSÁVEL PELA TAREFA</label>
-												<select type="text" class="form-control" id="integrante" required="" name="tecnico">
-													<option selected="" hidden="" value="">ESCOLHA AQUI</option>
-													@foreach($membros as $membro)
-													<option value="{{$membro->user->id}}">{{$membro->user->nome}}</option>
-													@endforeach
-												</select>	 								
-											</div>
-											<center><button type="button" class="btn btn-success active" onclick="setTimeout(function() {executa(); },250);" >CONFIRMAR</button>
-											</center>
-										</form>
-										<!-- <x-card-t tipo="success" :mensagem="$mensagem"></x-card-t> -->
-									</center>
-									</div>
-								</div>
-							</div>
-						
+						<center>	
+						<!-- controle de permissões -->
+						@if($permi->permissao == 0)	
+							<button title="Nova Tarefa" type="button" class="btn btn-info btn-outline btn-lg text-white" onclick="abreFuncao('novaTarefaDiv')">
+								NOVA TAREFA	
+							</button>
+							<button title="Revisão de Tarefa" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="abreFuncao('revisaTarefaDiv')" >
+								<i class="fas fa-tools"></i>
+							</button>
+							<button title="Finalizar Quadro" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="abreFuncao('finalizarQuadroDiv')" >
+								<i class="fas fa-check-double"></i>
+							</button>
+						@endif	
+						@if($quadros[1]['quadro'] > 0)
+							<button title="Pausar Tarefa" type="button" class="btn btn-secondary active btn-outline btn-lg " onclick="abreFuncao('pausaTarefaDiv')" >
+								<i class="fa fa-pause"></i>
+							</button>
+						@endif
+						@if($permi->permissao == 0)	
+							<button title="Excluir Tarefa" type="button" class="btn btn-danger btn-outline btn-lg " onclick="abreFuncao('excluiTarefaDiv')" >
+								<i class="fas fa-trash-alt"></i>
+							</button>
+						@endif	
+						</center>
+						<div class="row" id="responseDiv" style="display: none">
+							<span class="" id="responseHere" style="float: right"></span>	
+						</div>
+						<div class="row" id="formRevisao" style="display: none">
+							
+						</div>
 					</div>
-					<div class="row justify-content-center"  id="finaliza" style="margin-bottom: 10px;display: none">
+					@include('parciais.nova-tarefa')
+					@include('parciais.revisa-tarefa')
+					<style type="text/css">
+.sticky{position:fixed;margin:0;width:30%;top:25%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
+					</style>
+					<div class="row justify-content-center"  id="finalizarQuadroDiv" style="margin-bottom: 10px;display: none;">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
-							<div class="card  border-0 shadow-lg my-5" >
-								<div class="card-header bg-primary text-white ">FINALIZAR QUADRO ? <span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fechaQuadroUp()" ><i class="fas fa-times-circle"></i></span></button></span></div>
+							<div class="card  border-0 shadow-lg my-5 " >
+								<div class="card-header bg-primary text-white ">FINALIZAR QUADRO ? <span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('finalizarQuadroDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center" style="min-height: 80px">
-									<form method="post" action="{{ route('finalizar.quadro') }}" class="form-horizontal" id="formF" >
+									<form method="post" action="{{ route('finalizar.quadro') }}" class="form-horizontal" id="formFinalizaQuadro" >
 										@csrf
 										<input type="hidden" name="kanban" value="{{$kanban->id}}">
 										<button class="btn btn-success active">CONFIRMAR</button>
@@ -108,51 +88,50 @@ KANBAN
 							</div>
 						</div>
 					</div>
-					<div class="row justify-content-center"  id="revisa" style="margin-bottom: 10px;display: none">
-						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
-							<div class="card  border-0 shadow-lg my-5" >
-								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA REVISAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fechaRevisa()" ><i class="fas fa-times-circle"></i></span></button></span></div>
-								<div class="card-body text-center connectedSortable" id="revisaTarefa" style="min-height: 80px">
+					<div class="row justify-content-center"  id="revisaTarefaDiv" style="margin-bottom: 10px;display: none">
+						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px" >
+							<div class="card  border-0 shadow-lg my-5 sticky"  >
+								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA REVISAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('revisaTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-body text-center connectedSortable" id="revisaTarefaQuadro" style="min-height: 80px">
 									
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row justify-content-center"  id="gringosTrash" style="margin-bottom: 10px;display: none">
-						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
-							<div class="card  border-0 shadow-lg my-5" >
-								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA EXCLUIR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="jogaFora()" ><i class="fas fa-times-circle"></i></span></button></span></div>
-								<div class="card-body text-center connectedSortable" id="roxolixo" style="min-height: 80px">
+					<div class="row justify-content-center"  id="excluiTarefaDiv" style="margin-bottom: 10px;display: none">
+						<div class="col-xl-6 col-md-6 mb-4 bg-light" style="height: 150px"  >
+							<div class="card  border-0 shadow-lg my-5 sticky"  >
+								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA EXCLUIR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('excluiTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-body text-center connectedSortable" id="excluiTarefaQuadro" style="min-height: 80px">
 									
 								</div>
 							</div>
 						</div>
 					</div>
-						<!-- <div class="col-xl-4 col-md-6 mb-4  bg-light" >
-							<div class="card-sm bg-light " >
-								<div class="card-body text-center connectedSortable" id="roxolixo">
-									<button class="btn btn-danger" style="margin-top: 8px"><span style="text-align: center;margin: auto" onclick="jogaFora()" ><i class="fas fa-trash-alt fa-3x"></i></span></button>
-
+					<div class="row justify-content-center"  id="pausaTarefaDiv" style="margin-bottom: 10px;display: none">
+						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px"  >
+							<div class="card  border-0 shadow-lg my-5 sticky"  >
+								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA PAUSAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('pausaTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-body text-center connectedSortable" id="excluiTarefaQuadro" style="min-height: 80px">
+									
 								</div>
-							</div>	
-						</div> -->
+							</div>
+						</div>
+					</div>
 				
 				</div>
-				<!-- <input type="hidden"  id="todo"value="{{$quadros[0]['quadro']}}">
-				<input type="hidden"  id="doing"value="{{$quadros[1]['quadro']}}">
-				<input type="hidden"  id="done"value="{{$quadros[2]['quadro']}}"> -->
 				<div class="row" id="app" >
 					<quadro-um :tasks="tasks" :todo="{{$quadros[0]['quadro']}}" @primeiro="tasks = $event"></quadro-um>
 					<quadro-dois :tasksdois="tasksdois" :doing="{{$quadros[1]['quadro']}}" @segundo="tasksdois = $event"></quadro-dois>
 					<quadro-last :taskslast="taskslast" :done="{{$quadros[2]['quadro']}}" @last="taskslast = $event"></quadro-last>
 				</div>
-				<div class="card o-hidden border-0 shadow-lg my-5">
+				<!-- <div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
 						<div class="row">
 
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 
 
@@ -170,40 +149,7 @@ KANBAN
 	<!-- End of Content Wrapper -->
 
 </div>
-<!-- End of Page Wrapper -->
-<div class="modal fade" id="abt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title" id="image-gallery-title" style="font-family: 'VT323', monospace;">NOVA TAREFA</h3>
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="container">
-					<div class="row" style="padding-bottom: 8px">
-						<input type="text" name="tarefa" class="form-control" id="tare" placeholder="TEREFA" autocomplete="off">
 
-					</div>
-
-					<div class="row"  style="padding-bottom: 8px">	
-						<select type="text" name="tecnico" class="form-control" id="tare2">
-							<option value="" selected disabled hidden>ESCOLHA UM RESPONSÁVEL</option>
-							@foreach($membros as $membro)
-							<option value="{{$membro->user->id}}">{{$membro->user->nome}}</option>
-							@endforeach
-						</select>
-					</div>
-					<div >
-						<center>
-							<button type="button" class="btn btn-success " data-dismiss="modal" onclick="refresh()">OK</button>
-						</center>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
 	<i class="fas fa-angle-up"></i>
@@ -219,43 +165,12 @@ KANBAN
 	$(document).ready(function(){
 		$('[data-toggle="popover"]').popover();   
 	});
-	function anima(){
-		$('#sobe').slideUp('fast',function(){});  
-		$('#desce').slideDown('fast',function(){$('#tarefa').focus();});                
-	}
-	function fecha(){
-		$('#desce').slideUp('fast',function(){});  
-		$('#sobe').slideDown('fast',function(){});                
-	}
-	function executa(){
-		var form = $('#form');
-  var post_url = form.attr('action');
-  var post_data = form.serialize();
-  $.ajax({
-    type: 'GET',
-    url: post_url, 
-    data: post_data,
-    success: function(msg) {
-    	$("#some").slideDown( "fast", function() {});
-        $('#respp').attr('class','alert alert-'+msg[1]);
-        document.getElementById('respp').innerHTML = msg[0];
-        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
-      },
-      error: function(msg){
-        //alert('Falha carregando os dados!'+msg);
-        $("#some").slideDown( "fast", function() {});
-        $('#respp').attr('class','alert alert-danger');
-        document.getElementById('respp').innerHTML = msg.responseJSON.errors.tarefa[0];
-        setTimeout(function() { $("#some").slideUp( "fast", function() {}); },3500);
-      }
-    });
-  setTimeout(function() {fecha();reset();},10);
-	}
+	
 	function reset(){
 		
-		document.getElementById('exibe').innerHTML = `<center>
+		document.getElementById('formNovaTarefa').innerHTML = `<center>
 										<h3 style="font-family: 'VT323', monospace;">NOVA TAREFA</h3>
-										<form method="get" action="{{ route('newtask') }}"  class="user" id="form">
+										<form method="get" action="{{ route('newtask') }}"  class="user" id="formTarefa">
 											<div class="form-group">
 												<input type="text" class="form-control" name="tarefa" id="tarefa" required="" placeholder="TAREFA AQUI" autocomplete="off">
 												<input type="hidden" name="id" value="{{$kanban->id}}">
@@ -270,14 +185,14 @@ KANBAN
 													@endforeach
 												</select>	 								
 											</div>
-											<center><button type="button" class="btn btn-success active" onclick="setTimeout(function() {executa(); },250);" >CONFIRMAR</button></center>
+											<center><button type="button" class="btn btn-success active" onclick="setTimeout(function() {executaFormNovaTarefa(); },250);" >CONFIRMAR</button></center>
 										</form>
 									</center>`;            
 	}
 </script>
 
 <a hidden>
-	<form method="get" action="{{ route('movetask') }}" class="form-horizontal" id="move" >
+	<form method="get" action="{{ route('movetask') }}" class="form-horizontal" id="moveForm" >
 		<div id="insert">
 
 		</div>
@@ -285,7 +200,7 @@ KANBAN
 </a>
 
 <a hidden>
-	<form method="get" action="{{ route('deltask') }}" class="form-horizontal" id="lixo" >
+	<form method="get" action="{{ route('deltask') }}" class="form-horizontal" id="lixoForm" >
 		<div id="insertlixo">
 
 		</div>
@@ -293,6 +208,13 @@ KANBAN
 </a>
 <a hidden>
 	<form method="get" action="{{ route('revisa.task') }}" class="form-horizontal" id="revisaForm" >
+		<div id="insertRevisao">
+
+		</div>
+	</form>
+</a>
+<a hidden>
+	<form method="get" action="{{ route('pausa.task') }}" class="form-horizontal" id="revisaForm" >
 		<div id="insertRevisao">
 
 		</div>

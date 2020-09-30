@@ -59,7 +59,7 @@ class TaskController extends Controller
         $user = Auth::user();
         $task = TaskFato::findOrFail($request->task);
         $tarefa = Task::find($task->task_id);
-        $verifica = $this->moveTarefa($user , $task);
+        $verifica = $this->moveTarefa($user , $task,$request);
         //verifica se movimento é válido
         if(!$verifica[0]){
             event(new MovimentoInvalido($user));
@@ -86,17 +86,37 @@ class TaskController extends Controller
     }
     public function revisatask(Request $request)
     {
-       // dd($request->all());
         $request->validate([
         'task' => 'required|exists:task_fatos,id',
         ]);
         $user = Auth::user();
         $task = TaskFato::findOrFail($request->task);
-        $task->estado = 4;    
+        if($task->estado != 2){
+            return [false,'Tarefa ainda não realizada !','danger'];
+        }
+        $task->estado = 4; 
+        $task->quadro_id = $task->quadro_id - 1;  
         $task->save(); 
         $tarefa = Task::find($task->task_id); 
         broadcast(new NovaTask($tarefa,$user))->toOthers();
-       return ['Tarefa enviada para revisão com sucesso !','success'];
+
+        return ['Tarefa enviada para revisão com sucesso !','success'];
+    }
+    public function revisaTaskMotivo(Request $request)
+    {
+        //dd($request->all());
+        $request->validate([
+        'task_id' => 'required|exists:task_fatos,id',
+        'id' => 'required|exists:kanbans,id',
+        'motivo' => 'required|between:5,250',
+        ]);
+        $user = Auth::user();
+        $task = Task::findOrFail($request->task_id);
+        $task->descricao = $request->motivo; 
+        $task->save(); 
+        //broadcast(new NovaTask($tarefa,$user))->toOthers();
+        
+        return redirect()->route('kanban.show',$request->id);
     }
     public function buscaTask($id){
         $tasks = $this->tarefasKanban($id);

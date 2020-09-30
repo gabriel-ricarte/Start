@@ -56,6 +56,16 @@ class KanbanController extends Controller
      */
     public function store(Request $request)
     {
+       
+        $request->validate([
+        'nome' => 'required|between:5,250',
+        'descricao' => 'required|between:5,250',
+        'data_ini' => 'required|date',
+        'data_fim' => 'required|date',
+        'tipo' => 'required|integer',
+        'projeto_id' => 'required|exists:projetos,id',
+        ]);
+
         $user = Auth::user();
         if(!$user->status){
             session()->flash('per','USUÁRIO NÃO AUTORIZADO !');
@@ -75,7 +85,6 @@ class KanbanController extends Controller
         $kanban->data_ini = $request->data_ini;
         $kanban->data_fim = $request->data_fim;
         $kanban->save();
-        //dd($kanban);
 
         $tipoKanban = $this->tipoKanban($kanban->id,$request->tipo);
 
@@ -146,18 +155,16 @@ class KanbanController extends Controller
     {
         //
     }
-    public function buscaK(Request $request)
-    {
-        $kanban = Kanban::find($request->dado);
-        $tarefas = collect() ;
-        foreach ($kanban->quadros as $quadros) {
-            $quadros->tasks_all;
-            // foreach($quadros->tasks_all as $tarefas){
-            //     dd($tarefas);
-            // }
-        }
+    // public function buscaK(Request $request)
+    // {
+    //     dd($request->all());
+    //     $kanban = Kanban::find($request->dado);
+    //     $tarefas = collect() ;
+    //     foreach ($kanban->quadros as $quadros) {
+    //         $quadros->tasks_all;
+    //     }
 
-    }
+    // }
     public function fecharKanban(Request $request)
     {
         $user = Auth::user();

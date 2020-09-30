@@ -49,19 +49,19 @@ class PlayerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $hoje = date('Y-m-d-H-i-s');
-        $encoding = 'UTF-8'; 
-        $player = new Tecnico();
-        $player->nome = mb_convert_case($request->nome, MB_CASE_UPPER, $encoding);
-        $player->email = $request->email;
-        $player->contato = $request->contato;
-        $player->setor = mb_convert_case($request->setor, MB_CASE_UPPER, $encoding);
-        $player->hash = $hoje.substr($request->email,0,4);
-        $player->save();  
-        session()->flash('msg','Adicionado com sucesso !');
-    }
+    // public function store(Request $request)
+    // {
+    //     $hoje = date('Y-m-d-H-i-s');
+    //     $encoding = 'UTF-8'; 
+    //     $player = new Tecnico();
+    //     $player->nome = mb_convert_case($request->nome, MB_CASE_UPPER, $encoding);
+    //     $player->email = $request->email;
+    //     $player->contato = $request->contato;
+    //     $player->setor = mb_convert_case($request->setor, MB_CASE_UPPER, $encoding);
+    //     $player->hash = $hoje.substr($request->email,0,4);
+    //     $player->save();  
+    //     session()->flash('msg','Adicionado com sucesso !');
+    // }
     public function newPlayer(Request $request)
     {
         $hoje = date('Y-m-d-H-i-s');

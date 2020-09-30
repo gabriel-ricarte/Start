@@ -16,17 +16,18 @@ use DB;
 
 trait verificaTrait
 {
-   public function moveTarefa(User $user, TaskFato $task){
+   public function moveTarefa(User $user, TaskFato $task, Request $request){
    		//verifica se o quadro está em aberto 
    		$quadro = Quadro::find($task->quadro_id);
    		$kanban = $quadro->kanban;
-   		if($kanban->status == 2){
+   		if($kanban->status == 2 ){
    			return [false,'Quadro está finalizado','danger'];
    		}
 	    if($task->user_id != $user->id){
 	        return [false,'Usuário não tem permissão para mover a tarefa !','danger'];
 	    }
-       if($task->estado == 2){
+      //dd($request);
+       if($task->estado == 2 && $request->estado =! 2){
            return [false,'Tarefa já finalizada, se precisar de revisão utilize a função correta !','danger'];
        }
 	    return [true];

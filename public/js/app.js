@@ -2167,17 +2167,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   //props: ['tasksdois','doing']
   props: ['tasksdois', 'doing'],
@@ -6712,7 +6701,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.over{\n\n\t\tmax-height: 800px;\n\t\t\n    \twidth: 100%;\n    \toverflow: auto;\n}\n.blink {\n/*  background-color: #004A7F;\n  -webkit-border-radius: 10px;\n  border-radius: 10px;\n  border: none;\n  color: #FFFFFF;\n  cursor: pointer;\n  display: inline-block;\n  font-family: Arial;\n  font-size: 20px;\n  padding: 5px 10px;\n  text-align: center;\n  text-decoration: none;*/\n  -webkit-animation: glowing 1500ms infinite;\n  animation: glowing 1500ms infinite;\n}\n@-webkit-keyframes glowing {\n0% { background-color: #3989d2; -webkit-box-shadow: 0 0 3px #3989d2;\n}\n50% { background-color: #347ec0; -webkit-box-shadow: 0 0 40px #347ec0;\n}\n100% { background-color: #1e69ac; -webkit-box-shadow: 0 0 3px #1e69ac;\n}\n}\n\n\t", ""]);
+exports.push([module.i, "\n.over{\n\n\t\tmax-height: 800px;\n\t\t\n    \twidth: 100%;\n    \toverflow: auto;\n}\n.blink {\n  -webkit-animation: glowing 1500ms infinite;\n  animation: glowing 1500ms infinite;\n}\n@-webkit-keyframes glowing {\n0% { background-color: #3989d2; -webkit-box-shadow: 0 0 3px #3989d2;\n}\n50% { background-color: #347ec0; -webkit-box-shadow: 0 0 40px #347ec0;\n}\n100% { background-color: #1e69ac; -webkit-box-shadow: 0 0 3px #1e69ac;\n}\n}\n\n\t", ""]);
 
 // exports
 
@@ -66265,7 +66254,7 @@ var render = function() {
                       staticClass: " bottom-right noselect",
                       staticStyle: { float: "right" }
                     },
-                    [_vm._v(_vm._s(task.dono))]
+                    [_vm._v(_vm._s(task.dono)), _vm._m(0, true)]
                   )
                 ])
               ]
@@ -66277,7 +66266,16 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "badge badge-success" }, [
+      _c("span", { staticClass: "fas fa-check-circle" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -66423,6 +66421,10 @@ var render = function() {
                     _vm._v(_vm._s(task.task))
                   ]),
                   _vm._v(" "),
+                  task.revisao != "TESTE"
+                    ? _c("p", [_vm._v(_vm._s(task.revisao))])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c(
                     "small",
                     {
@@ -66437,7 +66439,14 @@ var render = function() {
                       staticClass: " bottom-right noselect ",
                       staticStyle: { float: "right" }
                     },
-                    [_vm._v(_vm._s(task.dono))]
+                    [
+                      _vm._v(_vm._s(task.dono) + " "),
+                      task.revisao != "TESTE"
+                        ? _c("button", { staticClass: "badge badge-light" }, [
+                            _c("span", { staticClass: "fas fa-tools" })
+                          ])
+                        : _vm._e()
+                    ]
                   )
                 ])
               ]
