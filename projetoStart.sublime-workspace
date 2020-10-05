@@ -1,0 +1,1329 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"sty",
+				"sticky"
+			],
+			[
+				"text",
+				"text-white"
+			],
+			[
+				"auto",
+				"autocomplete\tAttr"
+			],
+			[
+				"tare",
+				"tarefa-"
+			],
+			[
+				"btn",
+				"btn-success"
+			],
+			[
+				"quadro",
+				"quadro_id"
+			],
+			[
+				"ale",
+				"alert"
+			],
+			[
+				"pe",
+				"projetos"
+			],
+			[
+				"s",
+				"style"
+			],
+			[
+				"pesqui",
+				"pesquisei"
+			],
+			[
+				"pa",
+				"placeholder\tAttr"
+			],
+			[
+				"create",
+				"created_at"
+			],
+			[
+				"tele",
+				"telectecs"
+			],
+			[
+				"atd",
+				"atdpromo"
+			],
+			[
+				"col-",
+				"col-md-4"
+			],
+			[
+				"form",
+				"form-control"
+			],
+			[
+				"tex",
+				"text"
+			],
+			[
+				"col",
+				"col-md-4"
+			],
+			[
+				"to",
+				"toArray"
+			],
+			[
+				"onc",
+				"onclick\tAttr"
+			],
+			[
+				"promoco",
+				"promocao_id"
+			],
+			[
+				"participante",
+				"participante_id"
+			],
+			[
+				"premiaca",
+				"premiacao_id"
+			],
+			[
+				"PROGRAMA",
+				"programa"
+			],
+			[
+				"tikc",
+				"tickets"
+			],
+			[
+				"request",
+				"request-"
+			],
+			[
+				"tecnicosOff",
+				"tecnicosOff"
+			],
+			[
+				"Ticke",
+				"TicketTransfer"
+			],
+			[
+				"tr",
+				"transferência"
+			],
+			[
+				"tec",
+				"tecidUp"
+			],
+			[
+				"equipe",
+				"equipe_id"
+			],
+			[
+				"tecnico",
+				"tecnico_id"
+			],
+			[
+				"EMAIL",
+				"email"
+			],
+			[
+				"equi",
+				"equipeTecnico"
+			],
+			[
+				"di",
+				"display\tproperty"
+			],
+			[
+				"proj",
+				"proj-"
+			],
+			[
+				"card",
+				"card"
+			],
+			[
+				"btn-",
+				"btn-danger"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"border",
+				"border-color\tproperty"
+			],
+			[
+				"hora",
+				"hora_fim"
+			],
+			[
+				"re",
+				"reservas"
+			],
+			[
+				"RESE",
+				"RESERVAS"
+			],
+			[
+				"nav",
+				"nav-item"
+			],
+			[
+				"font",
+				"font-size\tproperty"
+			],
+			[
+				"min",
+				"min-height\tproperty"
+			],
+			[
+				"with",
+				"withProjeto"
+			],
+			[
+				"route",
+				"Route"
+			],
+			[
+				"bt",
+				"btn-danger"
+			],
+			[
+				"for",
+				"form\tTag"
+			],
+			[
+				"crea",
+				"created_at"
+			],
+			[
+				"or",
+				"orderBy"
+			],
+			[
+				"redi",
+				"redirect"
+			],
+			[
+				"opt",
+				"option\tTag"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"background-",
+				"background-color\tproperty"
+			],
+			[
+				"borde",
+				"border-radius\tproperty"
+			],
+			[
+				"pass",
+				"password_hash"
+			],
+			[
+				"is",
+				"isAdmin"
+			],
+			[
+				"dash",
+				"Dashboard"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/Traits/kanbanTrait.php",
+			"settings":
+			{
+				"buffer_size": 5681,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/js/components/Revisa.vue",
+			"settings":
+			{
+				"buffer_size": 2309,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "Revisa.vue"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/TaskController.php",
+			"settings":
+			{
+				"buffer_size": 4311,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Traits/taskTrait.php",
+			"settings":
+			{
+				"buffer_size": 2374,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "taskTrait.php"
+			}
+		},
+		{
+			"file": "resources/views/layouts/auth.blade.php",
+			"settings":
+			{
+				"buffer_size": 218,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/Traits/projetoTrait.php",
+			"settings":
+			{
+				"buffer_size": 6236,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/dashboard/dashboard.blade.php",
+			"settings":
+			{
+				"buffer_size": 15441,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Traits/verificaTrait.php",
+			"settings":
+			{
+				"buffer_size": 878,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resources/views/kanban/showvue.blade.php",
+			"settings":
+			{
+				"buffer_size": 8780,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "composer.json",
+			"settings":
+			{
+				"buffer_size": 1803,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "composer.lock",
+			"settings":
+			{
+				"buffer_size": 231877,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/parciais/nova-tarefa.blade.php",
+			"settings":
+			{
+				"buffer_size": 1672,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "nova-tarefa.blade.php"
+			}
+		},
+		{
+			"file": "resources/views/parciais/revisa-tarefa.blade.php",
+			"settings":
+			{
+				"buffer_size": 1222,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "revisa-tarefa.blade.php"
+			}
+		},
+		{
+			"file": "public/js/paineis3.js",
+			"settings":
+			{
+				"buffer_size": 7758,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/EquipeController.php",
+			"settings":
+			{
+				"buffer_size": 6026,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/js/components/QuadroSegundo.vue",
+			"settings":
+			{
+				"buffer_size": 3156,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resources/js/components/QuadroLast.vue",
+			"settings":
+			{
+				"buffer_size": 2395,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resources/js/app.js",
+			"settings":
+			{
+				"buffer_size": 2556,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/KanbanController.php",
+			"settings":
+			{
+				"buffer_size": 5273,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Discover Packages"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/xampp/htdocs/Start",
+		"/C/xampp/htdocs/Start/app",
+		"/C/xampp/htdocs/Start/app/Console",
+		"/C/xampp/htdocs/Start/app/Events",
+		"/C/xampp/htdocs/Start/app/Http",
+		"/C/xampp/htdocs/Start/app/Http/Controllers",
+		"/C/xampp/htdocs/Start/app/Providers",
+		"/C/xampp/htdocs/Start/app/Services",
+		"/C/xampp/htdocs/Start/app/Traits",
+		"/C/xampp/htdocs/Start/config",
+		"/C/xampp/htdocs/Start/public",
+		"/C/xampp/htdocs/Start/resources",
+		"/C/xampp/htdocs/Start/resources/js",
+		"/C/xampp/htdocs/Start/resources/js/components",
+		"/C/xampp/htdocs/Start/resources/views",
+		"/C/xampp/htdocs/Start/resources/views/auth",
+		"/C/xampp/htdocs/Start/resources/views/components",
+		"/C/xampp/htdocs/Start/resources/views/dashboard",
+		"/C/xampp/htdocs/Start/resources/views/equipes",
+		"/C/xampp/htdocs/Start/resources/views/kanban",
+		"/C/xampp/htdocs/Start/resources/views/layouts",
+		"/C/xampp/htdocs/Start/resources/views/parciais",
+		"/C/xampp/htdocs/Start/resources/views/projetos",
+		"/C/xampp/htdocs/Start/resources/views/users",
+		"/C/xampp/htdocs/Start/routes"
+	],
+	"file_history":
+	[
+		"/C/xampp/htdocs/Start/app/TaskFato.php",
+		"/C/xampp/htdocs/Start/resources/views/dashboard/dashboard.blade.php",
+		"/C/xampp/htdocs/Start/app/Traits/projetoTrait.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps.js",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps2.js",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/register-novo.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/login-novo.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/.env",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/viacep.js",
+		"/C/xampp/htdocs/Start/public/css/app.css",
+		"/C/xampp/htdocs/Start/routes/web.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/ProjetoController.php",
+		"/C/xampp/htdocs/Start/resources/views/equipes/index.blade.php",
+		"/C/xampp/htdocs/Start/app/Quadro.php",
+		"/C/xampp/htdocs/Start/resources/views/kanban/create.blade.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/PlayerController.php",
+		"/C/xampp/htdocs/Start/resources/views/parciais/loading-page.blade.php",
+		"/C/xampp/htdocs/Start/app/Providers/AppServiceProvider.php",
+		"/C/xampp/htdocs/Start/public/css/noselect.css",
+		"/C/xampp/htdocs/Start/resources/js/components/QuadroPrimeiro.vue",
+		"/C/xampp/htdocs/Start/resources/views/bemvindo.blade.php",
+		"/C/xampp/htdocs/Start/app/Traits/kanbanTrait.php",
+		"/C/xampp/htdocs/Start/resources/views/projetos/em-andamento.blade.php",
+		"/C/xampp/htdocs/Start/app/Events/RevisaTarefa.php",
+		"/C/xampp/htdocs/Start/routes/channels.php",
+		"/F/DOWNLOADS CHROME/Cookie-Consent-Notice-Bootstrap-4-cookieAlert/demo.html",
+		"/C/xampp/htdocs/Start/composer.json",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
+		"/C/xampp/htdocs/Start/app/Services/SocialGoogleAccountService.php",
+		"/C/xampp/htdocs/Start/public/js/paineis3.js",
+		"/C/xampp/htdocs/Start/public/css/wobble.css",
+		"/C/xampp/htdocs/Start/public/css/tabs.css",
+		"/C/xampp/htdocs/Start/public/css/sb-admin-2.css",
+		"/C/xampp/htdocs/Start/public/css/navbar.css",
+		"/C/xampp/htdocs/Start/public/css/loginPage.css",
+		"/C/xampp/htdocs/Start/app/User.php",
+		"/C/xampp/htdocs/Start/public/css/flip.css",
+		"/C/xampp/htdocs/Start/public/css/perfil.css",
+		"/C/xampp/htdocs/Start/resources/views/users/perfil.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/layouts/home.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/parciais/head.blade.php",
+		"/C/xampp/htdocs/Start/app/Traits/verificaTrait.php",
+		"/C/xampp/htdocs/Start/app/Events/MovimentoInvalido.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/FormularioController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteioRes.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteio.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/RelatorioController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio-entradas.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/OuvinteController.php",
+		"/C/xampp/htdocs/Reserva/resources/views/home.blade.php",
+		"/C/Users/bielr/Documents/dumps/Dump20200923.sql",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/page-promocao.php",
+		"/C/xampp/htdocs/Start/database/migrations/2014_10_12_000000_create_users_table.php",
+		"/C/xampp/htdocs/Start/database/migrations/2020_07_05_163156_create_projetos_table.php",
+		"/F/DOWNLOADS CHROME/users (2).sql",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultado.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/components/card-t.blade.php",
+		"/C/xampp/htdocs/Start/app/View/Components/CardT.php",
+		"/C/xampp/htdocs/Start/resources/views/dashboard/side-bar.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/parciais/headTeste.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/parciais/head-dash.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade 2.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/AdminController.php",
+		"/F/DOWNLOADS CHROME/enderecos.sql",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/HomeController.php",
+		"/C/Users/bielr/Documents/dumps/Dump20200910.sql",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/DashboardAdminTrait.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/BuscaController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/index.blade 2.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/index.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tickets-resolvidosL.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/meus-tickets.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tickets-resolvidos.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/dashboard.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/HomeController.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/navuser.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/head-auth.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/head.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/Auth/LoginController.php",
+		"/C/xampp/htdocs/backup/ftp - service/.env",
+		"/C/xampp/htdocs/backup/ftp - service/routes/web.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/usuarios/dashboard.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/tickets/index.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/tickets/create.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/relatorios/index.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/sidebar-info.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/layouts/cliente.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/admin/meus-tickets.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/admin/dashboard.blade.php",
+		"/C/xampp/htdocs/backup/ftp - service/config/app.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Services/SocialGoogleAccountService.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Notifications/TicketFinalizado.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Notifications/TicketAtualizado.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/aps.js",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/app.js",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/SocialGoogleAccountService.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/TicketController.php",
+		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/BuscaController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/app 2.js",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/GerenciaController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio-resp.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/Atendimento.php",
+		"/F/DOWNLOADS CHROME/startbootstrap-sb-admin-2-gh-pages/index.html",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/mostractel.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonistas.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonista-cadastra.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonista-atende.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultadoPesq.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tele-cadastrada.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/recaptcha.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/RegisterController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/bootstrap.min.css",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/EntradasController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/bootstrap.css",
+		"/F/DOWNLOADS CHROME/432497859.csv",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/promocoes-show.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/filesystems.php",
+		"/C/xampp/htdocs/sjteste/config/filesystems.php",
+		"/C/xampp/htdocs/sjteste/resources/views/parciais/sidebar-info.blade.php",
+		"/C/xampp/htdocs/sjteste/resources/views/parciais/head.blade.php",
+		"/C/xampp/htdocs/sjteste/resources/views/vendor/laravel-filemanager/index.blade.php",
+		"/C/xampp/htdocs/sjteste/.env",
+		"/C/xampp/htdocs/sjteste/vendor/unisharp/laravel-filemanager/src/LfmStorageRepository.php",
+		"/C/xampp/htdocs/sjteste/app/Http/Controllers/TicketController.php",
+		"/C/xampp/htdocs/sjteste/resources/js/components/TicketsMuitoImportante.vue"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"quadros",
+			"moveTarefa",
+			"lixo",
+			"task_id",
+			"ale",
+			"exibe",
+			"fecha",
+			"novaTarefa",
+			"abt",
+			"revisaTarefa",
+			"finalizarQuadro",
+			"finalizaQuadro",
+			"kanbanController",
+			"revisa",
+			"finaliza",
+			"cinza",
+			"hoje",
+			"console",
+			"salveTarefa",
+			"busca.quadro",
+			"buscaK",
+			"avatar",
+			"some",
+			"movido",
+			"executa",
+			");\n",
+			"desce",
+			"[",
+			"bairros"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/Traits/kanbanTrait.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5681,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4090,
+								4090
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1430.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "resources/js/components/Revisa.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2309,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2298,
+								976
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Revisa.vue",
+							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 78.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/Http/Controllers/TaskController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4311,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1833,
+								1847
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 356.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/Traits/taskTrait.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2374,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1790,
+								1790
+							]
+						],
+						"settings":
+						{
+							"auto_name": "taskTrait.php",
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 26.4,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "resources/views/layouts/auth.blade.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 218,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								218,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/Traits/projetoTrait.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6236,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1551,
+								1567
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 13.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "resources/views/dashboard/dashboard.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15441,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8054,
+								8054
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1508.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/Traits/verificaTrait.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 878,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								878,
+								878
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "resources/views/kanban/showvue.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8780,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5766,
+								5766
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 853.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "composer.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								228,
+								228
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "composer.lock",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 231877,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2147,
+								2147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 117.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "resources/views/parciais/nova-tarefa.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1672,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1672
+							]
+						],
+						"settings":
+						{
+							"auto_name": "nova-tarefa.blade.php",
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "resources/views/parciais/revisa-tarefa.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1222,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								532,
+								377
+							]
+						],
+						"settings":
+						{
+							"auto_name": "revisa-tarefa.blade.php",
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "public/js/paineis3.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7758,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4830,
+								4830
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1492.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "app/Http/Controllers/EquipeController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6026,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5913,
+								5913
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1872.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "resources/js/components/QuadroSegundo.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3156,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								959,
+								851
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "resources/js/components/QuadroLast.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2395,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								819,
+								819
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "resources/js/app.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2556,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2300,
+								2300
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 190.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "app/Http/Controllers/KanbanController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5273,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1496,
+								1496
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 143.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 74.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "projetoStart.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 406.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

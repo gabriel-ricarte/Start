@@ -168,6 +168,12 @@ DASHBOARD
                                 {{$kanban['kanban_nome']}}
                               </div>
                            </a>
+                           <div class="card">
+                            <div class="progress" >
+                              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:{{$kanban['kanban_andamento']}}%" aria-valuenow="{{$kanban['kanban_andamento']}}" aria-valuemin="0" aria-valuemax="100">{{$kanban['kanban_andamento']}}%</div>
+                            </div>
+                            <span class="text-uppercase text-small text-primary text-center">De: {{$kanban['data_ini']}} Até :{{$kanban['data_fim']}} </span>
+                          </div>
                           @endif
                       @if($kanban['kanban_status'] == 2)
                         <div class="card">

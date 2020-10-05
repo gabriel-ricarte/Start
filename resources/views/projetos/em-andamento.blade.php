@@ -4,6 +4,8 @@ PROJETOS EM ANDAMENTO
 @endsection
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('css/flip.css')}}">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/locale/pt-br.min.js"></script>
 @endsection
 @section('projetosA','active')
 @section('local','PROJETOS EM ANDAMENTO')
@@ -221,6 +223,7 @@ PROJETOS EM ANDAMENTO
     <i class="fas fa-angle-up"></i>
   </a>
 <script type="text/javascript">
+
   function desce(id , nome){
      $("#raus").slideUp( "fast", function() {$("#projeto"+id).slideDown( "fast", function() {});});
      document.getElementById('quad').innerHTML = '';
@@ -278,12 +281,13 @@ PROJETOS EM ANDAMENTO
 
     }else{
 
-    	console.log(dat);
+  
 		document.getElementById('pesquisei').innerHTML = "";
 			for (var i = 0; i < Object.values(dat).length; i++) {
 
-       
-			   let hora =  `
+        if(Object.values(dat)[i].tipo == 0)
+        {
+            let hora =  `
         <div class="col-xl-3 col-md-6 mb-4 `+Object.values(dat)[i].prioridade+`"> 
           <div class="card-body" >
               <h5 class="text-center noselect">`+  
@@ -295,12 +299,60 @@ PROJETOS EM ANDAMENTO
             </div>
           </div>
 
-        `;
-			                $('#pesquisei').append(hora);
+        `;        
+        $('#pesquisei').append(hora);
+        }
+        if(Object.values(dat)[i].tipo == 1){
+          let hora =  `
+        <div class="col-xl-3 col-md-6 mb-4 `+Object.values(dat)[i].prioridade+`"> 
+          <div class="card-body" >
+              <h5 class="text-center noselect">`+  
+                        Object.values(dat)[i].task
+                   +`</h5>
+              <small class=" bottom-right noselect " style="float: left">`+moment(Object.values(dat)[i].tempo).fromNow()+`</small><small class=" bottom-right noselect" style="float: right">`+  
+                        Object.values(dat)[i].dono
+                   +`</small>
+            </div>
+          </div>
+
+        `;$('#pesquisei').append(hora);
+        }
+        if(Object.values(dat)[i].tipo == 2){
+            let hora =  `
+        <div class="col-xl-3 col-md-6 mb-4 `+Object.values(dat)[i].prioridade+`"> 
+          <div class="card-body" >
+              <h5 class="text-center noselect">`+  
+                        Object.values(dat)[i].task
+                   +`</h5><p>`+Object.values(dat)[i].revisao+`</p>
+              <small class=" bottom-right noselect " style="float: left">`+moment(Object.values(dat)[i].tempo).fromNow()+`</small><small class=" bottom-right noselect" style="float: right">`+  
+                        Object.values(dat)[i].dono
+                   +`<button class="badge badge-light"><span class="fas fa-tools"></span></button></small>
+            </div>
+          </div>
+
+        `;$('#pesquisei').append(hora);
+        }
+        if(Object.values(dat)[i].tipo == 3){
+           let hora =  `
+        <div class="col-xl-3 col-md-6 mb-4 `+Object.values(dat)[i].prioridade+`"> 
+          <div class="card-body" >
+              <h5 class="text-center noselect">`+  
+                        Object.values(dat)[i].task
+                   +`</h5>
+              <small class=" bottom-right noselect " style="float: left">`+Object.values(dat)[i].tempo+`</small><small class=" bottom-right noselect" style="float: right">`+  
+                        Object.values(dat)[i].dono
+                   +`<button class="badge badge-success"><span class="fas fa-check-circle"></span></button></small>
+            </div>
+          </div>
+
+        `;$('#pesquisei').append(hora);
+        }
+
+			   
 			}
 	}
 
-
+ 
 
    });
 

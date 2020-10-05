@@ -53,10 +53,18 @@ trait taskTrait
 				$minutos = $diff->format("%i");
 				$tarefa->custo = (($horas*60)+$minutos);	
 				$tarefa->save();
+				$quadro = Quadro::find($request->quadro);
+				$task->quadro_id = $request->quadro;    
+				$task->estado = $request->estado;
+				$task->save(); 
 			}
 			if($request->estado == 3 && $task->estado != 4){ 
 				$tarefa->custo = $hoje;
 				$tarefa->save();
+				$quadro = Quadro::find($request->quadro);
+				$task->quadro_id = $request->quadro;    
+				$task->estado = $request->estado;
+				$task->save(); 
 			}
 
 			// if($request->estado == 4){ 

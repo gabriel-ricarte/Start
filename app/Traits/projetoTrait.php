@@ -26,13 +26,22 @@ trait projetoTrait
         $minhasTarefasF = 0;
         $minhasTarefasA  = 0;
         foreach($projeto->kanban as $kanban) {
+            $bF = 0;
+            $bA = 0;
+            $ands = 0;
             foreach($kanban->quadros as $quadro){
                 $minhasTarefasA+=$quadro->minhas_tasks_ativas($user->id)->count();
                 $minhasTarefasF+=$quadro->minhas_tasks_finalizadas($user->id)->count();
                 $tarefasA+=$quadro->tasks_ativas->count();
                 $tarefasF+=$quadro->tasks_finalizadas->count();
+                $bA+=$quadro->tasks_ativas->count();
+                $bF+=$quadro->tasks_finalizadas->count();
             }
-            $kan[] = ['kanban_nome'=>$kanban->nome,'kanban_id'=>$kanban->id,'kanban_status' => $kanban->status,'concluido'=>date('d/m/Y', strtotime($kanban->updated_at))];
+            $ands =  $bA + $bF;
+                if($ands > 0 ){
+                    $ands = round(100*($bF/$ands));
+                }
+            $kan[] = ['kanban_nome'=>$kanban->nome,'kanban_id'=>$kanban->id,'kanban_status' => $kanban->status,'concluido'=>date('d/m/Y', strtotime($kanban->updated_at)),'data_ini' => date('d/m/Y', strtotime($kanban->data_ini)),'data_fim' => date('d/m/Y', strtotime($kanban->data_fim)),'kanban_andamento' => $ands];
         }
         $total =  $tarefasA + $tarefasF;
         if($total > 0 ){

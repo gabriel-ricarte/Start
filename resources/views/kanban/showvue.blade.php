@@ -72,12 +72,12 @@ KANBAN
 					@include('parciais.nova-tarefa')
 					@include('parciais.revisa-tarefa')
 					<style type="text/css">
-.sticky{position:fixed;margin:0;width:30%;top:25%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
+.sticky{position:fixed;margin:0;width:30%;top:20%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
 					</style>
 					<div class="row justify-content-center"  id="finalizarQuadroDiv" style="margin-bottom: 10px;display: none;">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" >
 							<div class="card  border-0 shadow-lg my-5 " >
-								<div class="card-header bg-primary text-white ">FINALIZAR QUADRO ? <span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('finalizarQuadroDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-header bg-primary text-white ">FINALIZAR QUADRO ? <span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('finalizarQuadroDiv')"  ><span  ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center" style="min-height: 80px">
 									<form method="post" action="{{ route('finalizar.quadro') }}" class="form-horizontal" id="formFinalizaQuadro" >
 										@csrf
@@ -91,7 +91,7 @@ KANBAN
 					<div class="row justify-content-center"  id="revisaTarefaDiv" style="margin-bottom: 10px;display: none">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px" >
 							<div class="card  border-0 shadow-lg my-5 sticky"  >
-								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA REVISAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('revisaTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-header bg-primary text-white ">ARRASTE A TEREFA QUE DESEJA REVISAR<span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('revisaTarefaDiv')" ><span   ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center connectedSortable" id="revisaTarefaQuadro" style="min-height: 80px">
 									
 								</div>
@@ -101,7 +101,7 @@ KANBAN
 					<div class="row justify-content-center"  id="excluiTarefaDiv" style="margin-bottom: 10px;display: none">
 						<div class="col-xl-6 col-md-6 mb-4 bg-light" style="height: 150px"  >
 							<div class="card  border-0 shadow-lg my-5 sticky"  >
-								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA EXCLUIR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('excluiTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA EXCLUIR<span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('excluiTarefaDiv')" ><span   ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center connectedSortable" id="excluiTarefaQuadro" style="min-height: 80px">
 									
 								</div>
@@ -111,7 +111,7 @@ KANBAN
 					<div class="row justify-content-center"  id="pausaTarefaDiv" style="margin-bottom: 10px;display: none">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px"  >
 							<div class="card  border-0 shadow-lg my-5 sticky"  >
-								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA PAUSAR<span style="float: right"><button class="btn btn-danger btn-sm" ><span  onclick="fecha('pausaTarefaDiv')" ><i class="fas fa-times-circle"></i></span></button></span></div>
+								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA PAUSAR<span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('pausaTarefaDiv')" ><span   ><i class="fas fa-times-circle"></i></span></button></span></div>
 								<div class="card-body text-center connectedSortable" id="excluiTarefaQuadro" style="min-height: 80px">
 									
 								</div>
@@ -214,8 +214,8 @@ KANBAN
 	</form>
 </a>
 <a hidden>
-	<form method="get" action="{{ route('pausa.task') }}" class="form-horizontal" id="revisaForm" >
-		<div id="insertRevisao">
+	<form method="get" action="{{ route('pausa.task') }}" class="form-horizontal" id="pausaForm" >
+		<div id="insertPausa">
 
 		</div>
 	</form>
