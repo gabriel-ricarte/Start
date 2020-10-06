@@ -44,14 +44,22 @@ trait taskTrait
 
 		//melhorar complexidade !
 
+		//dd($tarefa);
 		if($request->estado != $task->estado){
 			if($request->estado == 2){ 
 				$date1=date_create($tarefa->custo);
 				$date2=date_create($hoje);
 				$diff=date_diff($date1,$date2);
+				$dias = $diff->format("%d");
 				$horas = $diff->format("%h");
 				$minutos = $diff->format("%i");
-				$tarefa->custo = (($horas*60)+$minutos);	
+				if($dias > 0){
+					$tarefa->custo = ($dias*24*60)+(($horas*60)+$minutos);
+				}else{
+					$tarefa->custo = (($horas*60)+$minutos);	
+				}
+				//dd($tarefa->custo);
+				//$tarefa->custo = (($horas*60)+$minutos);	
 				$tarefa->save();
 				$quadro = Quadro::find($request->quadro);
 				$task->quadro_id = $request->quadro;    

@@ -71,6 +71,7 @@ KANBAN
 					</div>
 					@include('parciais.nova-tarefa')
 					@include('parciais.revisa-tarefa')
+					@include('parciais.pausa-tarefa')
 					<style type="text/css">
 .sticky{position:fixed;margin:0;width:30%;top:20%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
 					</style>
@@ -112,7 +113,7 @@ KANBAN
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px"  >
 							<div class="card  border-0 shadow-lg my-5 sticky"  >
 								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA PAUSAR<span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('pausaTarefaDiv')" ><span   ><i class="fas fa-times-circle"></i></span></button></span></div>
-								<div class="card-body text-center connectedSortable" id="excluiTarefaQuadro" style="min-height: 80px">
+								<div class="card-body text-center connectedSortable" id="pausaTarefaQuadro" style="min-height: 80px">
 									
 								</div>
 							</div>

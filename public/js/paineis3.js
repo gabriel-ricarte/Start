@@ -59,6 +59,22 @@ jQuery(function($) {
 
         }).disableSelection();
   //fim
+    //inicio do listener de pausa de tarefas       
+        var pausa = $('#pausaTarefaQuadro');
+        pausa.sortable({
+            connectWith: ".connectedSortable",
+            update: function() {
+                $('.pan', pausa).each(function(index, elem) {
+                     var $listItem = $(elem),
+                         newIndex = $listItem.index();
+                          preparaPausa(elem.id,pausa);
+                          //console.log(elem.id,val1)
+                });
+
+            }
+
+        }).disableSelection();
+  //fim
 
         });
 //fim dos listeners dos quadros
@@ -132,6 +148,47 @@ $('#'+task).css('cursor', 'wait');
         fecha('revisaTarefaDiv');
         $("#revisaTarefaDivForm").slideDown( "fast", function() {});
         document.getElementById('insertTaskId').innerHTML = '<input type="hidden" name="task_id" id="revisa_id" value="'+des+'">';
+        setTimeout(function() { $("#responseDiv").slideUp( "fast", function() {}); },3500);
+      },
+      error: function(msg){
+        $('#articlee').css('cursor', 'default');
+        document.getElementById('responseHere').innerHTML = msg;
+      }
+    });
+
+ }
+ function preparaPausa(task){
+$('#articlee').css('cursor', 'wait');
+$('#'+task).css('cursor', 'wait');
+    document.getElementById('insertPausa').innerHTML = "";
+    document.getElementById('insertPausa').innerHTML =
+    `
+    <input type="text" name="task"  class="form-control col-12" value="`+task+`" required="required">
+
+    `;
+  setTimeout(function() {enviaPausa(task);  },10);
+}
+
+ function enviaPausa(des){
+  $('#articlee').css('cursor', 'wait');
+  var form = $('#pausaForm');
+  var post_url = form.attr('action');
+  var post_data = form.serialize();
+  $.ajax({
+    type: 'GET',
+    url: post_url,
+    data: post_data,
+    success: function(msg) {
+        $('#articlee').css('cursor', 'default');
+        $('#'+des).css('cursor', 'move');
+        $("#responseDiv").slideDown( "fast", function() {});
+        $('#responseHere').attr('class','alert alert-'+msg[1]);
+
+        // document.getElementById('responseHere').innerHTML = msg[0];
+        // setTimeout(function() { $("#responseDiv").slideUp( "fast", function() {}); },3500);
+        fecha('pausaTarefaDiv');
+        $("#revisaTarefaDivFormp").slideDown( "fast", function() {});
+        document.getElementById('insertTaskIdp').innerHTML = '<input type="hidden" name="task_id" id="revisa_id" value="'+des+'">';
         setTimeout(function() { $("#responseDiv").slideUp( "fast", function() {}); },3500);
       },
       error: function(msg){

@@ -84,6 +84,22 @@ class TaskController extends Controller
         broadcast(new NovaTask($tarefa,$user))->toOthers();
        return ['Tarefa eliminada com sucesso !','success'];
     }
+    public function pausatask(Request $request)
+    {
+        $request->validate([
+        'task' => 'required|exists:task_fatos,id',
+        ]);
+        $user = Auth::user();
+        $task = TaskFato::findOrFail($request->task);
+        if($task->estado != 3){
+            return [false,'Tarefa ainda não realizada !','danger'];
+        }
+        $task->estado = 4; 
+        $task->save(); 
+        $tarefa = Task::find($task->task_id); 
+        broadcast(new NovaTask($tarefa,$user))->toOthers();
+       return ['Tarefa pausada com sucesso !','success'];
+    }
     public function revisatask(Request $request)
     {
         $request->validate([

@@ -32,4 +32,18 @@ trait verificaTrait
        }
 	    return [true];
    }
+   public function acessaEquipe($id, Projeto $projeto){
+    $val = 0;
+      if($id != $projeto->user_id){
+        $val++;
+      }
+      if($id != $projeto->po_id){
+        $val++;
+      }if($val == 2){
+        return false;
+      }else{
+        return true;
+      }
+      
+   }
 }

@@ -109,18 +109,26 @@ public function tarefasKanban($id){
     if($ta->prioridade == 0){
       $cor = 'card pan dragg qitem bg-light';
     }
+
     if($ta->task->custo == 0){
       $hrs = '00:';
       $mins = '00';
     }else{
-      if($ta->task->custo > 60){
+
+      if($ta->task->custo > 60 && $ta->task->custo <= 1440){
         $div1 = gmp_div_q($ta->task->custo, "60");
         $hrs = gmp_strval($div1).':';
         $div = gmp_div_r($ta->task->custo, "60");
         $mins = gmp_strval($div).' Hrs';
-      } else{
+      }if($ta->task->custo <= 60){
         $hrs = '00:';
         $mins = $ta->task->custo.' Hrs';
+      }
+      if($ta->task->custo > 1440){
+        $div1 = gmp_div_q($ta->task->custo, "1440");
+        $hrs = gmp_strval($div1).':';
+        $div = gmp_div_r($ta->task->custo, "60");
+        $mins = gmp_strval($div).' Hrs';
       }
     }
 

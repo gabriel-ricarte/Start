@@ -25,7 +25,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('quadro-um', require('./components/QuadroPrimeiro.vue').default);
 Vue.component('quadro-dois', require('./components/QuadroSegundo.vue').default);
 Vue.component('quadro-last', require('./components/QuadroLast.vue').default);
-
+Vue.component('integrantes-selecionados', require('./components/IntegrantesEscolhidos.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -37,7 +37,7 @@ const app = new Vue({
         tasks: [],
         tasksdois: [],
         taskslast: [],
-        //dado: [],
+        integrantes: [],
     },
     // },
 

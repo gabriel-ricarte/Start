@@ -16,9 +16,11 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Notifications\Contato;
+use App\Traits\verificaTrait;
 
 class EquipeController extends Controller
 {
+    use verificaTrait;
     public function __construct()
     {
          $this->middleware(['auth']);
@@ -48,23 +50,50 @@ class EquipeController extends Controller
     {
         $user = Auth::user();
         $projeto = $user->projeto_andando->first;
-        $integrantes = User::all();
-        $hoje = date('Y-m-d');
-        return view('equipes.create')->withProjeto($projeto)->withHoje($hoje)->withIntegrantes($integrantes);
+        if($this->acessaEquipe($user->id,$projeto)){
+            $integrantes = User::all();
+            $hoje = date('Y-m-d');
+            return view('equipes.create')->withProjeto($projeto)->withHoje($hoje)->withIntegrantes($integrantes);
+        }else{
+            return redirect()->back()->withErrors('Usuário não autorizado !');
+        }
+        
+    }
+    public function buscaIntegrantes($id)
+    {
+        $user = Auth::user();
+        $projeto = Projeto::findOrFail($id);
+        if($this->acessaEquipe($user->id,$projeto)){
+            $equipe = Equipe::find($projeto->equipe->first->id->id);
+            $pessoas = [];
+            $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();
+            foreach($integrantes as $integrante){
+                $pessoas[] = ['id' => $integrante->user->id,'nome' => $integrante->user->nome,'status' => $integrante->status, 'permissao' => $integrante->permissao, 'email' => $integrante->user->email];
+            }
+            return $pessoas;
+        }else{
+            return [false,'Usuário não autorizado !'];
+        }
+        
     }
 
     public function continueEquipe($id)
     {
         $user = Auth::user();
-        $projeto = Projeto::find($id);
-        if($projeto->equipe->count() == 0){
+        $projeto = Projeto::findOrFail($id);
+        if($this->acessaEquipe($user->id,$projeto)){
+           if($projeto->equipe->count() == 0){
             $ids = $projeto->equipe->first->id;
              $integrantes = EquipeUser::where('equipe_id',$ids)->get();
              return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);
         }
         $ids = $projeto->equipe->first->id->id;
         $integrantes = EquipeUser::where('equipe_id',$ids)->where('status',0)->get();
-        return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);
+        return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);      
+        }else{
+             return redirect()->back()->withErrors('Usuário não autorizado !');
+        }
+       
     }
     /**
      * Store a newly created resource in storage.
