@@ -19,16 +19,12 @@ class Convite extends Notification
     public $nome;
     public $usuario;
     public $projeto;
-    public $senha;
-    public $link;
 
-    public function __construct($nome,$projeto,$usuario,$senha,$link)
+    public function __construct($nome,$projeto,$usuario)
     {
         $this->nome = $nome;
         $this->projeto = $projeto;
         $this->usuario = $usuario;
-        $this->senha = $senha;
-        $this->link = $link;
     }
 
     /**
@@ -53,10 +49,9 @@ class Convite extends Notification
         return (new MailMessage)
                 ->greeting('Olá '.$this->nome.', sou '.$this->usuario) 
                 ->line('Estou te convidando para participar do projeto '.$this->projeto)
-                ->line('Ao acessar o sistema utilize o link e a senha disponibilizados abaixo')
-                ->line('Qualquer dúvida ligue para 2013 e procure pelo biel')
-                ->line('Senha: '.$this->senha)
-                ->action('Link de Acesso',$link)
+                ->line('Ao acessar o sistema utilize o link disponibilizado abaixo e este endereço de email.')
+                ->line('Qualquer dúvida ligue para 2013 e procure pelo Gabriel')
+                ->action('Link de Acesso',route('inicio'))
                 ->line('No aguardo da sua resposta !');
     }
 

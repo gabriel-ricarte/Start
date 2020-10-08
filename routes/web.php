@@ -67,6 +67,7 @@ Route::post('/contato','HomeController@contato')->name('contact');
 
 Route::resource('equipe','EquipeController');
 Route::get('buscaIntegrantes/{id}','EquipeController@buscaIntegrantes')->name('busca.integrantes');
+Route::get('buscaIntegrantesD/{id}','EquipeController@buscaIntegrantesD')->name('busca.integrantesd');
 Route::get('/admins','EquipeController@usersIndex')->name('admins.index');
 Route::get('/ativa-admin/{id}','EquipeController@ativaUser')->name('admins.activate');
 //Route::get('/enviando-email/{id}','EquipeController@lembrarTecnico')->name('olaMarilene');

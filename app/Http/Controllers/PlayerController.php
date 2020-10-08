@@ -13,12 +13,15 @@ use App\Kanban;
 use App\EquipeUser;
 use App\Equipe;
 use DB;
-
+use App\Notifications\Convite;
 use App\Notifications\Contato;
+use App\Traits\verificaTrait;
+use App\Http\Controllers\EquipeController;
 
 class PlayerController extends Controller
 {
-     public function __construct()
+    use verificaTrait;
+    public function __construct()
     {
          $this->middleware(['auth']);
     }
@@ -52,6 +55,19 @@ class PlayerController extends Controller
     {
         $hoje = date('Y-m-d H:i:s');
         $encoding = 'UTF-8'; 
+        $user = Auth::user();
+        $projeto = Projeto::findOrFail($request->projeto);
+
+            //dd('deu certo');
+
+        $request->validate([
+        'nome' => 'required|between:5,250',
+        'email' => 'required|email|unique:users',
+        'projeto' => 'required|exists:projetos,id',
+        ]);
+        if(!$this->acessaEquipe($user->id,$projeto)){
+            return redirect()->back()->withErrors('Usuário não autorizado !');
+        }
         $player = new User();
         $player->nome = mb_convert_case($request->nome, MB_CASE_UPPER, $encoding);
         $player->email = $request->email;
@@ -63,8 +79,16 @@ class PlayerController extends Controller
         $player->vertical = '-';
         $player->filial = '-';
         $player->status = 'ATIVO';       
-        $player->save();  
+        $player->save();
+
+
+        //adicionando na equipe 
+        $equipe = Equipe::findOrFail($projeto->equipe->first->id->id);
+       EquipeController::adicionaIntegrante($equipe, $player);
+        \Notification::route('mail', $request->email)
+            ->notify(new Convite($request->nome,$projeto->nome,$user->nome));
         session()->flash('msg','Adicionado com sucesso !');
+        return redirect()->route('equipe.criar');
     }
     public function removePlayer(Request $request)
     {

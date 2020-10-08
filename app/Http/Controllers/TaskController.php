@@ -59,13 +59,21 @@ class TaskController extends Controller
         $user = Auth::user();
         $task = TaskFato::findOrFail($request->task);
         $tarefa = Task::find($task->task_id);
-        $verifica = $this->moveTarefa($user , $task,$request);
+        $verifica = $this->moveTarefa($user , $task, $request);
         //verifica se movimento é válido
+        if($request->quadro == $task->quadro_id || $request->estado == $task->estado ){
+            return ['Tarefas somente salvas com movimento entre quadros !','info'];
+        }
         if(!$verifica[0]){
             event(new MovimentoInvalido($user));
             return [$verifica[1],$verifica[2]];
         }
-        $this->salvaMovimento($user , $request,$task,$tarefa);
+        $movimento = $this->salvaMovimento($user ,$request ,$task ,$tarefa);
+        if(!$movimento[0]){
+            event(new MovimentoInvalido($user));
+            return [$movimento[1],$movimento[2]];
+        }
+        //$this->salvaMovimento($user ,$request ,$task ,$tarefa);
         broadcast(new TaskMovida($tarefa,$user))->toOthers();
         event(new TaskMovida($tarefa,$user));
         return ['Movido com sucesso !','success'];

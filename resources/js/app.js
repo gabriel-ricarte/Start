@@ -9,7 +9,13 @@ require('./bootstrap');
 window.Vue = require('vue');
 import moment from 'moment'
 moment.locale('pt_BR'); 
-Vue.prototype.moment = moment
+import VueCsrf from 'vue-csrf';
+ 
+Vue.use(VueCsrf, {
+    selector: 'meta[name="csrf-token"]', // selector of csrf element with csrf-token value
+    attribute: 'content', //attribute of csrf-token element
+});
+Vue.prototype.moment = moment;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -26,6 +32,7 @@ Vue.component('quadro-um', require('./components/QuadroPrimeiro.vue').default);
 Vue.component('quadro-dois', require('./components/QuadroSegundo.vue').default);
 Vue.component('quadro-last', require('./components/QuadroLast.vue').default);
 Vue.component('integrantes-selecionados', require('./components/IntegrantesEscolhidos.vue').default);
+Vue.component('integrantes-disponiveis', require('./components/IntegrantesDisponiveis.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -38,6 +45,7 @@ const app = new Vue({
         tasksdois: [],
         taskslast: [],
         integrantes: [],
+        users:[],
     },
     // },
 

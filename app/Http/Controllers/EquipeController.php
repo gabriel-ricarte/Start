@@ -42,10 +42,6 @@ class EquipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
     public function criarEquipe()
     {
         $user = Auth::user();
@@ -71,6 +67,35 @@ class EquipeController extends Controller
                 $pessoas[] = ['id' => $integrante->user->id,'nome' => $integrante->user->nome,'status' => $integrante->status, 'permissao' => $integrante->permissao, 'email' => $integrante->user->email];
             }
             return $pessoas;
+        }else{
+            return [false,'Usuário não autorizado !'];
+        }
+        
+    }
+    public function buscaIntegrantesD($id)
+    {
+        $user = Auth::user();
+        $projeto = Projeto::findOrFail($id);
+        $usuarios = User::all();
+        $nomes = array();
+        if($this->acessaEquipe($user->id,$projeto)){
+            $equipe = Equipe::find($projeto->equipe->first->id->id);
+            $pessoas = [];
+            $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();
+            foreach($integrantes as $integrante){
+                $pessoas[] = ['id' => $integrante->user->id];
+            }
+            foreach($usuarios as $key => $value){
+
+                if($integrantes->contains('user_id',$value->id)){
+                    unset($usuarios[$key]);    
+                }else{
+                    //array_push($nomes,$value->nome);
+                    $nomes[] = ['id' => $value->id, 'nome' => $value->nome, 'email' => $value->email]; 
+                }
+             
+            }
+            return $nomes;
         }else{
             return [false,'Usuário não autorizado !'];
         }
@@ -151,6 +176,14 @@ class EquipeController extends Controller
         }
         return redirect()->route('equipe.criando',$projeto->id);
         
+    }
+    public static function adicionaIntegrante(Equipe $equipe, User $user){
+        $integrante = new EquipeUser();
+        $integrante->status = 0;
+        $integrante->permissao =  0;
+        $integrante->user()->associate($user->id);
+        $integrante->equipe()->associate($equipe->id);
+        $integrante->save();
     }
 
     /**
