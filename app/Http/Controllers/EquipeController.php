@@ -196,9 +196,15 @@ class EquipeController extends Controller
     {
         $user = Auth::user();
         $projeto = Projeto::find($id);
-        $kanban = Kanban::find($projeto->kanban->first->id->id);
-        session()->flash('msg','Equipe criada com sucesso!');
-        return redirect()->route('kanban.show',$kanban->id);
+        if($projeto->kanban_ativo){
+            $kanban = $projeto->kanban_ativo[0];
+            session()->flash('msg','Equipe criada com sucesso!');
+            return redirect()->route('kanban.show',$kanban->id);
+        }else{
+            session()->flash('msg','Sem Kanbans ativos no momento !');
+            return redirect()->route('projeto.index');
+        }
+        
     }
 
     /**

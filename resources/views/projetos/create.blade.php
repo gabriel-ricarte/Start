@@ -53,7 +53,7 @@ NOVO PROJETO
 
 										</div>
 										<div class="form-group row">
-											<div class="col-sm-12 mb-3 mb-sm-0">
+											<div class="col-sm-12 mb-3 mb-sm-0" id="pesqPO">
 												<input type="text" class="form-control form-control-user" id="po" placeholder="P.O  (Product Owner)" name="po" required oninput="pesquisa(this.value)" autocomplete="off">
 												<div id="valval" style="display: none"></div>
 												<br>
@@ -132,6 +132,13 @@ NOVO PROJETO
         </div>
   </form>
 </a>
+<a hidden>
+  <form method="get" action="{{route('insere.pessoa')}}" class="form-horizontal" id="inserePessoa" >
+        <div id="inserirP">
+
+        </div>
+  </form>
+</a>
 <!-- <a hidden>
   <form method="get" action="{{route('busca.pessoa')}}" class="form-horizontal" id="buscaC" >
         <div id="inserir">
@@ -142,6 +149,7 @@ NOVO PROJETO
 
 <!-- Logout Modal-->
 @include('parciais.modal-logout')
+@include('parciais.modal-insere-pessoa')
 @endsection
 
 

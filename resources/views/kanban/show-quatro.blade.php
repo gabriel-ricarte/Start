@@ -51,11 +51,6 @@ KANBAN
 								<i class="fas fa-check-double"></i>
 							</button>
 						@endif	
-						<!-- @if($quadros[1]['quadro'] > 0)
-							<button title="Pausar Tarefa" type="button" class="btn btn-secondary active btn-outline btn-lg " onclick="abreFuncao('pausaTarefaDiv')" >
-								<i class="fa fa-pause"></i>
-							</button>
-						@endif -->
 						@if($permi->permissao == 0)	
 							<button title="Excluir Tarefa" type="button" class="btn btn-danger btn-outline btn-lg " onclick="abreFuncao('excluiTarefaDiv')" >
 								<i class="fas fa-trash-alt"></i>
@@ -109,32 +104,13 @@ KANBAN
 							</div>
 						</div>
 					</div>
-					<div class="row justify-content-center"  id="pausaTarefaDiv" style="margin-bottom: 10px;display: none">
-						<div class="col-xl-6 col-md-6 mb-4  bg-light" style="height: 150px"  >
-							<div class="card  border-0 shadow-lg my-5 sticky"  >
-								<div class="card-header bg-primary text-white " >ARRASTE A TEREFA QUE DESEJA PAUSAR<span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('pausaTarefaDiv')" ><span   ><i class="fas fa-times-circle"></i></span></button></span></div>
-								<div class="card-body text-center connectedSortable" id="pausaTarefaQuadro" style="min-height: 80px">
-									
-								</div>
-							</div>
-						</div>
-					</div>
-				
 				</div>
 				<div class="row" id="app" >
-					<quadro-um :tasks="tasks" :todo="{{$quadros[0]['quadro']}}" @primeiro="tasks = $event" :tipo="3"></quadro-um>
-					<quadro-dois :tasksdois="tasksdois" :doing="{{$quadros[1]['quadro']}}" @segundo="tasksdois = $event" :tipo="3"></quadro-dois>
-					<quadro-last :taskslast="taskslast" :done="{{$quadros[2]['quadro']}}" @last="taskslast = $event" :tipo="3"></quadro-last>
+					<quadro-um :tasks="tasks" :todo="{{$quadros[0]['quadro']}}" @primeiro="tasks = $event" :tipo="4"></quadro-um>
+					<quadro-dois :tasksdois="tasksdois" :doing="{{$quadros[1]['quadro']}}" @segundo="tasksdois = $event" :tipo="4"></quadro-dois>
+					<quadro-tres :taskstres="taskstres" :testing="{{$quadros[2]['quadro']}}" @terceiro="taskstres = $event" :tipo="4"></quadro-tres>
+					<quadro-last :taskslast="taskslast" :done="{{$quadros[3]['quadro']}}" @last="taskslast = $event" :tipo="4"></quadro-last>
 				</div>
-				<!-- <div class="card o-hidden border-0 shadow-lg my-5">
-					<div class="card-body p-0">
-						<div class="row">
-
-						</div>
-					</div>
-				</div> -->
-
-
 
 			</div>
 			<!-- /.container-fluid -->
@@ -210,13 +186,6 @@ KANBAN
 <a hidden>
 	<form method="get" action="{{ route('revisa.task') }}" class="form-horizontal" id="revisaForm" >
 		<div id="insertRevisao">
-
-		</div>
-	</form>
-</a>
-<a hidden>
-	<form method="get" action="{{ route('pausa.task') }}" class="form-horizontal" id="pausaForm" >
-		<div id="insertPausa">
 
 		</div>
 	</form>

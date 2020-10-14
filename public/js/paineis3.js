@@ -18,8 +18,8 @@ jQuery(function($) {
                           movido(ui.item[0].id,val2,3);
             }
         }).disableSelection();
-        var panelList3 = $('#draggablePanelList3');
-        var val3 = document.getElementById('draggablePanelList3').getAttribute('data-value');
+        var panelList3 = $('#draggablePanelList5');
+        var val3 = document.getElementById('draggablePanelList5').getAttribute('data-value');
         panelList3.sortable({
             connectWith: ".connectedSortable",
             update: function(event,ui) {

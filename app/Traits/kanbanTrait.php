@@ -91,8 +91,7 @@ public function tarefasKanban($id){
 
         $trabs = (int) $ta->task->tempo[0]->tempo;
     }
-  
-     //dd($trabs); 
+
     if($trabs == 0){
       $hrs = '00:';
       $mins = '00';

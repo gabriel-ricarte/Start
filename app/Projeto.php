@@ -29,5 +29,9 @@ class Projeto extends Model
     public function po(){
 		return $this->belongsTo('App\User');
 	}
+	public function kanban_ativo(){
+		return $this->kanban()->where('status',1);
+	}
+
 
 }

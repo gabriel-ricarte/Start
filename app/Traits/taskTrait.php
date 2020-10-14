@@ -155,7 +155,7 @@ trait taskTrait
 					$task->estado = $request->estado;
 					$task->save();
 					
-       			return [true,'Tarefa iniciada com sucesso !','success'];
+       			return [true,'Tarefa pausada com sucesso !','success'];
 				}
 				if($task->estado == 4){
 					//pause

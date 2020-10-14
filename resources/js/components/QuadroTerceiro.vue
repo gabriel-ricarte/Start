@@ -1,27 +1,10 @@
 <template>
-	<div class="col-xl-4 col-md-6 mb-4  bg-light text-white"  v-model="segundo" v-if="tipo == 3" >
+	<div class="col-xl-4 col-md-6 mb-4  bg-light text-white"  v-model="terceiro" v-if="tipo == 4" >
 		<div class="card  border-0 shadow-lg my-5" >
-			<div class="card-header btn btn-lg btn-info text-white ">FAZENDO</div>
-			<div class="card-body connectedSortable over" id="draggablePanelList2" :data-value="doing"style="min-height: 80px">
+			<div class="card-header btn btn-lg btn-info text-white ">EM TESTE</div>
+			<div class="card-body connectedSortable over" id="draggablePanelList3" :data-value="testing"style="min-height: 80px">
 
-				<div :class="task.prioridade" :id="task.id"    :data-value="doing" style="position: relative;" v-for="task in tasksdois" v-bind:key="task.id" >	
-					<div class="card-body" >
-						<!-- <div class="container"> -->
-							<h5 class="text-center noselect ">{{task.task}}</h5>
-							<p v-if="task.revisao != 'TESTE'">{{task.revisao}}</p>
-							<small class=" bottom-right noselect " style="float: left">{{moment(task.tempo).fromNow()}}</small><small class=" bottom-right noselect " style="float: right">{{task.dono}} <button class="badge badge-light" v-if="task.revisao != 'TESTE'"><span class="fas fa-tools"></span></button></small>
-							<!-- </div> -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xl-3 col-md-6 mb-4  bg-light text-white"  v-model="segundo" v-else >
-		<div class="card  border-0 shadow-lg my-5" >
-			<div class="card-header btn btn-lg btn-info text-white ">FAZENDO</div>
-			<div class="card-body connectedSortable over" id="draggablePanelList2" :data-value="doing"style="min-height: 80px">
-
-				<div :class="task.prioridade" :id="task.id"    :data-value="doing" style="position: relative;" v-for="task in tasksdois" v-bind:key="task.id" >	
+				<div :class="task.prioridade" :id="task.id"    :data-value="testing" style="position: relative;" v-for="task in taskstres" v-bind:key="task.id" >	
 					<div class="card-body" >
 						<!-- <div class="container"> -->
 							<h5 class="text-center noselect ">{{task.task}}</h5>
@@ -58,10 +41,10 @@
 	<script>
 		export default {
 			//props: ['tasksdois','doing']
-			props: ['tasksdois','doing','tipo'],
+			props: ['taskstres','testing','tipo'],
 			 data() {
     		return {
-     			 quadro : this.doing,
+     			 quadro : this.testing,
     			};
   			},
   			created() {
@@ -80,16 +63,16 @@
 			        });
   			},
   			computed: {
-  				segundo: {
+  				terceiro: {
   					get: function() {
   						return axios.get('/buscaTask/'+this.quadro).then(response => {
-			                this.$emit('segundo', response.data);
+			                this.$emit('terceiro', response.data);
 			            });
   					},
   					set: function() {
   						axios.get('/buscaTask/'+this.quadro).then(response => {
 	                //this.tasks = response.data;
-			                this.$emit('segundo', response.data);
+			                this.$emit('terceiro', response.data);
 			            });
   						//this.$emit('emitterdrawer', val)
   					}
@@ -104,11 +87,11 @@
   			methods: {
   				buscaTask() {
   					axios.get('/buscaTask/'+this.quadro).then(response => {
-  						this.$emit('segundo', response.data);
+  						this.$emit('terceiro', response.data);
   					});
   				},zera() {
   					
-  					this.$emit('segundo',[]);
+  					this.$emit('terceiro',[]);
   					
   				}
   			}

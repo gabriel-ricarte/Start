@@ -101,7 +101,6 @@ EQUIPE
                   </div>
                   <button class="btn btn-primary" type="submit">Cadastrar</button>
             </form>
-            
         </div>
       </div>
 

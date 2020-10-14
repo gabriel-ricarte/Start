@@ -47,6 +47,7 @@ Route::post('/new-player', 'PlayerController@store')->name('newplayer');
 Route::get('/move-player', 'PlayerController@movePlayer')->name('moveplayer');
 Route::post('/criar-time', 'PlayerController@storeTeamAndSteps')->name('criar.time');
 Route::get('/buscando-pessoa/', 'PlayerController@buscaIntegrante')->name('busca.pessoa');
+Route::get('/insere-pessoa/', 'PlayerController@insereIntegrante')->name('insere.pessoa');
 Route::get('/criar-equipe', 'EquipeController@criarEquipe')->name('equipe.criar');
 Route::get('/criando-equipe/{id}', 'EquipeController@continueEquipe')->name('equipe.criando');
 Route::post('/remove-player', 'PlayerController@removePlayer')->name('removeplayer');

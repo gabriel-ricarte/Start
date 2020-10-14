@@ -70,6 +70,7 @@ function pesquisa(dado){
                       </tbody>
                     </table>
                   </div>
+                  <span class="alert alert-warning">Se integrante não foi encontrado cadastre <button type="button" class="btn btn-warning active btn-sm" onclick="newplayer()">AQUI</button></span>
 `;
       },
       error: function(){
@@ -116,4 +117,37 @@ function selecionar(nome,id){
 	document.getElementById('valval').innerHTML = '<input  type="hidden" value="'+id+'" name="po_id" required>';
 	document.getElementById('po').value = nome;
 	$('#razao').focus();
-	}
+}
+
+function newplayer(){
+    $('#pesqPO').slideUp('fast',function(){});  
+    $('#inserePO').slideDown('fast',function(){$('#nome-new').focus();}); 
+}
+function preparaInsercao(){
+    document.getElementById('inserirP').innerHTML = 
+    `
+    <input type="email" name="email"  class="form-control col-12" value="`+$('#email-new').val()+`" required>
+    <input type="text" name="nome"  class="form-control col-12" value="`+$('#nome-new').val()+`" required>
+    
+    `
+    setTimeout(function() { executaInsercao(); },10);
+}
+function executaInsercao(){
+  var form = $('#inserePessoa');
+  var post_url = form.attr('action');
+  var post_data = form.serialize();
+  var show =  $.ajax({
+    type: 'GET',
+    url: post_url, 
+    data: post_data,
+    success: function(data) {
+        //ação aqui
+        console.log(data);
+        document.getElementById('po').innerHTML = '';
+        //document.getElementById('po').innerHTML = data;
+      },
+      error: function(){
+        document.getElementById('resp').innerHTML = 'Erro na inserção';
+      }
+    });
+}

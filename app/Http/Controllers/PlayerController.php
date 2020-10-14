@@ -117,7 +117,29 @@ class PlayerController extends Controller
         $clientes = $clientes->unique('id');
         return $clientes->toArray();
     }
-
+    public function insereIntegrante(Request $request)
+    {
+        $hoje = date('Y-m-d H:i:s');
+        $encoding = 'UTF-8'; 
+        $user = Auth::user();
+        $request->validate([
+        'nome' => 'required|between:5,250',
+        'email' => 'required|email|unique:users',
+        ]);
+        $player = new User();
+        $player->nome = mb_convert_case($request->nome, MB_CASE_UPPER, $encoding);
+        $player->email = $request->email;
+        $player->setor = '-';
+        $player->password = '0051651651';
+        $player->is_admin = 0;
+        $player->avatar = 'padrao.png';
+        $player->matricula = '-';
+        $player->vertical = '-';
+        $player->filial = '-';
+        $player->status = 'ATIVO';       
+        $player->save();
+        return $player;
+    }
     /**
      * Display the specified resource.
      *

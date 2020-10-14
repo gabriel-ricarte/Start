@@ -2239,9 +2239,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   //props: ['taskslast','done']
-  props: ['taskslast', 'done'],
+  props: ['taskslast', 'done', 'tipo'],
   data: function data() {
     return {
       quadro: this.done
@@ -2340,8 +2354,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['tasks', 'todo'],
+  props: ['tasks', 'todo', 'tipo'],
   data: function data() {
     return {
       quadro: this.todo
@@ -2445,9 +2480,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   //props: ['tasksdois','doing']
-  props: ['tasksdois', 'doing'],
+  props: ['tasksdois', 'doing', 'tipo'],
   data: function data() {
     return {
       quadro: this.doing
@@ -6998,7 +7050,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.over{\n\n\t\tmax-height: 650px;\n\t\t\n    \twidth: 100%;\n    \toverflow: auto;\n}\n    \n\t", ""]);
+exports.push([module.i, "\n.over{\n\tmax-height: 650px;\n\twidth: 100%;\n\toverflow: auto;\n}\n\n", ""]);
 
 // exports
 
@@ -67145,75 +67197,151 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "col-xl-4 col-md-6 mb-4  bg-light",
-      model: {
-        value: _vm.last,
-        callback: function($$v) {
-          _vm.last = $$v
+  return _vm.tipo == 3
+    ? _c(
+        "div",
+        {
+          staticClass: "col-xl-4 col-md-6 mb-4  bg-light",
+          model: {
+            value: _vm.last,
+            callback: function($$v) {
+              _vm.last = $$v
+            },
+            expression: "last"
+          }
         },
-        expression: "last"
-      }
-    },
-    [
-      _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
-        _c(
-          "div",
-          { staticClass: "card-header btn btn-lg btn-info text-white " },
-          [_vm._v("FEITO")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "card-body connectedSortable over",
-            staticStyle: { "min-height": "80px" },
-            attrs: { id: "draggablePanelList3", "data-value": _vm.done }
-          },
-          _vm._l(_vm.taskslast, function(task) {
-            return _c(
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("FEITO")]
+            ),
+            _vm._v(" "),
+            _c(
               "div",
               {
-                key: task.id,
-                class: task.prioridade,
-                staticStyle: { position: "relative" },
-                attrs: { id: task.id, "data-value": _vm.done }
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList5", "data-value": _vm.done }
               },
-              [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "text-center noselect" }, [
-                    _vm._v(_vm._s(task.task))
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "small",
-                    {
-                      staticClass: " bottom-right noselect",
-                      staticStyle: { float: "left" }
-                    },
-                    [_vm._v(_vm._s(task.tempo))]
-                  ),
-                  _c(
-                    "small",
-                    {
-                      staticClass: " bottom-right noselect",
-                      staticStyle: { float: "right" }
-                    },
-                    [_vm._v(_vm._s(task.dono)), _vm._m(0, true)]
-                  )
-                ])
-              ]
+              _vm._l(_vm.taskslast, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.done }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect" }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect",
+                          staticStyle: { float: "left" }
+                        },
+                        [_vm._v(_vm._s(task.tempo))]
+                      ),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect",
+                          staticStyle: { float: "right" }
+                        },
+                        [_vm._v(_vm._s(task.dono)), _vm._m(0, true)]
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
             )
-          }),
-          0
-        )
-      ])
-    ]
-  )
+          ])
+        ]
+      )
+    : _c(
+        "div",
+        {
+          staticClass: "col-xl-3 col-md-6 mb-4  bg-light",
+          model: {
+            value: _vm.last,
+            callback: function($$v) {
+              _vm.last = $$v
+            },
+            expression: "last"
+          }
+        },
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("FEITO")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList5", "data-value": _vm.done }
+              },
+              _vm._l(_vm.taskslast, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.done }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect" }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect",
+                          staticStyle: { float: "left" }
+                        },
+                        [_vm._v(_vm._s(task.tempo))]
+                      ),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect",
+                          staticStyle: { float: "right" }
+                        },
+                        [_vm._v(_vm._s(task.dono)), _vm._m(1, true)]
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ]
+      )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "badge badge-success" }, [
+      _c("span", { staticClass: "fas fa-check-circle" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -67244,99 +67372,201 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "col-xl-4 col-md-6 mb-4  bg-light ",
-      model: {
-        value: _vm.primeiro,
-        callback: function($$v) {
-          _vm.primeiro = $$v
+  return _vm.tipo == 3
+    ? _c(
+        "div",
+        {
+          staticClass: "col-xl-4 col-md-6 mb-4  bg-light ",
+          model: {
+            value: _vm.primeiro,
+            callback: function($$v) {
+              _vm.primeiro = $$v
+            },
+            expression: "primeiro"
+          }
         },
-        expression: "primeiro"
-      }
-    },
-    [
-      _c("div", { staticClass: "card  border-0 shadow-lg my-5 " }, [
-        _c(
-          "div",
-          { staticClass: "card-header btn btn-lg btn-info text-white " },
-          [_vm._v("A FAZER")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "card-body connectedSortable over",
-            staticStyle: { "min-height": "80px" },
-            attrs: { id: "draggablePanelList1", "data-value": _vm.todo }
-          },
-          _vm._l(_vm.tasks, function(task) {
-            return _c(
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5 " }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("A FAZER")]
+            ),
+            _vm._v(" "),
+            _c(
               "div",
               {
-                key: task.id,
-                class: task.prioridade,
-                staticStyle: { position: "relative" },
-                attrs: { id: task.id, "data-value": _vm.todo }
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList1", "data-value": _vm.todo }
               },
-              [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "text-center noselect" }, [
-                    _vm._v(_vm._s(task.task))
-                  ]),
-                  _vm._v(" "),
-                  task.revisao != "TESTE"
-                    ? _c("p", [_vm._v(_vm._s(task.revisao))])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "small",
-                    {
-                      staticClass: " bottom-right noselect ",
-                      staticStyle: { float: "right" }
-                    },
-                    [
-                      _vm._v(_vm._s(task.dono) + " \n\t\t\t\t\t\t\t"),
-                      task.pause == 0
-                        ? _c("button", { staticClass: "badge badge-danger" }, [
-                            _c("span", { staticClass: "fas fa-pause" })
-                          ])
-                        : _vm._e(),
+              _vm._l(_vm.tasks, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.todo }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect" }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
                       _vm._v(" "),
                       task.revisao != "TESTE"
-                        ? _c("button", { staticClass: "badge badge-light" }, [
-                            _c("span", { staticClass: "fas fa-tools" })
-                          ])
-                        : _vm._e()
-                    ]
-                  ),
-                  _vm._v(" "),
-                  task.pause == 0
-                    ? _c(
+                        ? _c("p", [_vm._v(_vm._s(task.revisao))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
                         "small",
                         {
-                          staticClass: " bottom-left noselect ",
-                          staticStyle: { float: "left" }
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "right" }
                         },
                         [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t " +
-                              _vm._s(task.tempo) +
-                              " \n\t\t\t\t\t\t"
-                          )
+                          _vm._v(_vm._s(task.dono) + " \n\t\t\t\t\t\t\t"),
+                          task.pause == 0
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-danger" },
+                                [_c("span", { staticClass: "fas fa-pause" })]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          task.revisao != "TESTE"
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-light" },
+                                [_c("span", { staticClass: "fas fa-tools" })]
+                              )
+                            : _vm._e()
                         ]
-                      )
-                    : _vm._e()
-                ])
-              ]
+                      ),
+                      _vm._v(" "),
+                      task.pause == 0
+                        ? _c(
+                            "small",
+                            {
+                              staticClass: " bottom-left noselect ",
+                              staticStyle: { float: "left" }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t " +
+                                  _vm._s(task.tempo) +
+                                  " \n\t\t\t\t\t\t"
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              }),
+              0
             )
-          }),
-          0
-        )
-      ])
-    ]
-  )
+          ])
+        ]
+      )
+    : _c(
+        "div",
+        {
+          staticClass: "col-xl-3 col-md-6 mb-4  bg-light ",
+          model: {
+            value: _vm.primeiro,
+            callback: function($$v) {
+              _vm.primeiro = $$v
+            },
+            expression: "primeiro"
+          }
+        },
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5 " }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("A FAZER")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList1", "data-value": _vm.todo }
+              },
+              _vm._l(_vm.tasks, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.todo }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect" }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
+                      _vm._v(" "),
+                      task.revisao != "TESTE"
+                        ? _c("p", [_vm._v(_vm._s(task.revisao))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "right" }
+                        },
+                        [
+                          _vm._v(_vm._s(task.dono) + " \n\t\t\t\t\t\t\t"),
+                          task.pause == 0
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-danger" },
+                                [_c("span", { staticClass: "fas fa-pause" })]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          task.revisao != "TESTE"
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-light" },
+                                [_c("span", { staticClass: "fas fa-tools" })]
+                              )
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      task.pause == 0
+                        ? _c(
+                            "small",
+                            {
+                              staticClass: " bottom-left noselect ",
+                              staticStyle: { float: "left" }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t " +
+                                  _vm._s(task.tempo) +
+                                  " \n\t\t\t\t\t\t"
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ]
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -67360,84 +67590,167 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "col-xl-4 col-md-6 mb-4  bg-light text-white",
-      model: {
-        value: _vm.segundo,
-        callback: function($$v) {
-          _vm.segundo = $$v
+  return _vm.tipo == 3
+    ? _c(
+        "div",
+        {
+          staticClass: "col-xl-4 col-md-6 mb-4  bg-light text-white",
+          model: {
+            value: _vm.segundo,
+            callback: function($$v) {
+              _vm.segundo = $$v
+            },
+            expression: "segundo"
+          }
         },
-        expression: "segundo"
-      }
-    },
-    [
-      _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
-        _c(
-          "div",
-          { staticClass: "card-header btn btn-lg btn-info text-white " },
-          [_vm._v("FAZENDO")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "card-body connectedSortable over",
-            staticStyle: { "min-height": "80px" },
-            attrs: { id: "draggablePanelList2", "data-value": _vm.doing }
-          },
-          _vm._l(_vm.tasksdois, function(task) {
-            return _c(
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("FAZENDO")]
+            ),
+            _vm._v(" "),
+            _c(
               "div",
               {
-                key: task.id,
-                class: task.prioridade,
-                staticStyle: { position: "relative" },
-                attrs: { id: task.id, "data-value": _vm.doing }
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList2", "data-value": _vm.doing }
               },
-              [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "text-center noselect " }, [
-                    _vm._v(_vm._s(task.task))
-                  ]),
-                  _vm._v(" "),
-                  task.revisao != "TESTE"
-                    ? _c("p", [_vm._v(_vm._s(task.revisao))])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "small",
-                    {
-                      staticClass: " bottom-right noselect ",
-                      staticStyle: { float: "left" }
-                    },
-                    [_vm._v(_vm._s(_vm.moment(task.tempo).fromNow()))]
-                  ),
-                  _c(
-                    "small",
-                    {
-                      staticClass: " bottom-right noselect ",
-                      staticStyle: { float: "right" }
-                    },
-                    [
-                      _vm._v(_vm._s(task.dono) + " "),
+              _vm._l(_vm.tasksdois, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.doing }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect " }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
+                      _vm._v(" "),
                       task.revisao != "TESTE"
-                        ? _c("button", { staticClass: "badge badge-light" }, [
-                            _c("span", { staticClass: "fas fa-tools" })
-                          ])
-                        : _vm._e()
-                    ]
-                  )
-                ])
-              ]
+                        ? _c("p", [_vm._v(_vm._s(task.revisao))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "left" }
+                        },
+                        [_vm._v(_vm._s(_vm.moment(task.tempo).fromNow()))]
+                      ),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "right" }
+                        },
+                        [
+                          _vm._v(_vm._s(task.dono) + " "),
+                          task.revisao != "TESTE"
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-light" },
+                                [_c("span", { staticClass: "fas fa-tools" })]
+                              )
+                            : _vm._e()
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
             )
-          }),
-          0
-        )
-      ])
-    ]
-  )
+          ])
+        ]
+      )
+    : _c(
+        "div",
+        {
+          staticClass: "col-xl-3 col-md-6 mb-4  bg-light text-white",
+          model: {
+            value: _vm.segundo,
+            callback: function($$v) {
+              _vm.segundo = $$v
+            },
+            expression: "segundo"
+          }
+        },
+        [
+          _c("div", { staticClass: "card  border-0 shadow-lg my-5" }, [
+            _c(
+              "div",
+              { staticClass: "card-header btn btn-lg btn-info text-white " },
+              [_vm._v("FAZENDO")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body connectedSortable over",
+                staticStyle: { "min-height": "80px" },
+                attrs: { id: "draggablePanelList2", "data-value": _vm.doing }
+              },
+              _vm._l(_vm.tasksdois, function(task) {
+                return _c(
+                  "div",
+                  {
+                    key: task.id,
+                    class: task.prioridade,
+                    staticStyle: { position: "relative" },
+                    attrs: { id: task.id, "data-value": _vm.doing }
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "text-center noselect " }, [
+                        _vm._v(_vm._s(task.task))
+                      ]),
+                      _vm._v(" "),
+                      task.revisao != "TESTE"
+                        ? _c("p", [_vm._v(_vm._s(task.revisao))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "left" }
+                        },
+                        [_vm._v(_vm._s(_vm.moment(task.tempo).fromNow()))]
+                      ),
+                      _c(
+                        "small",
+                        {
+                          staticClass: " bottom-right noselect ",
+                          staticStyle: { float: "right" }
+                        },
+                        [
+                          _vm._v(_vm._s(task.dono) + " "),
+                          task.revisao != "TESTE"
+                            ? _c(
+                                "button",
+                                { staticClass: "badge badge-light" },
+                                [_c("span", { staticClass: "fas fa-tools" })]
+                              )
+                            : _vm._e()
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ]
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
