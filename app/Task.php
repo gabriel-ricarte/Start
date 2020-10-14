@@ -11,4 +11,7 @@ class Task extends Model
 		'descricao',
 		'custo',
 	];
+	public function tempo(){
+		return $this->hasMany('App\TempoTask');
+	}
 }

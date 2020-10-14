@@ -73,7 +73,7 @@ Route::get('/ativa-admin/{id}','EquipeController@ativaUser')->name('admins.activ
 //Route::get('/enviando-email/{id}','EquipeController@lembrarTecnico')->name('olaMarilene');
 Route::get('/tecnicos','EquipeController@tecnicosIndex')->name('tecnicos.index');
 Route::get('/meu-perfil','EquipeController@perfil')->name('perfil');
-
+Route::get('/executa','KanbanController@executa');
 
 
 

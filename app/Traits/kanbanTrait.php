@@ -53,7 +53,14 @@ public function tarefasKanban($id){
     if($ta->prioridade == 1){
       $cor = 'card pan dragg qitem bg-danger';
     }
-    $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'tempo' => $ta->task->custo];
+    if(isset($ta->task->tempo[0])){
+      $tempo = $ta->task->tempo[0]->tempo;
+      $t = 0;
+    }else{
+      $tempo = 0;
+       $t = 1;
+    }
+    $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'pause' => $t,'tempo' => $tempo. ' mins','revisao'=>$ta->task->descricao];
   }
   foreach ($quadro->tasks_em_andamento as $ta) {
     if($ta->prioridade == 0){
@@ -66,41 +73,49 @@ public function tarefasKanban($id){
   }
   foreach ($quadro->tasks_em_revisao as $ta) {
     if($ta->prioridade == 0){
-      $cor = 'card pan dragg qitem bg-primary blink';
+      $cor = 'card pan dragg qitem bg-info blink';
     }
     if($ta->prioridade == 1){
       $cor = 'card pan dragg qitem bg-danger';
     }
     $tasks[] = ['id'=>$ta->id , 'task' => $ta->task->task,'dono'=>$ta->user->nome,'prioridade' =>$cor,'revisao'=>$ta->task->descricao,'tempo'=>$hoje];
   }
+  //asdf
   foreach ($quadro->tasks_finalizadas as $ta) {
     if($ta->prioridade == 0){
       $cor = 'card pan dragg qitem bg-light';
     }
+    if(!isset($ta->task->tempo[0])){
+      $trabs = 0;
+    }else{
 
-    if($ta->task->custo == 0){
+        $trabs = (int) $ta->task->tempo[0]->tempo;
+    }
+  
+     //dd($trabs); 
+    if($trabs == 0){
       $hrs = '00:';
       $mins = '00';
       $tempo = $hrs.$mins;
     }else{
 
-      if($ta->task->custo > 60 && $ta->task->custo <= 1440){
-        $tempoHx = gmp_div_q($ta->task->custo, "60");
+      if($trabs > 60 && $trabs <= 1440){
+        $tempoHx = gmp_div_q($trabs, "60");
         $tempoH = gmp_strval($tempoHx).':';
-        $tempoMx = gmp_div_r($ta->task->custo, "60");
+        $tempoMx = gmp_div_r($trabs, "60");
         $tempoM = gmp_strval($tempoMx).' Hrs';
 
         $tempo = $tempoH.$tempoM;
-      }if($ta->task->custo <= 60){
+      }if($trabs <= 60){
         $hrs = '00:';
-        $mins = $ta->task->custo.' Hrs';
+        $mins = $trabs.' Hrs';
         $tempo = $hrs.$mins;
       }
-      if($ta->task->custo > 1440){
-        $tempoDx = gmp_div_q($ta->task->custo, "1440");
+      if($trabs > 1440){
+        $tempoDx = gmp_div_q($trabs, "1440");
         $tempoD = gmp_strval($tempoDx);
 
-        $tempoHx = $ta->task->custo - ($tempoD*1440);
+        $tempoHx = $trabs - ($tempoD*1440);
         $tempoHx = gmp_div_q($tempoHx, "60");
         $tempoH = gmp_strval($tempoHx);
 

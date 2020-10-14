@@ -18,6 +18,7 @@ trait verificaTrait
 {
    public function moveTarefa(User $user, TaskFato $task, Request $request){
    		//verifica se o quadro está em aberto 
+   //dd($request->all());
    		$quadro = Quadro::find($task->quadro_id);
    		$kanban = $quadro->kanban;
    		if($kanban->status == 2 ){

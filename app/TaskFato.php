@@ -27,4 +27,5 @@ class TaskFato extends Model
 	public function task(){
 		return $this->belongsTo('App\Task');
 	}
+
 }

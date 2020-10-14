@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"Task",
+				"TaskFato"
+			],
+			[
+				"suce",
+				"success"
+			],
+			[
+				"a",
+				"auto\toverflow-x"
+			],
+			[
+				"overfl",
+				"overflow-x\tproperty"
+			],
+			[
+				"max",
+				"max-height\tproperty"
+			],
+			[
 				"re",
 				"return"
 			],
@@ -248,19 +268,19 @@
 	"buffers":
 	[
 		{
-			"file": "app/Http/Controllers/PlayerController.php",
+			"file": "app/Http/Controllers/TaskController.php",
 			"settings":
 			{
-				"buffer_size": 4530,
+				"buffer_size": 5446,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/Http/Controllers/TaskController.php",
+			"file": "app/Traits/kanbanTrait.php",
 			"settings":
 			{
-				"buffer_size": 5274,
+				"buffer_size": 5778,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -269,80 +289,25 @@
 			"file": "app/Traits/taskTrait.php",
 			"settings":
 			{
-				"buffer_size": 4517,
+				"buffer_size": 5030,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "<?php\n\nnamespace App\\Http\\Controllers;\n\nuse Illuminate\\Http\\Request;\nuse App\\User;\nuse Auth;\nuse DB;\nuse App\\Atendimento;\nuse App\\Programa;\nuse App\\Premiacao;\nuse App\\Promocao;\nuse App\\Musica;\nuse App\\Ouvinte;\nuse DateTime;\nuse App\\MusicaZap;\nuse Carbon\\Carbon;\nuse App\\Sorteio;\nuse App\\Endereco;\n\nclass TelefonistaController extends Controller\n{\n\tpublic function __construct()\n\t{\n\t\t$this->middleware('auth');\n\t}\n\n\n\tpublic function showSorteio(){\n\t\t$promocoes =  Promocao::where('D_E_L',0)->get();\n\t\t$programas = Programa::where('D_E_L',0)->get();\n\t\t$bairros = DB::table('bairros_old')\n\t\t->get(); \n\n\t\t$hoje =  date('Y-m-d');\t\t\n\n\t\treturn view('telefonistas.sorteio')\n\t\t->withPromocoes($promocoes)\n\t\t->withBairros($bairros)\n\t\t->withHoje($hoje)\n\t\t->withProgramas($programas)\n\t\t;\n\t}\n\n\tpublic function RelaFeira(){\n\t\t$participacoes = DB::table('part_feira')->get();\n\t\t//$result = $participacoes->unique('OUV_ID');\n\t\tforeach($participacoes as $atd){\n\t\t\tif($atd->BAIRRO_NOME == 'CEP'){\n\t\t\t\t$end = Endereco::find($atd->B_END);\n\t\t\t\t$atd->CIDADE = trim(mb_convert_case($atd->CIDADE, MB_CASE_UPPER, \"UTF-8\"));\n\t\t\t\t$atd->BAIRRO_NOME = trim(mb_convert_case($end->bairro, MB_CASE_UPPER, \"UTF-8\"));\n\t\t\t}else{\n\t\t\t\t$atd->CIDADE = trim(mb_convert_case($atd->CIDADE, MB_CASE_UPPER, \"UTF-8\"));\n\t\t\t\t$atd->BAIRRO_NOME = trim(mb_convert_case($atd->BAIRRO_NOME, MB_CASE_UPPER, \"UTF-8\"));\n\t\t\t}\n\t\t}\n\t\treturn $participacoes;\n\t}\n\tpublic function RelaFeiraBairro($bairro){\n\t\t$bairro = mb_convert_case($bairro, MB_CASE_UPPER, \"UTF-8\");\n\t\t$participacoes = $this->RelaFeira();\n\t\tforeach($participacoes as $key => $value){\n\n\t\t\tif($value->BAIRRO_NOME == $bairro || $value->CIDADE == $bairro){\n\t\t\t\t\n\t\t\t}else{\n\t\t\t\tunset($participacoes[$key]);\n\t\t\t}\n\t\t}\n\t\treturn view('telefonistas.relaFeira')->withParticipacoes($participacoes);\n\t}\n\n\tpublic function buscaAtdCampos(Request $request){\n\n\t\t$user = User::find(Auth::id());\n\t\t$request->validate([\n\t\t\t\t'data_ini' =>'required',\n\t\t\t\t'data_fim' => 'required',\n\t\t\t]);\n\t\t$ini = new DateTime($request->data_ini);\n\t\t$ini = $ini->format('Y-m-d 00:00:00'); \n\t\t\t\n\t\t$fim =  new DateTime($request->data_fim);\n\t\t$fim = $fim->format('Y-m-d 23:59:59'); \n\t\t\n\t\t$manha = new DateTime($request->data_ini);\n\t\t$manha = $manha->format('Y-m-d 10:00:00'); \n    //BUSCA DO CAMPO ORAÇÃO PELA HORA\n\n\t\tif($request->busca == 'oracao')\n\t\t{\n\t\t\t$request->validate([\n\t\t\t\t'hora' => 'required',\n\t\t\t]);\n\t\t\t$resultado = $request->busca;\n\t\t\t$atendimentos =  Atendimento::where('atd_pedido_oracao','!=',null)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->where('atd_pedido_oracao','like','%'. $request->hora . '%')\n\t\t\t->get();\n\n\t\t\tforeach($atendimentos as $o){\n\t\t\t\t$ouvi = Ouvinte::find($o->ouvinte_id);\n\t\t\t\t$nome = DB::table('bairros_old')->where('id',$ouvi->ouv_bairro)->first();\n                    // dd($nome->bairro);\n\t\t\t\tif($nome != null){\n\t\t\t\t\t$o->ouvinte->ouv_bairro = mb_convert_case($nome->bairro, MB_CASE_UPPER, \"UTF-8\");\n\t\t\t\t}\n\n\t\t\t}  \n\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t}\n\t\tif($request->busca == 'quadro')\n\t\t{\n\t\t\t$request->validate([\n\t\t\t\t'quadro' => 'required',\n\t\t\t\t'data_ini' =>'required',\n\t\t\t\t'data_fim' => 'required',\n\t\t\t]);\n\t\t\t$resultado = $request->busca;\n\t\t\t$atendimentos1 =  Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->where('atd_participacao_1','like','%'. $request->quadro . '%')\n\t\t\t->get();\n\t\t\t$atendimentos2 =  Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->where('atd_participacao_2','like','%'. $request->quadro . '%')\n\t\t\t->get();\n\t\t\t$atendimentos3 =  Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->where('atd_participacao_3','like','%'. $request->quadro . '%')\n\t\t\t->get();\n\t\t\t$atendimentos = $atendimentos1->merge($atendimentos2);\n\t\t\t$atendimentos = $atendimentos->merge($atendimentos3);  \n\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t}\n\n    //BUSCA PELO PEDIDO DE ALÔ   \n\n\t\tif($request->busca == 'alo')\n\t\t{\n\t\t\t$atendimentos =  Atendimento::where('atd_pedido_alo','!=',null)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\n\t\t\t$resultado = $request->busca;\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t}\n\n\n    //BUSCA PELO PEDIDO DE LOTERIA\n\n\t\tif($request->busca == 'loteria')\n\t\t{\n\t\t\tif($request->lotnum != null){\n\t\t\t\t$atendimentos =  Atendimento::where('atd_loteria',$request->lotnum)\n\t\t\t\t->where('created_at','>=',$ini)\n\t\t\t\t->where('created_at','<=',$fim)\n\t\t\t\t->get();\n\t\t\t} \n\t\t\telse{\n\n\t\t\t\t\tif($request->peri == 0){\n\t\t\t\t\t\t\t$atendimentos =  Atendimento::where('atd_loteria','!=',null)\n\t\t\t\t\t\t->where('created_at','>=',$ini)\n\t\t\t\t\t\t->where('created_at','<=',$manha)\n\t\t\t\t\t\t->get();\n\t\t\t\t\t}else{\n\t\t\t\t\t\t$atendimentos =  Atendimento::where('atd_loteria','!=',null)\n\t\t\t\t\t\t->where('created_at','>=',$manha)\n\t\t\t\t\t\t->where('created_at','<=',$fim)\n\t\t\t\t\t\t->get();\n\t\t\t\t\t}\n\t\t\t\t\n\t\t\t}\n\n\t\t\t foreach($atendimentos as $o){\n        $ouvi = Ouvinte::find($o->ouvinte_id);\n        $nome = DB::table('bairros_old')->where('id',$ouvi->ouv_bairro)->first();\n                    // dd($nome->bairro);\n        if($nome != null){\n            $o->ouvinte->ouv_bairro = $nome->bairro.' - '.$nome->cidade;\n        }\n        \n    } \n\t\t\t$resultado = $request->busca;\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t\t}\n\n    //BUSCA PELO PEDIDO DE MÚSICA \n\n\t\tif($request->busca == 'musica')\n\t\t{\n\t\t\t$atendimentos =  Atendimento::where('musica_id','!=',null)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\t$resultado = $request->busca;\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t}\n\t\tif($request->busca == 'geral')\n\t\t{\n\t\t\t$resultado = $request->busca;\n\t\t\t$atendimentos =  Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim) \n\t\t\t->get();\n\t\t\treturn view('telefonistas.buscaRes')\n\t\t\t->withAtendimentos($atendimentos)\n\t\t\t->withResultado($resultado);\n\t\t}\n\t}\n\n\n\tpublic function correcaoMusicas(){\n\t\t$musicas = Musica::where('artista','like','%'.'null')\n\t\t->where('id','>=',10000)\n\t\t->where('id','<',13000)\n\t\t->get();\n\t\t//dd($musicas);\n\t\tforeach ($musicas as $muda) {\n\t\t\t$save = Musica::find($muda->id);\n\t\t\t$tratado = str_replace(\"null\", \"\",$muda->artista);\n\t\t\t$save->artista = $tratado;\n\t\t\t$save->save();\n\t\t\t\n\t\t}\n\t}\n\tpublic function showRelatorio(){\n\t\t$user = User::find(Auth::id());\n\t\t$quadros = Promocao::where('D_E_L',0)->get();\n\t\t$hoje =  date('Y-m-d');\n\t\treturn view('telefonistas.relatorio')\n\t\t->withUser($user)\n\t\t->withQuadros($quadros)\n\t\t->withHoje($hoje);\n\t}\n\n\tpublic function fazSorteio(Request $request){\n\t\t$promocoes =  Promocao::where('D_E_L',0)->get();\n\t\t//$bairros = DB::table('bairros_old')\n\t\t//->get();\n\n\t\t$request->validate([\n\t\t\t'data_ini' =>'required',\n\t\t\t'data_fim' => 'required',\n\t\t]);\n\t\t$ini = new DateTime($request->data_ini);\n\t\t$ini = $ini->format('Y-m-d 00:00:00'); \n\t\t\n\t\t$fim =  new DateTime($request->data_fim);\n\t\t$fim = $fim->format('Y-m-d 23:59:59'); \n        //verificar primeiro se tem resposta\n\n\t\tif($request->resp == 'NAO'){\n\t\t\t$quadro = Promocao::where('nome',$request->quadro)\n\t\t\t->where('D_E_L',0)\n\t\t\t->first();\n\n\t\t\t$atendimentos = Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('promo_1_id',$quadro->id)\n\t\t\t//->orWhere('promo_2_id',$quadro->id)\n\t\t\t//->orWhere('promo_3_id',$quadro->id)\n\t\t\t->get();\n\t\t\t$atendimentos2 = Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('promo_2_id',$quadro->id)\n\t\t\t->get();\n\t\t\t$atendimentos3= Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('promo_3_id',$quadro->id)\n\t\t\t->get();\n\t\t\t$atendimentos->merge($atendimentos2);\n\t\t\t$atendimentos->merge($atendimentos3);\n\t\t}\n\t\tif($request->resp == 'SIM'){\n\t\t\t$atendimentos = Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('atd_participacao_1','like',$request->resposta)\n\t\t\t// ->orWhere('atd_participacao_2','like',$request->resposta)\n\t\t\t// ->orWhere('atd_participacao_3','like',$request->resposta)\n\t\t\t->get();\n\t\t\t$atendimentos2 = Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('atd_participacao_2','like',$request->resposta)\n\t\t\t->get();\n\t\t\t$atendimentos3= Atendimento::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<',$fim)\n\t\t\t->where('atd_participacao_3','like',$request->resposta)\n\t\t\t->get();\n\t\t\t$atendimentos->merge($atendimentos2);\n\t\t\t$atendimentos->merge($atendimentos3);\n\t\t}  \n\n\t\tforeach($atendimentos as $key => $value){\n\t\t\t\tif($value->created_at < $ini && $value->created_at > $fim){\n\t\t\t\t\tunset($atendimentos[$key]);    \n\t\t\t\t}\n\t\t\t} \n\n\t\t// \t\tif($request->resp == 'NAO'){\n\t\t// \t$quadro = Promocao::where('nome',$request->quadro)\n\t\t// \t->where('D_E_L',0)\n\t\t// \t->first();\n\n\t\t// \t$atendimentos = Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('promo_1_id',$quadro->id)\n\t\t// \t->get();\n\t\t// \t$atendimentos2 = Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('promo_2_id',$quadro->id)\n\t\t// \t->get();\n\t\t// \t$atendimentos3= Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('promo_3_id',$quadro->id)\n\t\t// \t->get();\n\n\n\t\t// \t$atendimentos->merge($atendimentos2);\n\t\t// \t $atendimentos->merge($atendimentos3);\n\n\t\t\t\n\t\t// }\n\t\t// if($request->resp == 'SIM'){\n\t\t// \t$atendimentos = Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('atd_participacao_1','like',$request->resposta)\n\t\t// \t->get();\n\t\t// \t$atendimentos2 = Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('atd_participacao_2','like',$request->resposta)\n\t\t// \t->get();\n\t\t// \t$atendimentos3= Atendimento::where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<',$fim)\n\t\t// \t->where('atd_participacao_3','like',$request->resposta)\n\t\t// \t->get();\n\n\n\t\t// \t$atendimentos->merge($atendimentos2);\n\t\t// \t $atendimentos->merge($atendimentos3);\n\t\t// } \n         // verifica se o sorteio vai ter limitações de gênero \n\t\tif($request->sexo == \"MASCULINO\"){\n\t\t\tforeach($atendimentos as $key => $value){\n\t\t\t\tif($value->ouvinte->ouv_sexo == \"FEMININO\"){\n\t\t\t\t\tunset($atendimentos[$key]);    \n\t\t\t\t}\n\t\t\t} \n\t\t}\n\t\tif($request->sexo == \"FEMININO\"){\n\t\t\tforeach($atendimentos as $key => $value){\n\t\t\t\tif($value->ouvinte->ouv_sexo == \"MASCULINO\"){\n\t\t\t\t\tunset($atendimentos[$key]);    \n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n         //verifica se vai ter filtro de bairro \n\t\tif($request->bairro != \"SEM BAIRRO\"){\n\n\t\t\tforeach($atendimentos as $key => $value){\n\t\t\t\t//dd($value->ouvinte->endereco->cidade);\n\t\t\t\tif($value->ouvinte->endereco != null){\n\t\t\t\t\t$upup = mb_convert_case($request->bairro, MB_CASE_UPPER, \"UTF-8\");\n\t\t\t\t\tif( trim(mb_convert_case($value->ouvinte->endereco->bairro, MB_CASE_UPPER, \"UTF-8\")) == $upup || trim(mb_convert_case($value->ouvinte->endereco->cidade, MB_CASE_UPPER, \"UTF-8\"))  == $upup ){\n\t\t\t\t\t\n\t\t\t\t\t}else{\n\t\t\t\t\t\tunset($atendimentos[$key]);    \n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t} \n\t\t}\n\t\tif($request->programa != \"SEM PROGRAMA\"){\n\n\t\t\tforeach($atendimentos as $key => $value){\n\t\t\t\tif($value->programa_id != $request->programa){\n\t\t\t\t\tunset($atendimentos[$key]);    \n\t\t\t\t}\n\t\t\t} \n\t\t}\n\t\t$unique = $atendimentos->unique('ouvinte_id');\n\t\tif($unique->count() >= 5){\n\t\t\t$atendimentos = $unique->random(5);\n\t\t}\n\t\tif($unique->count() == 4){\n\t\t\t$atendimentos = $unique->random(4);\n\t\t}\n\t\tif($unique->count() == 3){\n\t\t\t$atendimentos = $unique->random(3);\n\t\t}\n\t\tif($unique->count() == 2){\n\t\t\t$atendimentos = $unique->random(2);\n\t\t}\n\t\tif($unique->count() == 1){\n\t\t\t$atendimentos = $unique->random(1);\n\t\t}\n\n\t\t$ganhadores = Sorteio::all();\n\n\t\t$ga = collect();\n\n\t\t$sorted = $atendimentos->sortBy('ouvinte_id');\n          //verificar os que ja ganharam\n\t\tforeach($sorted as $key => $value){\n\t\t\tif($ganhadores->contains('ouvinte_id',$value->ouvinte_id)){\n\t\t\t\t$ga = $ga->push($sorted[$key]);\n\n\t\t\t}\n\t\t} \n\n\tforeach($sorted as $o){\n       // $ouvi = Ouvinte::find($o->ouvinte_id);\n        //$nome = DB::table('bairros_old')->where('id',$ouvi->ouv_bairro)->first();\n                    // dd($nome->bairro);\n       // if($nome != null){\n        //    $o->ouvinte->ouv_bairro = mb_convert_case($nome->bairro, MB_CASE_UPPER, \"UTF-8\");\n       // }\n        \n    }  \n\n\n\t\t$now = Carbon::today()->toDateString();\n\n\n\t\t$hoje  = date(\"Y-m-d\");\n\n\t\treturn view('telefonistas.sorteioRes')\n\t\t->withAtendimentos($atendimentos)\n\t\t->withPromocoes($promocoes)\n\t\t//->withBairros($bairros)\n\t\t->withSorted($sorted)\n\t\t->withGa($ga)\n\t\t->withNow($now)\n\t\t->withHoje($hoje);\n\t}\n\n\tpublic function ganhadoresGet(){\n\n \t\t$user = User::find(Auth::id());\n\t\t$hoje  = date(\"Y-m-d\");\n\t\t$promocoes =  Promocao::where('D_E_L',0)->get();\n\t\t$premios = Premiacao::where('D_E_L',0)->get();\n\t\treturn view('telefonistas.pesquisa-ganhadores')\n\t\t->withUser($user)\n\t\t->withHoje($hoje)\n\t\t->withPromocoes($promocoes)\n\t\t->withPremios($premios);\n\t}\n\tpublic function ganhadoresPost(Request $request){\n\n \t\t$user = User::find(Auth::id());\n \t\t$request->validate([\n\t\t\t\t'data_ini' =>'required',\n\t\t\t\t'data_fim' => 'required',\n\t\t\t]);\n \t\t$ini = new DateTime($request->data_ini);\n\t\t$ini = $ini->format('Y-m-d 00:00:00'); \n\t\t\t\n\t\t$fim =  new DateTime($request->data_fim);\n\t\t$fim = $fim->format('Y-m-d 23:59:59'); \n\n    //BUSCA DOS GANHADORES POR PERÍODO\n\n\t\tif($request->busca == 'periodo')\n\t\t{\n\t\t\t$ganhadores =  Sorteio::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\treturn view('telefonistas.ganhadores-resp')\n\t\t\t->withGanhadores($ganhadores);\n\t\t}\n\n\n    //BUSCA DOS GANHADORES POR PROMOÇÃO   \n\n\t\tif($request->busca == 'promocao')\n\t\t{\n\t\t\t$request->validate([\n\t\t\t\t'promo' =>'required',\n\t\t\t]);\n\t\t\t$ganhadores =  Sorteio::where('promocao_id',$request->promo)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\treturn view('telefonistas.ganhadores-resp')\n\t\t\t->withGanhadores($ganhadores);\n\t\t}\n\n    //BUSCA DOS GANHADORES POR PREMIOS\n\n\t\tif($request->busca == 'premio')\n\t\t{\n\t\t\t$request->validate([\n\t\t\t\t'premio' =>'required',\n\t\t\t]);\n\t\t\t$ganhadores = Sorteio::where('premiacao_id',$request->premio)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\treturn view('telefonistas.ganhadores-resp')\n\t\t\t->withGanhadores($ganhadores);\n\t\t}\n\n\n    //BUSCA PELO PEDIDO DE MÚSICA \n\n\t\tif($request->busca == 'ouvinte')\n\t\t{\n\t\t\tif ($request->nome == null && $request->numero == null) {\n\t\t\t\treturn redirect()->back()->withErrors('campos vazios !');\n\t\t\t}\n\t\t\tif (trim($request->nome) != null && strlen($request->nome) <= 5) {\n\t\t\t\treturn redirect()->back()->withErrors('texto muito curto !');\n\t\t\t}\n\t\t\tif (trim($request->numero) != null && strlen($request->numero) <= 5) {\n\t\t\t\treturn redirect()->back()->withErrors('texto muito curto !');\n\t\t\t}\n\n\t\t\t$ouvintes = Ouvinte::where('ouv_nome', 'like', '%' . $request->nome . '%')->take(5)->get();\n\t\t\t$ouvintes1 = Ouvinte::where('ouv_celular', 'like',$request->numero . '%')->take(5)->get();\n\t\t\t$ouvintes2 = Ouvinte::where('ouv_telefone', 'like',$request->numero . '%')->take(5)->get();\n\n\t\t\t//$ganhadores =  Sorteio::where('ouvinte_id',$)->get();\n\t\t\t$ouvintes->merge($ouvintes1->all());\n\t\t\t$ouvintes->merge($ouvintes2->all());\n\t\t\treturn view('ouvintes.resultadoGanhadores')\n\t\t\t->withOuvintes($ouvintes);\n\t\t}\n\t}\n\tpublic function alozap(Request $request)\n    {\n         $request->validate([\n            'ouvinte' =>'required|max:50',\n            'bairro' => 'nullable|max:50',\n            'para' => 'required|max:100',\n        ]);\n\n        $user = auth()->user(); // atendente\n        $hoje =  date('Y-m-d H:i:s');\n        $encoding = 'UTF-8'; \n        $alo = [];\n\n        $alo[] = [\n                        \n                        'ouvinte' => mb_convert_case($request->ouvinte, MB_CASE_UPPER, $encoding),\n                        'bairro' => mb_convert_case($request->bairro, MB_CASE_UPPER, $encoding),\n                        'para' => mb_convert_case($request->para, MB_CASE_UPPER, $encoding),\n                        'telefonista_id' => $user->id, \n                        'locutor' => $request->locutor, \n                        'created_at' => $hoje,\n                    ];\n        \n        DB::table('alo_zap')->insert($alo); \n\n     \treturn redirect()->route('inicio')->with('msg','ALÔ CADASTRADO COM SUCESSO !');\n    }\n    public function musicazap(Request $request)\n    {\n         $request->validate([\n            'ouvinte' =>'required|max:50',\n            'cep' => 'required|max:20',\n            'musica' => 'required|exists:musicas,id',\n        ]);\n        // dd($request->all());\n        $user = auth()->user(); // atendente\n        $hoje =  date('Y-m-d H:i:s');\n        $encoding = 'UTF-8'; \n       \t$musicazap = new MusicaZap();\n       \t$musicazap->ouvinte = $request->ouvinte;\n       \t$musicazap->cep = $request->cep;\t\n       \t$musicazap->musica()->associate($request->musica);\n       \t$musicazap->telefonista()->associate($user->id);\n       \t$musicazap->save();\n\n     \treturn redirect()->route('inicio')->with('msg','PEDIDO DE MUSICA CADASTRADA COM SUCESSO !');\n    }\n\n    public function buscaSorteados(Request $request){\n\n\t\t$user = User::find(Auth::id());\n\t\t$request->validate([\n\t\t\t\t'data_ini' =>'required',\n\t\t\t\t'data_fim' => 'required',\n\t\t\t]);\n\t\t$ini = new DateTime($request->data_ini);\n\t\t$ini = $ini->format('Y-m-d 00:00:00'); \n\t\t\t\n\t\t$fim =  new DateTime($request->data_fim);\n\t\t$fim = $fim->format('Y-m-d 23:59:59'); \n\n\t   \n\t\t\n \n    //BUSCA DO CAMPO ORAÇÃO PELA HORA\n\n\t\tif($request->busca == 'periodo')\n\t\t{\n\t\t\t$atendimentos =  Sorteio::where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\treturn view('telefonistas.buscaResSorte')\n\t\t\t->withAtendimentos($atendimentos);\n\t\t}\n    //BUSCA PELO PEDIDO DE ALÔ   \n\t\tif($request->busca == 'promocao')\n\t\t{\n\t\t\t$atendimentos =  Sorteio::where('promocao_id',$request->promocao)\n\t\t\t->where('created_at','>=',$ini)\n\t\t\t->where('created_at','<=',$fim)\n\t\t\t->get();\n\t\t\treturn view('telefonistas.buscaResSorte')\n\t\t\t->withAtendimentos($atendimentos);\n\t\t}\n\t\tif($request->busca == 'premio')\n\t\t{\n\t$atendimentos =  Sorteio::where('created_at','>=',$ini)->where('created_at','<=',$fim)->where('premiacao_id',$request->premio)->get();\n\t\t\treturn view('telefonistas.buscaResSorte')\n\t\t\t->withAtendimentos($atendimentos);\n\t\t}\n\t\t// if($request->busca == 'ouvinte')\n\t\t// {\n\t\t// \t$atendimentos =  Sorteio::where('ouvinte_id',$request->ouvinte)\n\t\t// \t->where('created_at','>=',$ini)\n\t\t// \t->where('created_at','<=',$fim)\n\t\t// \t->get();\n\t\t// \treturn view('telefonistas.buscaResSorte')\n\t\t// \t->withAtendimentos($atendimentos);\n\t\t// }\n\t\t\n\t}\n\n\n\n\n\n\npublic function showMusicas()\n{\n $user = auth()->user();\n $musicas = Musica::paginate(500);\n return view('telefonistas.musicas')\n ->withUser($user)\n ->withMusicas($musicas);\n}\n\npublic function storeMusicas(Request $request)\n{\n $user = User::find(Auth::id());\n\n $request->validate([\n    'nome' =>'required',\n    'artista' => 'required',\n\n]);\n $musica = new Musica();\n $musica->nome = mb_convert_case($request->nome, MB_CASE_UPPER, 'UTF-8');\n $musica->artista = mb_convert_case($request->artista, MB_CASE_UPPER, 'UTF-8');\n $musica->save();\n return redirect()->route('telefone.musicas')\n ->with('msg','MUSICA CADASTRADA COM SUCESSO !');\n}\n\n}\n",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
-			"file_size": 20158,
-			"file_write_time": 132465773104946274,
+			"file": "resources/views/kanban/showvue.blade.php",
 			"settings":
 			{
-				"buffer_size": 19464,
+				"buffer_size": 8941,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "@extends('layouts.main')\n@section('titulo')\nBUSCA ATENDIMENTOS\n@endsection\n@section('ini')\nactive\n@endsection\n@section('conteudo')\n<style type=\"text/css\">\n    .my-card\n    {\n        position:absolute;\n        left:40%;\n        top:-20px;\n        border-radius:50%;\n    }\n\n</style>\n\n<div class=\"container\">\n\n  <h1 class=\"font-weight-light text-center text-lg-left mt-4 mb-0\">RESULTADO DA PESQUISA<span style=\"float:right;\">  <a href=\"{{route('tel.relatorio')}}\" style=\"text-decoration:none;\"><button class=\"btn btn-danger\"><span class=\"fa fa-arrow-left\" aria-hidden=\"true\"></span>VOLTAR </button>   </a> </span></h1>\n\n  <hr class=\"mt-2 mb-5\">\n  \n <div class=\"row text-center text-lg-left\">\n \t@if($resultado == 'loteria')\n \t\t<div class=\"table-responsive\" id=\"buscas\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-sm table-bordered\" >\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th>NOME</th> \n\t\t\t\t\t\t\t\t<th>BAIRRO</th>\n\t\t\t\t\t\t\t\t<th>FONE</th>\n\t\t\t\t\t\t\t\t<th>CELULAR</th>\n\t\t\t\t\t\t\t\t<th>MILHAR</th>\n\t\t\t\t\t\t\t\t<!-- <th>AÇÕES</th> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($atendimentos as $atds)\n\t\t\t\t\t\t\t<tr class=\"table\">\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_nome}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->endereco['bairro']}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_telefone}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_celular}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->atd_loteria}}</td>\n\t\t\t\t\t\t\t\t<!-- <td><button class=\"btn btn-warning\"><span class=\"far fa-edit\"></span></button> <button class=\"btn btn-danger\" style=\"float: right\"><span class=\"fas fa-trash-alt\"></span></button></td> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<center><span class=\"alert alert-danger\">SEM PROGRAMAS CADASTRADOS</span></center>\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t@endif\n\t@if($resultado == 'geral')\n    \t\t<div class=\"table-responsive\" id=\"buscas\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-sm table-bordered\" >\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th>OUVINTE</th> \n\t\t\t\t\t\t\t\t<th>ATENDENTE</th>\n\t\t\t\t\t\t\t\t<th>FONE</th>\n\t\t\t\t\t\t\t\t<th>DATA</th>\n\t\t\t\t\t\t\t\t<th>AÇÃO</th>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($atendimentos as $atds)\n\t\t\t\t\t\t\t<tr class=\"table\">\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_nome}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->telefonista->nome}}</td>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_celular}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->created_at}}</td>\n\t\t\t\t\t\t\t\t<td><a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n     data-target=\"#geral{{$atds->id}}\"href=\"geral{{$atds->id}}\" style=\"text-decoration:none;\" ><button class=\"btn btn-success\">VER</button></a></td>\n\t\t\t\t\t\t\t\t<!-- <td><button class=\"btn btn-warning\"><span class=\"far fa-edit\"></span></button> <button class=\"btn btn-danger\" style=\"float: right\"><span class=\"fas fa-trash-alt\"></span></button></td> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<center><span class=\"alert alert-danger\">SEM PROGRAMAS CADASTRADOS</span></center>\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t\t\t@endif\n\t\t\t@if($resultado == 'quadro')\n    \t\t<div class=\"table-responsive\" id=\"buscas\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-sm table-bordered\" >\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th>OUVINTE</th> \n\t\t\t\t\t\t\t\t<th>ATENDENTE</th>\n\t\t\t\t\t\t\t\t<th>FONE</th>\n\t\t\t\t\t\t\t\t<th>DATA</th>\n\t\t\t\t\t\t\t\t<th>AÇÃO</th>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($atendimentos as $atds)\n\t\t\t\t\t\t\t<tr class=\"table\">\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_nome}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->telefonista->nome}}</td>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<td>{{$atds->ouvinte->ouv_celular}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->created_at}}</td>\n\t\t\t\t\t\t\t\t<td><a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n     data-target=\"#geral{{$atds->id}}\"href=\"geral{{$atds->id}}\" style=\"text-decoration:none;\" ><button class=\"btn btn-success\">VER</button></a></td>\n\t\t\t\t\t\t\t\t<!-- <td><button class=\"btn btn-warning\"><span class=\"far fa-edit\"></span></button> <button class=\"btn btn-danger\" style=\"float: right\"><span class=\"fas fa-trash-alt\"></span></button></td> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<center><span class=\"alert alert-danger\">SEM PROGRAMAS CADASTRADOS</span></center>\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t\t\t@endif\n    @forelse($atendimentos as $atds)\n\n  \n    @if($resultado == 'oracao')\n    \t@if($loop->iteration %2 == 0)\n    \t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px;\" >\n    \t\t@else\n    \t\t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px; background-color: lightgrey\" >\n    \t\t\t@endif\n\t\t\t\t<div class=\"card-body\">\n\t\t\t\t\t<h5 class=\"card-title\" style = \"font-family:arial; margin-left: 10px;margin-right: 10px;\"><i class=\"far fa-user-circle \" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->ouv_nome}}</h5>\n\t\t\t\t\t<h5 style=\"font-size: 13px; margin-left: 10px;margin-right: 10px;\"><i class=\"fas fa-map-marked-alt\" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->endereco['bairro']}}</h5>\n\t\t\t\t\t<p class=\"card-text\" style = \"font-family:Verdana;font-weight: 600; margin-bottom: 10px; margin-left: 10px;margin-right: 10px;\">\t\t\t\t \n\t\t\t\t\t\t{{$atds->atd_pedido_oracao}}\n\t\t\t\t\t</p>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t@endif\n     @if($resultado == 'alo')\n    \t\t    \t@if($loop->iteration %2 == 0)\n    \t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px;\" >\n    \t\t@else\n    \t\t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px; background-color: lightgrey\" >\n    \t\t\t@endif\n\t\t\t\t<div class=\"card-body\">\n\t\t\t\t\t<h5 class=\"card-title\" style = \"font-family:arial; margin-left: 10px;margin-right: 10px;\"><i class=\"far fa-user-circle \" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->ouv_nome}}</h5>\n\t\t\t\t\t<h5 style=\"font-size: 13px; margin-left: 10px;margin-right: 10px;\"><i class=\"fas fa-map-marked-alt\" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->endereco['bairro']}}</h5>\n\t\t\t\t\t<p class=\"card-text\" style = \"font-family:Verdana;font-weight: 600; margin-bottom: 10px; margin-left: 10px;margin-right: 10px;\">\t\t\t\t \n\t\t\t\t\t\t{{$atds->atd_pedido_alo}}\n\t\t\t\t\t</p>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t@endif\n\t\t\t@if($resultado == 'loteria')\n\t\t\t\n    \t\t    \t@if($loop->iteration %2 == 0)\n    \t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px;\" >\n    \t\t@else\n    \t\t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px; background-color: lightgrey\" >\n    \t\t\t@endif\n\t\t\t\t<div class=\"card-body\">\n\t\t\t\t\t<h5 class=\"card-title\" style = \"font-family:arial; margin-left: 10px;margin-right: 10px;\"><i class=\"far fa-user-circle \" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->ouv_nome}}</h5>\n\t\t\t\t\t<h5 style=\"font-size: 13px; margin-left: 10px;margin-right: 10px;\"><i class=\"fas fa-map-marked-alt\" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->endereco['bairro']}}</h5>\n\t\t\t\t\t<p class=\"card-text\" style = \"font-family:Verdana;font-weight: 600; margin-bottom: 10px; margin-left: 10px;margin-right: 10px;\">\t\t\t\t \n\t\t\t\t\t\t{{$atds->ouvinte->ouv_celular}}\n\t\t\t\t\t</p>\n\t\t\t\t\t<p class=\"card-text\" style = \"font-family:Verdana;font-weight: 600; margin-bottom: 10px; margin-left: 10px;margin-right: 10px;\">\t\t\t\t \n\t\t\t\t\t\t{{$atds->atd_loteria}}\n\t\t\t\t\t</p>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t@endif\n\t\t\t@if($resultado == 'musica')\n    \t\t    \t@if($loop->iteration %2 == 0)\n    \t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px;\" >\n    \t\t@else\n    \t\t\t<div class=\"card text-left col-3\"  style=\"margin-top: 10px; background-color: lightgrey\" >\n    \t\t\t@endif\n\t\t\t\t<div class=\"card-body\">\n\t\t\t\t\t<h5 class=\"card-title\" style = \"font-family:arial; margin-left: 10px;margin-right: 10px;\"><i class=\"far fa-user-circle \" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->ouv_nome}}</h5>\n\t\t\t\t\t<h5 style=\"font-size: 13px; margin-left: 10px;margin-right: 10px;\"><i class=\"fas fa-map-marked-alt\" style=\"color: #642EFE\"></i> - {{$atds->ouvinte->endereco['bairro']}}</h5>\n\t\t\t\t\t<p class=\"card-text\" style = \"font-family:Verdana;font-weight: 600; margin-bottom: 10px; margin-left: 10px;margin-right: 10px;\">\t\t\t\t \n\t\t\t\t\t\t{{$atds->musica->nome}}<br>\n\t\t\t\t\t\t<span style=\"font-size: 13px\">{{$atds->musica->artista}}</span>\n\t\t\t\t\t</p>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t@endif\n\t\t\t@if($resultado == 'geral' || $resultado == 'quadro')\n\t\t\t\t<div class=\"modal fade\" id=\"geral{{$atds->id}}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR ATENDIMENTO</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n       <h1 class=\"font-weight-light text-center text-lg-left mt-4 mb-0\">{{$atds->ouvinte->ouv_nome}}  \n\n</h1>\n\n<hr class=\"mt-2 mb-5\">\n\n  <div class=\"row\">\n    <div class=\"form-group col-md-4\" >\n      <label ><strong >{{ __('PROGRAMA') }}</strong></label>\n      <input type=\"text\" value=\"{{$atds->programa->nome}}\" readonly=\"readonly\" class=\"form-control\n\">\n    </div>\n    <div class=\"form-group col-md-4\" >\n      <label ><strong >{{ __('QUADRO / PROMOÇÃO') }}</strong></label>\n      @if($atds->promo_1 != null)\n      \t@if($atds->atd_participacao_1)\n      \t\t <input type=\"text\" value=\"{{$atds->atd_participacao_1}}\" readonly=\"readonly\" class=\"form-control\n\">\n      \t@else\n     \t\t <input type=\"text\" value=\"{{$atds->promo_1->nome}}\" readonly=\"readonly\" class=\"form-control\n\">\n     \t@endif\n      @endif\n      @if($atds->promo_2 != null)\n      \t@if($atds->atd_participacao_2)\n      \t\t <input type=\"text\" value=\"{{$atds->atd_participacao_2}}\" readonly=\"readonly\" class=\"form-control\n\">\n      \t@else\n     \t\t <input type=\"text\" value=\"{{$atds->promo_2->nome}}\" readonly=\"readonly\" class=\"form-control\n\">\n     \t@endif\n      @endif\n      @if($atds->promo_3 != null)\n      \t@if($atds->atd_participacao_3)\n      \t\t <input type=\"text\" value=\"{{$atds->atd_participacao_3}}\" readonly=\"readonly\" class=\"form-control\n\">\n      \t@else\n     \t\t <input type=\"text\" value=\"{{$atds->promo_3->nome}}\" readonly=\"readonly\" class=\"form-control\n\">\n     \t@endif\n      @endif\n    </div>\n    <div class=\"form-group col-md-4\">\n     <label><strong>{{ __('LOTERIA') }}</strong></label>\n     <input type=\"text\" name=\"atd_loteria\" class=\"form-control col-4\" readonly=\"readonly\" value=\"{{$atds->atd_loteria}}\">\n   </div>\n </div>\n<div class=\"row\">\n  <div class=\"form-group col-md-8\">\n   <label ><strong >{{ __('PEDIDO DE ORAÇÃO') }}</strong></label><br>\n   <textarea rows=\"3\" cols=\"120\" name=\"atd_pedido_oracao\" class=\"form-control\" readonly=\"readonly\" maxlength=\"255\">{{$atds->atd_pedido_oracao}}</textarea>\n   <label ><strong >{{ __('PEDIDO DE ALÔ') }}</strong></label><br>\n   <textarea rows=\"1\"  name=\"atd_pedido_alo\" class=\"form-control\" readonly=\"readonly\" maxlength=\"255\">{{$atds->atd_pedido_alo}}</textarea>\n </div>\n\n</div>\n<div class=\"row\"> \n  <style type=\"text/css\">\n    .pointer       { cursor: pointer; }\n  </style>\n  <div class=\"col-md-6\" id=\"pedidoMus\">\n   <label ><strong >{{ __('PEDIDO MUSICAL') }}</strong></label>\n   @if(isset($atds->musica->nome))\n   <input type=\"text\" readonly=\"readonly\" value=\"{{$atds->musica->nome}}\" class=\"form-control col-8\"> \n   @endif\t\n \t\n</div>\n\n\n\n</div>\n  </div>\n</div>\n</div>\n</div>\n\t\t\t@endif\n\n    @empty\n\n        <span class=\"alert alert-danger\">NÃO HÁ RESULTADOS</span>\n    @endforelse    \n    </div>\n<hr>\n\n</div>\n\n<!-- /.container -->\n\n@endsection\n\n",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/buscaRes.blade.php",
-			"file_size": 11643,
-			"file_write_time": 132465752108695839,
+			"file": "resources/views/parciais/revisa-tarefa.blade.php",
 			"settings":
 			{
-				"buffer_size": 11335,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "@extends('layouts.main')\n@section('titulo')\nBUSCA ATENDIMENTOS\n@endsection\n@section('ini')\nactive\n@endsection\n@section('conteudo')\n<style type=\"text/css\">\n    .my-card\n    {\n        position:absolute;\n        left:40%;\n        top:-20px;\n        border-radius:50%;\n    }\n\n</style>\n\n<div class=\"container\">\n\n  <h1 class=\"font-weight-light text-center text-lg-left mt-4 mb-0\">RESULTADO DA PESQUISA<span style=\"float:right;\">  <a href=\"{{route('tel.relatorio')}}\" style=\"text-decoration:none;\"><button class=\"btn btn-danger\"><span class=\"fa fa-arrow-left\" aria-hidden=\"true\"></span>VOLTAR </button>   </a> </span></h1>\n\n  <hr class=\"mt-2 mb-5\">\n  \n <div class=\"row text-center text-lg-left\">\n \t\t<h5>TOTAL : {{$participacoes->count()}}  /  ÚNICOS: {{$participacoes->unique('ouvinte_atd')->count()}}</h5>\n    \t<div class=\"table-responsive\" id=\"buscas\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-sm table-bordered\" >\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th>OUVINTE</th>\n\t\t\t\t\t\t\t\t<th>CONTATO</th>\n\t\t\t\t\t\t\t\t<th>CIDADE</th>\n\t\t\t\t\t\t\t\t<th>BAIRRO</th> \n\t\t\t\t\t\t\t\t<th>ENDERECO</th>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($participacoes as $atds)\n\t\t\t\t\t\t\t<tr class=\"table\">\n\t\t\t\t\t\t\t\t<td>{{$atds->OUV_NOME}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->OUV_CEL}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->CIDADE}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->BAIRRO_NOME}}</td>\n\t\t\t\t\t\t\t\t<td>{{$atds->OUVINTE_END}}</td>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<center><span class=\"alert alert-danger\">SEM RESULTADOS RELEVANTES</span></center>\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\n   \n</div>\n</div>\n\n<!-- /.container -->\n\n@endsection\n\n",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relaFeira.blade.php",
-			"file_size": 1690,
-			"file_write_time": 132465774370937445,
-			"settings":
-			{
-				"buffer_size": 1624,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "@extends('layouts.main')\n@section('titulo')\nInicio\n@endsection\n@section('ini')\nactive\n@endsection\n@section('conteudo')\n<style type=\"text/css\">\n  .my-card\n  {\n    position:absolute;\n    left:40%;\n    top:-20px;\n    border-radius:50%;\n  }\n  @media only screen and (max-width: 1700px) {\n    h4 {\n      font-size: 1.2rem;\n    }\n\n  </style>\n  <input type=\"hidden\" id=\"ini\" value=\"{{$hoje}}\">\n    <h1 class=\"font-weight-light text-center text-lg-left mt-4 mb-0\">PESQUISA DE ATENDIMENTOS<span style=\"float:right;\">  <a href=\"{{route('inicio')}}\" style=\"text-decoration:none;\"><button class=\"btn btn-danger\"><span class=\"fa fa-arrow-left\" aria-hidden=\"true\"></span>VOLTAR </button>   </a> </span></h1>\n\n  <hr class=\"mt-2 mb-5\">\n  <div class=\"jumbotron\">\n    <div class=\"row w-100\">\n      <div class=\"col-md-3\" >\n        <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n        data-target=\"#oracao\"href=\"oracao\" style=\"text-decoration:none;\" >\n        <div class=\"card border-secondary mx-sm-1 p-3 btn btn-outline-secondary\" id=\"plus\" >\n          <div class=\"card border-secondary shadow text-secondary p-3 my-card\"><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n          <div class=\"text-outline-secondary text-center mt-3\"><h4>ORAÇÃO</h4></div>\n          <div class=\"text-outline-secondary text-center mt-2\"><span class=\"fas fa-praying-hands fa-3x\" aria-hidden=\"true\"></span></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"col-md-3\"  >\n     <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n     data-target=\"#alo\"href=\"alo\" style=\"text-decoration:none;\" >\n     <div class=\"card border-danger mx-sm-1 p-3 btn btn-outline-danger\" id=\"plus2\" >\n      <div class=\"card border-danger shadow text-danger p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n      <div class=\"text-outline-danger text-center mt-3\"><h4>ALÔ</h4></div>\n      <div class=\"text-outline-danger text-center mt-2\"><span class=\"far fa-thumbs-up fa-3x\" aria-hidden=\"true\"></span></div>\n    </div>\n  </a>\n</div>\n<div class=\"col-md-3\"  >\n  <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n  data-target=\"#loteria\"href=\"loteria\" style=\"text-decoration:none;\" >\n  <div class=\"card border-primary mx-sm-1 p-3 btn btn-outline-primary\" id=\"plus3\">\n    <div class=\"card border-primary shadow text-primary p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n    <div class=\"text-outline-primary text-center mt-3\"><h4>LOTERIA</h4></div>\n    <div class=\"text-outline-primary text-center mt-2\"><span class=\"fas fa-hat-cowboy fa-3x\" aria-hidden=\"true\"></span></div>\n  </div>\n</a>\n</div>\n      <div class=\"col-md-3\" >\n      <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n  data-target=\"#quadro\"href=\"quadro\" style=\"text-decoration:none;\" >\n        <div class=\"card border-success mx-sm-1 p-3 btn btn-outline-success\" id=\"plus\" >\n          <div class=\"card border-success shadow text-success p-3 my-card\"><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n          <div class=\"text-outline-success text-center mt-3\"><h4>ATD QUADRO</h4></div>\n          <div class=\"text-outline-success text-center mt-2\"><span class=\"fa fa-dollar-sign fa-3x\" aria-hidden=\"true\"></span></div>\n        </div>\n      </a>\n    </div>\n</div>\n<br>\n<br>\n<div class=\"row w-100\">\n  <div class=\"col-md-3\">\n    <a href=\"{{route('tel.ganhadoresGet')}}\" style=\"text-decoration:none;\" >\n    <div class=\"card border-info mx-sm-1 p-3 btn btn-outline-info\" id=\"plus3\">\n      <div class=\"card border-info shadow text-info p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n      <div class=\"text-outline-info text-center mt-3\"><h4 style=\"font-size: 1rem;margin-left: -10px\">GANHADORES</h4></div>\n      <div class=\"text-outline-info text-center mt-2\"><span class=\"fa fa-gift fa-3x\" aria-hidden=\"true\"></span></div>\n    </div>\n  </a>\n  </div>\n  <div class=\"col-md-3\"  >\n     <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n     data-target=\"#geral\"href=\"geral\" style=\"text-decoration:none;\" >\n     <div class=\"card border-warning mx-sm-1 p-3 btn btn-outline-warning\" id=\"plus2\" >\n      <div class=\"card border-warning shadow text-warning p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n      <div class=\"text-outline-warning text-center mt-3\"><h4>GERAL</h4></div>\n      <div class=\"text-outline-warning text-center mt-2\"><span class=\"fas fa-users fa-3x\" aria-hidden=\"true\"></span></div>\n    </div>\n  </a>\n</div>\n  <div class=\"col-md-3\"  >\n     <a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n     data-target=\"#feira\"href=\"feira\" style=\"text-decoration:none;\" >\n     <div class=\"card border-light mx-sm-1 p-3 btn btn-outline-light active\" id=\"plus2\" >\n      <div class=\"card border-light shadow text-light p-3 my-card active\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n      <div class=\"text-outline-light text-center mt-3 active\"><h4>FEIRA</h4></div>\n      <div class=\"text-outline-light text-center mt-2 active\"><span class=\"fas fa-carrot fa-3x\" aria-hidden=\"true\"></span></div>\n    </div>\n  </a>\n</div>\n</div>\n</div>\n<div class=\"container\">\n</div>\n<!--                              ------------------------MODAIS -->\n<div class=\"modal fade\" id=\"oracao\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR ORAÇÕES</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"buscaoracao\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\"> \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\">\n            </div>\n          </div>\n\n          <div class=\"col\">\n\n            <strong>HORA </strong>\n            <br>\n            <div class=\"input-group\">\n              <select name=\"hora\" type=\"text\" class=\"form-control\" required>\n               <option selected disabled hidden>HORA</option>\n               <option required>06:00</option>\n<!--                <option required>07:00</option>\n <option required>08:00</option> -->\n <option required>09:00</option>\n <option required>10:00</option>\n <option required>15:00</option>\n</select>\n</div>\n</div>\n</div>   <!-- fim forms de busca  -->\n</div>\n<input type=\"hidden\" name=\"busca\" value=\"oracao\">\n<button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n</form> \n</div>\n</div>\n</div>\n</div>\n<div class=\"modal fade\" id=\"alo\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR PEDIDOS DE ALÔ</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"buscaalo\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p5\"> \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p6\">\n            </div>\n          </div>\n          <div class=\"col\"> \n            <span style=\"float: right\">\n              <button class=\"btn btn-success btn-lg\" onclick=\"preench()\">HOJE</button>\n\n            </span>\n          </div>\n\n        </div>   <!-- fim forms de busca  -->\n      </div>\n      <input type=\"hidden\" name=\"busca\" value=\"alo\">\n      <button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n    </form> \n  </div>\n</div>\n</div>\n</div>\n<div class=\"modal fade\" id=\"loteria\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">LOTERIA</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"buscalot\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-1\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p3\"> \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-1\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p4\">\n            </div>\n            <br>\n<!--             <div class=\"input-group\">\n             Nº : <input type=\"text\" name=\"lotnum\" class=\"form-control col-6\" id=\"lot\">\n             <br>\n             <span class=\"text-secondary\">(opcional)</span>\n           </div> -->\n         </div>\n         <div class=\"col\">\n            <span style=\"float: center\">\n           <select name=\"peri\" type=\"text\" class=\"form-control\" required>\n             <option selected value=\"\" hidden>TURNO</option>\n             <option required value=\"0\">MANHÃ</option>\n             <option required value=\"1\">TARDE</option>\n           </select>\n\n         </span>\n         </div>\n        \n       <div class=\"col\"> \n        <!-- span style=\"float: center\">\n           <select name=\"peri\" type=\"text\" class=\"form-control\" required>\n             <option selected value=\"\" hidden>ESCOLHA UM TURNO</option>\n             <option required value=\"0\">MANHÃ</option>\n             <option required value=\"1\">TARDE</option>\n           </select>\n\n         </span> -->\n        <span style=\"float: right\">\n          <button class=\"btn btn-success btn-lg\" onclick=\"preen()\">HOJE</button>\n\n        </span>\n      </div>\n\n\n    </div>   <!-- fim forms de busca  -->\n  </div>\n      <input type=\"hidden\" name=\"busca\" value=\"loteria\">\n      <button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n    </form> \n    <script type=\"text/javascript\">\n       $(document).ready(function($){\n\n   $('#lot').mask('0-0-0-0');\n\n\n });\n    </script>\n  </div>\n</div>\n</div>\n</div>\n<div class=\"modal fade\" id=\"musical\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR PEDIDOS MUSICAIS</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"ped\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p1\"> \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-12\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" id=\"p2\">\n            </div>\n          </div>\n\n          <div class=\"col\"> \n            <span style=\"float: right\">\n              <button class=\"btn btn-success btn-lg\" onclick=\"preenche()\">HOJE</button>\n\n            </span>\n          </div>\n\n        </div>   <!-- fim forms de busca  -->\n      </div>\n      <input type=\"hidden\" name=\"busca\" value=\"musica\">\n      <button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n    </form>\n    <script type=\"text/javascript\">\n     function preenche(){\n      var data = $('#ini').val();\n      console.log(data);\n\n      $('#p1').attr('value',data);\n      $('#p2').attr('value',data);\n\n    }\n    function preench(){\n     var data = $('#ini').val();\n     console.log(data);\n\n     $('#p5').attr('value',data);\n     $('#p6').attr('value',data);\n\n   }\n   function preen(){\n     var data = $('#ini').val();\n     console.log(data);\n     $('#p3').attr('value',data);\n     $('#p4').attr('value',data);\n\n   }\n </script> \n</div>\n</div>\n</div>\n</div>\n\n\n\n<div class=\"modal fade\" id=\"geral\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR ATENDIMENTO</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"buscaalo\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-8\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" > \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-8\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" >\n            </div>\n          </div>\n        </div>   <!-- fim forms de busca  -->\n      </div>\n      <input type=\"hidden\" name=\"busca\" value=\"geral\">\n      <button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n    </form> \n  </div>\n</div>\n</div>\n</div> \n<div class=\"modal fade\" id=\"feira\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR PARTICIPAÇÕES NA FEIRA POR BAIRRO</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        \n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>BAIRRO</strong>\n             <div class=\"input-group\">\n             <input type=\"text\" name=\"bairro\" class=\"form-control col-8\" id=\"bpesquisa\" onchange=\"BuscaB(this.value)\"> \n            </div>\n            \n          </div>\n        </div>   <!-- fim forms de busca  -->\n      </div>\n      <script type=\"text/javascript\">\n          function BuscaB(bairro){\n            $('#mudaPe').attr('href','https://itradio.sistemajangadeiro.com.br/relatorio-feira/'+bairro);\n          }\n      </script>\n      <a href=\"https://itradio.sistemajangadeiro.com.br/relatorio-feira/aldeota\"class=\"btn btn-success\" id=\"mudaPe\">BUSCAR</a>\n\n\n  </div>\n</div>\n</div>\n</div> \n<div class=\"modal fade\" id=\"quadro\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\" id=\"image-gallery-title\">BUSCAR POR QUADRO</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n\n        <form method=\"post\" action=\"{{route('busca.oracao')}}\" class=\"form-horizontal\" id=\"buscaalo\" role=\"form\"  onsubmit=\"myButton.disabled = true; return true;\" \n        >\n\n        @csrf\n        <div id=\"respostas\" class=\"container\">\n          <div class=\"card-body row no-gutters align-items-center\" > \n           <!-- forms de busca  -->\n\n           <div class=\"col\"> \n             <strong>PERÍODO</strong>\n             <br>\n             <div class=\"input-group\">\n              DE : <input type=\"date\" name=\"data_ini\" class=\"form-control col-8\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" > \n            </div>\n            <br>\n            <div class=\"input-group\">\n              ATÉ : <input type=\"date\" name=\"data_fim\" class=\"form-control col-8\" max=\"{{$hoje}}\" min=\"2019-01-01\" required=\"\" >\n            </div>\n          </div>\n          <div class=\"col\"> \n             <strong>QUADRO</strong>\n             <select type=\"text\" name=\"quadro\" required=\"\" class=\"form-control\">\n                <option selected=\"\" value=\"\" hidden=\"\">ESCOLHA AQUI</option>\n                @foreach($quadros as $quadro)\n                <option >{{$quadro->nome}}</option>\n                @endforeach\n             </select>\n          </div>\n        </div>   <!-- fim forms de busca  -->\n      </div>\n      <input type=\"hidden\" name=\"busca\" value=\"quadro\">\n      <button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton\">CONFIRMAR</button>\n\n    </form> \n  </div>\n</div>\n</div>\n</div> \n@endsection",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio.blade.php",
-			"file_size": 19804,
-			"file_write_time": 132465751123389077,
-			"settings":
-			{
-				"buffer_size": 19288,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "<?php\n\n/*\n|--------------------------------------------------------------------------\n| Web Routes\n|--------------------------------------------------------------------------\n|\n| Here is where you can register web routes for your application. These\n| routes are loaded by the RouteServiceProvider within a group which\n| contains the \"web\" middleware group. Now create something great!\n|\n*/\n\n\n\n//-------------------------------  Rotas da HOME\n\n\nRoute::get('/', 'HomeController@index')->name('inicio');\nRoute::get('/perfil/{nome}','HomeController@perfil')->name('perfil');\nRoute::get('/cadastro', 'Auth\\RegisterController@showRegisterForm')->name('admin-register');\nRoute::get('/gerencia-itRadio', 'HomeController@dashboard')->name('dashboard');\nAuth::routes();\nRoute::get('/mamamia', 'GerenciaController@listBairros');\n\n\n// ------------------------------ Rotas dos OUVINTES\nRoute::resource('ouvinte','OuvinteController');\nRoute::post('pesquisa-ouvintes','OuvinteController@pesquisa')->name('pesquisa');\nRoute::post('tel/premiando','OuvinteController@premiar')->name('store.premiado');\nRoute::get('tel/cadastrar-premiado/{id}','OuvinteController@criarPremiado')->name('cria.premiado');\n\n\n\n\n// ------------------------------ Rotas de ATENDIMENTO\nRoute::get('/atd/{id}','AtendimentoController@create')->name('atd.create');\nRoute::resource('atendimento','AtendimentoController');\nRoute::get('/visto','AtendimentoController@visto')->name('visto');\nRoute::get('/buskmu','AtendimentoController@procMus')->name('bkmus');\n//Route::get('/virabixo','OuvinteController@vira');\n\n\n\n\n// ----------------------------   Rotas de GERÊNCIA\nRoute::get('/todas-as-musicas','GerenciaController@showMusicas')->name('musicas');\nRoute::get('/todas-as-pesquisas','GerenciaController@showRelatorio')->name('relatorio');\nRoute::get('/sorteio','GerenciaController@showSorteio')->name('sorteio');\nRoute::post('store-musica','GerenciaController@storeMusicas')->name('store.musicas');\nRoute::get('/procura-bairro','GerenciaController@vaiBairro')->name('bairro.create');\nRoute::post('/add-bairro','GerenciaController@addBairro')->name('bairro.store');\nRoute::get('/criar-programa','GerenciaController@createPrograma')->name('cria.programa');\nRoute::post('/guarda-programa','GerenciaController@storePrograma')->name('guarda.programa');\nRoute::post('/premiacao_sendo_guardada','GerenciaController@storePremiacao')->name('guarda.premiacao');\nRoute::get('/programa/{id}/editando','GerenciaController@editPrograma')->name('edit.programa');\nRoute::patch('/update-programa/{id}','GerenciaController@updatePrograma')->name('update.programa');\nRoute::patch('/update-premiacao/{id}','GerenciaController@updatePremiacao')->name('update.premiacao');\nRoute::patch('/update-promocao/{id}','GerenciaController@updatePromocao')->name('update.promocao');\nRoute::patch('/update-musica/{id}','GerenciaController@updateMusica')->name('update.musica');\nRoute::get('/criar-premiacoes','GerenciaController@createPremiacao')->name('cria.premiacao');\nRoute::get('/criar-promocao','GerenciaController@createPromocao')->name('cria.promocao');\nRoute::post('/guarda-promocao','GerenciaController@storePromocao')->name('guarda.promocao');\nRoute::post('/pausa-promocao','GerenciaController@promocaoPausada')->name('pausa.promocao');\nRoute::get('/locutor-fm','GerenciaController@buscaAtdCamposLocutor')->name('locutor');\nRoute::post('/pausa-programa','GerenciaController@programaPausado')->name('pausa.programa');\nRoute::post('/pausa-premiacao','GerenciaController@premiacaoPausada')->name('pausa.premiacao');\n\nRoute::post('pesquisa-ouvintes-ADM','GerenciaController@pesquisa')->name('pesquisa.adm');\n\n\n// -------------------------      Rotas de TELEFONISTAS\nRoute::get('tel/todas-as-musicas','TelefonistaController@showMusicas')->name('tel.musicas');\nRoute::get('tel/todas-as-pesquisas','TelefonistaController@showRelatorio')->name('tel.relatorio');\nRoute::get('tel/pesquisa-ganhadores','TelefonistaController@ganhadoresGet')->name('tel.ganhadoresGet');\nRoute::post('tel/pesq-ganhadores','TelefonistaController@ganhadoresPost')->name('tel.ganhadoresPost');\nRoute::get('tel/sorteio','TelefonistaController@showSorteio')->name('tel.sorteio');\nRoute::get('tel/sorteando','TelefonistaController@fazSorteio')->name('faz.sorteio');\n\nRoute::post('/pesquisa-atds','TelefonistaController@buscaAtdCampos')->name('busca.oracao');\nRoute::get('/correcao','TelefonistaController@correcaoMusicas')->name('correto');\n\n\n\n//novas \nRoute::get('/vistozap','AtendimentoController@vistozap')->name('vistozap');\nRoute::post('/guarda-alou','TelefonistaController@alozap')->name('zap');\nRoute::post('/guarda-musica-zap','TelefonistaController@musicazap')->name('musicazap');\nRoute::post('/pesquisa-sorteados','TelefonistaController@buscaSorteados')->name('busca.sorteado');\n//Route::get('/cr-ouvinte','OuvinteController@formata');\n\nRoute::post('/maispedidas','GerenciaController@asMaisPedidas')->name('pedidas');\n\n\nRoute::get('/todas-las-musicas','TelefonistaController@showMusicas')->name('telefone.musicas');\nRoute::post('store-las-musicas','TelefonistaController@storeMusicas')->name('telefonistas.musicas');\n\n\n\n\nRoute::post('/guarda-aloloco','GerenciaController@alozap')->name('zaploc');\n\nRoute::post('/todos-los-atendimientos','GerenciaController@atdsvisao')->name('pesatd');\nRoute::post('/todos-los-quadritos','GerenciaController@quadrosPesq')->name('quadroPesq');\nRoute::get('/eita/{id}', 'HomeController@eita');\nRoute::get('/relatorio-feira/{bairro}', 'TelefonistaController@relaFeiraBairro')->name('busca.feira');\n//Route::get('/eita/{id}', 'GerenciaController@eita');",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
-			"file_size": 5694,
-			"file_write_time": 132465748752762557,
-			"settings":
-			{
-				"buffer_size": 5587,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "@extends('layouts.admin')\n@section('titulo')\nInicio\n@endsection\n@section('ini')\nactive\n@endsection\n@section('conteudo')\n<style type=\"text/css\">\n\t.my-card\n\t{\n\t\tposition:absolute;\n\t\tleft:40%;\n\t\ttop:-20px;\n\t\tborder-radius:50%;\n\t}\n\n</style>\n<div class=\"jumbotron\">\n\t@if($user->tipo ==2 )\n\t<div class=\"row w-100\">\n\t\t<!-- TESTE DE POPUP DE FORMULARIOS -->\n\t\t<div class=\"col-md-3\"  >\n\t\t\t<a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n\t\t\tdata-target=\"#programas\"href=\"programas\" style=\"text-decoration:none;\" >\n\t\t\t<div class=\"card border-success mx-sm-1 p-3 btn btn-outline-success\" id=\"plusq\" >\n\t\t\t\t<div class=\"card border-success shadow text-success p-3 my-card\"><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n\t\t\t\t<div class=\"text-outline-success text-center mt-3\"><h4>PROGRAMAS</h4></div>\n\t\t\t\t<div class=\"text-outline-success text-center mt-2\"id=\"gir\"><span class=\"fa fa-microphone fa-3x\" aria-hidden=\"true\" ></span></div>\n\t\t\t\t<!-- <div id=\"plus\" class=\"text-center\"><span class=\"fa fa-user-plus fa-5x\" aria-hidden=\"true\"></span></div> -->\n\t\t\t</div>\n\t\t</a>\n\t</div>\n\n\t<div class=\"col-md-3\"  >\n\t\t<a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n\t\tdata-target=\"#premiacoes\"href=\"premiacoes\" style=\"text-decoration:none;\" >\n\t\t<div class=\"card border-danger mx-sm-1 p-3 btn btn-outline-danger\" id=\"plus2\" >\n\t\t\t<div class=\"card border-danger shadow text-danger p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n\t\t\t<div class=\"text-outline-danger text-center mt-3\"><h4>PREMIAÇÕES</h4></div>\n\t\t\t<div class=\"text-outline-danger text-center mt-2\"><span class=\"fa fa-gift fa-3x\" aria-hidden=\"true\"></span></div>\n\t\t</div>\n\t</a>\n</div>\n<div class=\"col-md-3\"  >\n\t<a class=\"thumbnail\" href=\"#\" data-image-id=\"\" data-toggle=\"modal\"\n\tdata-target=\"#promocoes\"href=\"promocoes\" style=\"text-decoration:none;\"  >\n\t<div class=\"card border-primary mx-sm-1 p-3 btn btn-outline-primary\" id=\"plus3\">\n\t\t<div class=\"card border-primary shadow text-primary p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n\t\t<div class=\"text-outline-primary text-center mt-3\"><h4>PROMOÇÕES</h4></div>\n\t\t<div class=\"text-outline-primary text-center mt-2\"><span class=\"fa fa-dollar-sign fa-3x\" aria-hidden=\"true\"></span></div>\n\t</div>\n</a>\n</div>\n\n\n<div class=\"col-md-3\" >\n\t<a href=\"{{route('sorteio')}}\" style=\"text-decoration:none;\" >\n\t<div class=\"card border-secondary mx-sm-1 p-3 btn btn-outline-secondary\" id=\"plus4\">\n\t\t<div class=\"card border-secondary shadow text-secondary p-3 my-card\" ><i class=\"fa fa-heart\" aria-hidden=\"true\"></i></div>\n\t\t<div class=\"text-outline-secondary text-center mt-3\"><h4>SORTEIO</h4></div>\n\t\t<div class=\"text-outline-secondary text-center mt-2\"><span class=\"fas fa-award fa-3x\" aria-hidden=\"true\"></span></div>\n\t</div>\n\t</a>\n</div>\n\n</div>\n@endif\n<br><br>\n\n<div class=\"row w-100\">\n\t@if($user->tipo != 1)\n\t\t@if($user->tipo == 2 || $user->tipo == 3)\n\t<div class=\"col-md-3\">\n\t\t<a href=\"{{route('relatorio')}}\" style=\"text-decoration:none;\" >\n\t\t<div class=\"card border-info mx-sm-1 p-3 btn btn-outline-info\" id=\"plus3\">\n\t\t\t<div class=\"card border-info shadow text-info p-3 my-card\" ><span class=\"fa fa-heart\" aria-hidden=\"true\"></span></div>\n\t\t\t<div class=\"text-outline-info text-center mt-3\"><h4>PESQUISAS</h4></div>\n\t\t\t<div class=\"text-outline-info text-center mt-2\"><span class=\"fa fa-search fa-3x\" aria-hidden=\"true\"></span></div>\n\t\t</div>\n\t</a>\n\t</div>\n\t@endif\n\t<div class=\"col-md-3\"  >\n\t\t<a href=\"{{route('musicas')}}\" style=\"text-decoration:none;\" >\n\t\t<div class=\"card border-warning mx-sm-1 p-3 btn btn-outline-warning\" id=\"plus3\">\n\t\t\t<div class=\"card border-warning shadow text-warning p-3 my-card\" ><i class=\"fas fa-heart\" aria-hidden=\"true\"></i></div>\n\t\t\t<div class=\"text-outline-warning text-center mt-3\"><h4>MÚSICAS</h4></div>\n\t\t\t<div class=\"text-outline-warning text-center mt-2\"><span class=\"fa fa-music fa-3x\" aria-hidden=\"true\"></span></div>\n\t\t</div>\n\t</a>\n\t</div>\n@endif\n<style type=\"text/css\">\n\tdiv.roxo *{\n /* border: 1px solid ;*/\n background-color: white;\n  /*border-color: #b388ff;*/\n  color: #b388ff;\n  transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;\n}\n\ndiv.roxo:hover *{\n\tcolor: white;\n  background-color: #b388ff;\n  transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;\n}\n\tdiv.limao *{\n /* border: 1px solid ;*/\n background-color: white;\n  /*border-color: #b388ff;*/\n  color: #1ed013;\n  transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;\n}\n\ndiv.limao:hover *{\n\tcolor: white;\n  background-color: #1ed013;\n  transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;\n}\n</style>\n@if($user->tipo == 2)\n\t<div class=\"col-md-3 roxo\" >\n\t\t<a href=\"{{route('bairro.create')}}\" style=\"text-decoration:none;\" >\n\t\t\t<div class=\"card  mx-sm-1 p-3 btn btn-outline\"  style=\"border: 1px solid ;border-color: #b388ff; \">\n\t\t\t\t<div class=\"card  shadow  p-3 my-card roxouia\" style=\"border: 1px solid ;border-color: #b388ff\"><span class=\"fa fa-heart roxouia\" aria-hidden=\"true\" ></span></div>\n\t\t\t\t<div class=\"text-outline text-center mt-3 roxo\" ><h4>BAIRROS</h4></div>\n\t\t\t\t<div class=\"text-outline text-center mt-2 roxo\"><span class=\"fas fa-map-marked-alt fa-3x roxo\" aria-hidden=\"true\"></span></div>\n\t\t\t</div>\n\t\t</a>\n\t</div>\n\t@endif\n\t@if($user->tipo == 1 )\n\t<div class=\"col-md-3 limao\" >\n\t\t<a href=\"{{route('locutor')}}\" style=\"text-decoration:none;\" >\n\t\t\t<div class=\"card  mx-sm-1 p-3 btn btn-outline\"  style=\"border: 1px solid ;border-color: #1ed013; \">\n\t\t\t\t<div class=\"card  shadow  p-3 my-card roxouia\" style=\"border: 1px solid ;border-color: #1ed013\"><span class=\"fa fa-heart roxouia\" aria-hidden=\"true\" ></span></div>\n\t\t\t\t<div class=\"text-outline text-center mt-3 limao\" ><h4>LOCUTOR</h4></div>\n\t\t\t\t<div class=\"text-outline text-center mt-2 limao\"><span class=\"fas fa-podcast fa-3x limao\" aria-hidden=\"true\"></span></div>\n\t\t\t</div>\n\t\t</a>\n\t</div>\n\t@endif\n</div>\n</div>\n<!--                              ------------------------MODAIS -->\n<div class=\"modal fade\" id=\"programas\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n\t<div class=\"modal-dialog modal-lg\">\n\t\t<div class=\"modal-content\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<h4 class=\"modal-title\"  id=\"um\">PROGRAMAS CADASTRADOS </h4>\n\t\t\t\t<h4 class=\"modal-title\"  id=\"dois\" style=\"display: none\"> NOVO PROGRAMA</h4>\n\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n\t\t\t\t\t<span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<div class=\"modal-body\">\n\t\t\t\t<span style=\"float: right\"><a href=\"{{route('cria.programa')}}\" style=\"text-decoration: none\"><button class=\"btn btn-primary\"><span class=\"fa fa-microphone\"></span> TODOS</button></a></span><br>\n\t\t\t\t<div class=\"table-responsive\" id=\"buscas\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-striped table-sm table-bordered\" >\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th># - ID</th> \n\t\t\t\t\t\t\t\t<th>STATUS</th>\n\t\t\t\t\t\t\t\t<th>NOME</th>\n\t\t\t\t\t\t\t\t<th>HORÁRIO</th>\n\t\t\t\t\t\t\t\t<!-- <th>AÇÕES</th> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($programas as $programa)\n\t\t\t\t\t\t\t<tr class=\"table-info\">\n\t\t\t\t\t\t\t\t<td>{{$programa->id}}</td>\n\t\t\t\t\t\t\t\t<td><span style=\"color: darkgreen\"> ATIVO</span></td>\n\t\t\t\t\t\t\t\t<td>{{$programa->nome}}</td>\n\t\t\t\t\t\t\t\t<td>{{$programa->horarios}}</td>\n\t\t\t\t\t\t\t\t<!-- <td><button class=\"btn btn-warning\"><span class=\"far fa-edit\"></span></button> <button class=\"btn btn-danger\" style=\"float: right\"><span class=\"fas fa-trash-alt\"></span></button></td> -->\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<center><span class=\"alert alert-danger\">SEM PROGRAMAS CADASTRADOS</span></center>\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">  <!-- forms de cadastro de de prgrama -->\n\t\t\t\t\t<div class=\"col-2 offset-5\">\n\t\t\t\t\t\t<button type=\"button\" id=\"mais\" class=\"btn btn-success btn-circle btn-xl\" onclick=\"gira()\"><i class=\"fa fa-plus\" id=\"pl\"></i></button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<br>\n\t\t\t\t<!-- AQUI FORMULÁRIO DE NOVO PROGRAMA -->\n\t\t\t\t<form method=\"post\" action=\"{{ route('guarda.programa') }}\" class=\"form-horizontal\" role=\"form\" onsubmit=\"myButton2.disabled = true; return true;\" id=\"book\" style=\"display: none\" >\n\t\t\t\t\t@csrf\n\t\t\t\t\t<div class=\"container\" ><!--    inicio container -->\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('NOME DO PROGRAMA') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"text\"  placeholder=\"Nome do Programa\" class=\"form-control\" name=\"nome\" value=\"{{ old('nome') }}\"  autofocus autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('NOME DO(A) LOCUTOR(A)') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"text\"  placeholder=\"Nome do(a) Locutor(a)\" class=\"form-control\" name=\"locutor\" value=\"{{ old('locutor') }}\"  autofocus autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('HORÁRIOS') }}</strong></label>\n\t\t\t\t\t\t\t<input type=\"text\"  placeholder=\"Exemplo - 08:00 às 10:00\" class=\"form-control\" name=\"horarios\" value=\"{{ old('horarios') }}\"  autofocus autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div><!-- fim container -->\n\t\t\t\t\t<button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton2\">CONFIRMAR</button>\n\t\t\t\t</form> \n\t\t\t\t<!-- FIM -->\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<div class=\"modal fade\" id=\"premiacoes\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n\t<div class=\"modal-dialog modal-lg\">\n\t\t<div class=\"modal-content\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<h4 class=\"modal-title\"  id=\"tres\">PREMIAÇÕES CADASTRADAS</h4>\n\t\t\t\t<h4 class=\"modal-title\"  id=\"quatro\" style=\"display: none\"> NOVA PREMIAÇÃO</h4>\n\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n\t\t\t\t\t<span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<div class=\"modal-body\">\n<span style=\"float: right\"><a href=\"{{route('cria.premiacao')}}\" style=\"text-decoration: none\"><button class=\"btn btn-primary\"><span class=\"fa fa-gift\"></span> TODAS</button></a></span><br>\n\t\t\t\t<div class=\"table-responsive\" id=\"b2\" style=\"margin-top: 25px;\"> \n\t\t\t\t\t<table class=\"table table-striped table-sm\">\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th># - ID</th> \n\t\t\t\t\t\t\t\t<th>STATUS</th>\n\t\t\t\t\t\t\t\t<th>NOME</th>\n\t\t\t\t\t\t\t\t<th>CADASTRADO POR :</th>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($premiacoes as $premiacao)\n\t\t\t\t\t\t\t<tr class=\"table-info\">\n\t\t\t\t\t\t\t\t<td>{{$premiacao->id}}</td>\n\t\t\t\t\t\t\t\t<td><span style=\"color: darkgreen\">ATIVO</span></td>\n\t\t\t\t\t\t\t\t<td>{{$premiacao->nome}}</td>\n\t\t\t\t\t\t\t\t<td><span class=\"text-muted\">{{$premiacao->user->nome}}</span></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<span class=\"alert alert-danger\">SEM PREMIAÇÕES CADASTRADAS</span>\n\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"row\">  <!-- forms de cadastro de de prgrama -->\n\t\t\t\t\t<div class=\"col-2 offset-5\">\n\t\t\t\t\t\t<button type=\"button\" id=\"m2\" class=\"btn btn-success btn-circle btn-xl\" onclick=\"g2()\"><i class=\"fa fa-plus\" id=\"pl2\"></i></button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<br>\n\t\t\t\t<!-- AQUI FORMULÁRIO DE NOVO PROGRAMA -->\n\t\t\t\t<form method=\"post\" action=\"{{ route('guarda.premiacao') }}\" class=\"form-horizontal\" role=\"form\" onsubmit=\"myButton3.disabled = true; return true;\" id=\"b1\" style=\"display: none\" >\n\t\t\t\t\t@csrf\n\t\t\t\t\t<div class=\"container\" ><!--    inicio container -->\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('NOME DO PRÊMIO') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"text\"  placeholder=\"Nome do Premio\" class=\"form-control\" name=\"nome\" value=\"{{ old('nome') }}\"   autocomplete=\"off\" required=\"\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div><!-- fim container -->\n\t\t\t\t\t<button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton3\">CONFIRMAR</button>\n\t\t\t\t</form> \n\t\t\t\t<!-- FIM -->\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<div class=\"modal fade\" id=\"promocoes\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n\t<div class=\"modal-dialog modal-lg\">\n\t\t<div class=\"modal-content\">\n\t\t\t<div class=\"modal-header\">\n\t\t\t\t<h4 class=\"modal-title\"  id=\"cinco\">PROMOÇÕES/QUADROS CADASTRADAS</h4>\n\t\t\t\t<h4 class=\"modal-title\"  id=\"seis\" style=\"display: none\"> NOVA PROMOÇÃO</h4>\n\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n\t\t\t\t\t<span aria-hidden=\"true\">×</span><span class=\"sr-only\">Close</span>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<div class=\"modal-body\">\n<span style=\"float: right\"><a href=\"{{route('cria.promocao')}}\" style=\"text-decoration: none\"><button class=\"btn btn-primary\"><span class=\"fa fa-dollar-sign\"></span> TODAS</button></a></span><br>\n\t\t\t\t<div class=\"table-responsive\" id=\"b4\" style=\"margin-top: 25px;\">\n\t\t\t\t\t<table class=\"table table-striped table-sm\">\n\t\t\t\t\t\t<thead>\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<th># - ID</th> \n\t\t\t\t\t\t\t\t<th>STATUS</th>\n\t\t\t\t\t\t\t\t<th>NOME</th>\n\t\t\t\t\t\t\t\t<th>DATA INÍCIO</th>\n\t\t\t\t\t\t\t\t<th>DATA FIM</th>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</thead>\n\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t@forelse($promocoes as $promocao)\n\t\t\t\t\t\t\t<tr class=\"table-info\">\n\t\t\t\t\t\t\t\t<td>{{$promocao->id}}</td>\n\t\t\t\t\t\t\t\t<td><span style=\"color: darkgreen\">ATIVO</span></td>\n\t\t\t\t\t\t\t\t<td>{{$promocao->nome}}</td>\n\t\t\t\t\t\t\t\t<td>{{$promocao->data_ini}}</td>\n\t\t\t\t\t\t\t\t<td>{{$promocao->data_fim}}</td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t@empty\n\t\t\t\t\t\t\t<span class=\"alert-danger\">NÃO HÁ PROMOÇÕES CADASTRADAS</span>\n\n\t\t\t\t\t\t\t@endforelse\n\n\t\t\t\t\t\t</tbody>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">  <!-- forms de cadastro de de prgrama -->\n\t\t\t\t\t<div class=\"col-2 offset-5\">\n\t\t\t\t\t\t<button type=\"button\" id=\"m3\" class=\"btn btn-success btn-circle btn-xl\" onclick=\"g3()\"><i class=\"fa fa-plus\" id=\"pl3\"></i></button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<br>\n\t\t\t\t<!-- AQUI FORMULÁRIO DE NOVO PROGRAMA -->\n\t\t\t\t<form method=\"post\" action=\"{{ route('guarda.promocao') }}\" class=\"form-horizontal\" role=\"form\" onsubmit=\"myButton2.disabled = true; return true;\" id=\"b3\" style=\"display: none\" >\n\t\t\t\t\t@csrf\n\t\t\t\t\t<div class=\"container\" ><!--    inicio container -->\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('NOME DA PROMOÇÃO') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"text\"  placeholder=\"Nome da Promocao\" class=\"form-control\" name=\"nome\" value=\"{{ old('nome') }}\"  autofocus autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-group\" >\n\t\t\t\t\t\t\t<label ><strong >{{ __('DATA DE INÍCIO') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"date\" class=\"form-control\" name=\"data_ini\" value=\"{{ old('data_ini') }}\" max=\"{{$now}}\" autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t<label ><strong >{{ __('DATA DE FIM') }}</strong></label>\n\t\t\t\t\t\t\t<input  type=\"date\" class=\"form-control\" name=\"data_fim\" value=\"{{ old('data_fim') }}\" max=\"2030-12-01\" autocomplete=\"off\" required=\"required\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div><!-- fim container -->\n\t\t\t\t\t<button type=\"submit\" class=\"btn btn-success btn-block\" name=\"myButton2\">CONFIRMAR</button>\n\t\t\t\t</form> \n\t\t\t\t<!-- FIM -->\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n@endsection",
-			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/dashboard.blade.php",
-			"file_size": 15548,
-			"file_write_time": 132465699606383093,
-			"settings":
-			{
-				"buffer_size": 15167,
-				"encoding": "UTF-8",
+				"buffer_size": 1222,
 				"line_ending": "Windows"
 			}
 		},
@@ -350,106 +315,26 @@
 			"file": "resources/js/components/QuadroPrimeiro.vue",
 			"settings":
 			{
-				"buffer_size": 2011,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/Traits/kanbanTrait.php",
-			"settings":
-			{
-				"buffer_size": 5538,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/equipes/criar-equipe.blade.php",
-			"settings":
-			{
-				"buffer_size": 5064,
+				"buffer_size": 2441,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/js/create-equipe.js",
+			"file": "resources/views/parciais/modal-tutorial.blade.php",
 			"settings":
 			{
-				"buffer_size": 3456,
+				"buffer_size": 1989,
 				"encoding": "UTF-8",
 				"line_ending": "Windows",
-				"name": "create-equipe.js"
-			}
-		},
-		{
-			"file": "public/js/create-projeto.js",
-			"settings":
-			{
-				"buffer_size": 3614,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/Traits/verificaTrait.php",
-			"settings":
-			{
-				"buffer_size": 1156,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"name": "modal-tutorial.blade.php"
 			}
 		},
 		{
 			"file": "public/js/paineis3.js",
 			"settings":
 			{
-				"buffer_size": 9843,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/EquipeController.php",
-			"settings":
-			{
-				"buffer_size": 7465,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/js/components/QuadroSegundo.vue",
-			"settings":
-			{
-				"buffer_size": 3156,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resources/js/components/QuadroLast.vue",
-			"settings":
-			{
-				"buffer_size": 2395,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resources/js/app.js",
-			"settings":
-			{
-				"buffer_size": 2662,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/KanbanController.php",
-			"settings":
-			{
-				"buffer_size": 5273,
+				"buffer_size": 10158,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -502,39 +387,64 @@
 		"/C/xampp/htdocs/Start/app/Providers",
 		"/C/xampp/htdocs/Start/app/Services",
 		"/C/xampp/htdocs/Start/app/Traits",
+		"/C/xampp/htdocs/Start/app/View",
+		"/C/xampp/htdocs/Start/database",
 		"/C/xampp/htdocs/Start/public",
+		"/C/xampp/htdocs/Start/public/js",
+		"/C/xampp/htdocs/Start/public/js/demo",
 		"/C/xampp/htdocs/Start/resources",
 		"/C/xampp/htdocs/Start/resources/js",
 		"/C/xampp/htdocs/Start/resources/js/components",
 		"/C/xampp/htdocs/Start/resources/views",
-		"/C/xampp/htdocs/Start/resources/views/auth",
-		"/C/xampp/htdocs/Start/resources/views/components",
 		"/C/xampp/htdocs/Start/resources/views/dashboard",
-		"/C/xampp/htdocs/Start/resources/views/equipes",
 		"/C/xampp/htdocs/Start/resources/views/kanban",
-		"/C/xampp/htdocs/Start/resources/views/layouts",
 		"/C/xampp/htdocs/Start/resources/views/parciais",
-		"/C/xampp/htdocs/Start/resources/views/projetos",
-		"/C/xampp/htdocs/Start/resources/views/users",
 		"/C/xampp/htdocs/Start/routes"
 	],
 	"file_history":
 	[
-		"/C/xampp/htdocs/Start/app/Traits/taskTrait.php",
+		"/C/Users/bielr/AppData/Local/Temp/Rar$DIa1972.49899/paineis3.js",
+		"/C/Users/bielr/Desktop/termos.blade.php",
+		"/C/xampp/htdocs/Start/routes/web.php",
+		"/C/xampp/htdocs/Start/app/TempoTask.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/KanbanController.php",
+		"/C/xampp/htdocs/Start/app/Task.php",
+		"/C/xampp/htdocs/Start/app/TaskFato.php",
+		"/C/xampp/htdocs/Start/app/Traits/verificaTrait.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
+		"/C/xampp/htdocs/Start/database/migrations/2020_10_09_112654_tempo_task.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/PlayerController.php",
 		"/C/xampp/htdocs/Start/app/Http/Controllers/TaskController.php",
+		"/C/xampp/htdocs/Start/app/Traits/taskTrait.php",
+		"/C/xampp/htdocs/Start/resources/js/components/IntegrantesDisponiveis.vue",
+		"/C/xampp/htdocs/Start/resources/js/app.js",
+		"/C/xampp/htdocs/Start/resources/js/components/QuadroLast.vue",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relaFeira.blade.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/EquipeController.php",
+		"/C/xampp/htdocs/Start/public/js/paineis3.js",
+		"/C/xampp/htdocs/Start/public/js/create-projeto.js",
+		"/C/xampp/htdocs/Start/public/js/create-equipe.js",
+		"/C/xampp/htdocs/Start/resources/js/components/IntegrantesEscolhidos.vue",
+		"/C/xampp/htdocs/Start/resources/views/equipes/index.blade.php",
+		"/C/xampp/htdocs/Start/resources/views/equipes/criar-equipe.blade.php",
+		"/C/xampp/htdocs/Start/app/Traits/kanbanTrait.php",
+		"/C/xampp/htdocs/Start/resources/js/components/QuadroSegundo.vue",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/dashboard.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/buscaRes.blade.php",
+		"/C/xampp/mysql/data_backpuo/ibdata1",
 		"/C/xampp/htdocs/Start/app/Notifications/Convite.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/nova-tarefa.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/revisa-tarefa.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/dashboard/dashboard.blade.php",
 		"/C/xampp/htdocs/Start/app/Traits/projetoTrait.php",
-		"/C/xampp/htdocs/Start/routes/web.php",
 		"/C/xampp/htdocs/Start/resources/js/components/Revisa.vue",
-		"/C/xampp/htdocs/Start/app/Traits/kanbanTrait.php",
 		"/C/xampp/htdocs/Start/resources/views/projetos/create.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/kanban/showvue.blade.php",
 		"/C/xampp/htdocs/Start/composer.json",
 		"/C/xampp/htdocs/Start/composer.lock",
-		"/C/xampp/htdocs/Start/app/TaskFato.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps2.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/register-novo.blade.php",
@@ -543,10 +453,8 @@
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/viacep.js",
 		"/C/xampp/htdocs/Start/public/css/app.css",
 		"/C/xampp/htdocs/Start/app/Http/Controllers/ProjetoController.php",
-		"/C/xampp/htdocs/Start/resources/views/equipes/index.blade.php",
 		"/C/xampp/htdocs/Start/app/Quadro.php",
 		"/C/xampp/htdocs/Start/resources/views/kanban/create.blade.php",
-		"/C/xampp/htdocs/Start/app/Http/Controllers/PlayerController.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/loading-page.blade.php",
 		"/C/xampp/htdocs/Start/app/Providers/AppServiceProvider.php",
 		"/C/xampp/htdocs/Start/public/css/noselect.css",
@@ -556,9 +464,7 @@
 		"/C/xampp/htdocs/Start/app/Events/RevisaTarefa.php",
 		"/C/xampp/htdocs/Start/routes/channels.php",
 		"/F/DOWNLOADS CHROME/Cookie-Consent-Notice-Bootstrap-4-cookieAlert/demo.html",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
 		"/C/xampp/htdocs/Start/app/Services/SocialGoogleAccountService.php",
-		"/C/xampp/htdocs/Start/public/js/paineis3.js",
 		"/C/xampp/htdocs/Start/public/css/wobble.css",
 		"/C/xampp/htdocs/Start/public/css/tabs.css",
 		"/C/xampp/htdocs/Start/public/css/sb-admin-2.css",
@@ -570,13 +476,10 @@
 		"/C/xampp/htdocs/Start/resources/views/users/perfil.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/layouts/home.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/head.blade.php",
-		"/C/xampp/htdocs/Start/app/Traits/verificaTrait.php",
 		"/C/xampp/htdocs/Start/app/Events/MovimentoInvalido.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/FormularioController.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteioRes.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteio.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/RelatorioController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio-entradas.blade.php",
@@ -605,7 +508,6 @@
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tickets-resolvidosL.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/meus-tickets.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tickets-resolvidos.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/dashboard.blade.php",
 		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/HomeController.php",
 		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/navuser.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/head-auth.blade.php",
@@ -628,30 +530,11 @@
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/aps.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/app.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/SocialGoogleAccountService.php",
-		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/TicketController.php",
-		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/BuscaController.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/app 2.js",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/GerenciaController.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio-resp.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/Atendimento.php",
-		"/F/DOWNLOADS CHROME/startbootstrap-sb-admin-2-gh-pages/index.html",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/mostractel.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonistas.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonista-cadastra.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/telefonista-atende.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultadoPesq.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tele-cadastrada.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/recaptcha.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/RegisterController.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/bootstrap.min.css",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/EntradasController.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/bootstrap.css",
-		"/F/DOWNLOADS CHROME/432497859.csv",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/promocoes-show.blade.php"
+		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/TicketController.php"
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
@@ -665,6 +548,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"`",
+			"preparaRevisao",
+			"revisaTarefaDivForm",
+			"        \t<",
+			"$ta->tempo->tempo",
+			"responseHere",
+			"error",
+			"());\n",
+			"fecha",
+			"equipe.store",
 			"geral",
 			"integrante",
 			"quadros",
@@ -713,54 +606,24 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 7,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app/Http/Controllers/PlayerController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4530,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1200,
-								1200
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1134.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "app/Http/Controllers/TaskController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5274,
+						"buffer_size": 5446,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2342,
-								2289
+								1698,
+								1698
 							]
 						],
 						"settings":
@@ -770,10 +633,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 198.0,
+						"translation.y": 1065.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/Traits/kanbanTrait.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5778,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2640,
+								2640
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1287.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -782,15 +675,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4517,
+						"buffer_size": 5030,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2248,
-								2248
+								2818,
+								2818
 							]
 						],
 						"settings":
@@ -799,199 +692,85 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 796.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19464,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1647,
-								1647
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 673.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/buscaRes.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11335,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								11335
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 810.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relaFeira.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1624,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1286,
-								1286
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19288,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4857,
-								4863
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1430.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5587,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5459,
-								5443
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1440.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/dashboard.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15167,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3429,
-								3429
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 810.0,
+						"translation.y": 1782.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "resources/js/components/QuadroPrimeiro.vue",
-					"semi_transient": true,
+					"buffer": 3,
+					"file": "resources/views/kanban/showvue.blade.php",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2011,
+						"buffer_size": 8941,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								2769,
+								2735
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 972.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "resources/views/parciais/revisa-tarefa.blade.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1222,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1018,
+								1030
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "resources/js/components/QuadroPrimeiro.vue",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2441,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								937,
+								937
 							]
 						],
 						"settings":
@@ -999,176 +778,56 @@
 							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "app/Traits/kanbanTrait.php",
+					"buffer": 6,
+					"file": "resources/views/parciais/modal-tutorial.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5538,
+						"buffer_size": 1989,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1873,
-								1898
+								1644,
+								1644
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 621.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "resources/views/equipes/criar-equipe.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5064,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3631,
-								3631
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1108.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 17,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "public/js/create-equipe.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3456,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3435,
-								3435
-							]
-						],
-						"settings":
-						{
-							"auto_name": "create-equipe.js",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1134.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "public/js/create-projeto.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3614,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1249,
-								1249
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": "modal-tutorial.blade.php",
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "app/Traits/verificaTrait.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								307,
-								307
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
+					"buffer": 7,
 					"file": "public/js/paineis3.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9843,
+						"buffer_size": 10158,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1114,
-								1085
+								7265,
+								7265
 							]
 						],
 						"settings":
@@ -1178,158 +837,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4466.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "app/Http/Controllers/EquipeController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7465,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3522,
-								3522
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1260.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 17,
-					"file": "resources/js/components/QuadroSegundo.vue",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								751,
-								756
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 18,
-					"file": "resources/js/components/QuadroLast.vue",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2395,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								819,
-								819
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Vue Syntax Highlight/Vue Component.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 20,
-					"type": "text"
-				},
-				{
-					"buffer": 19,
-					"file": "resources/js/app.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2662,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 190.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 19,
-					"type": "text"
-				},
-				{
-					"buffer": 20,
-					"file": "app/Http/Controllers/KanbanController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5273,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1496,
-								1496
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1367.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1337,7 +848,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 31.0
 	},
 	"input":
 	{
@@ -1374,7 +885,7 @@
 	"project": "projetoStart.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 58.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1412,7 +923,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 326.0,
+	"side_bar_width": 293.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

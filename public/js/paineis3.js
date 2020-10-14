@@ -5,6 +5,7 @@ jQuery(function($) {
         panelList.sortable({
             connectWith: ".connectedSortable",
             update: function(event,ui) {
+                          //console.log(ui.item[0]);
                           movido(ui.item[0].id,val1,0);
             }
 
@@ -193,7 +194,7 @@ $('#'+task).css('cursor', 'wait');
       },
       error: function(msg){
         $('#articlee').css('cursor', 'default');
-        document.getElementById('responseHere').innerHTML = msg;
+         document.getElementById('responseHere').innerHTML = msg.responseJSON.errors.tarefa[0];
       }
     });
 
@@ -207,7 +208,7 @@ function salvaMove(des){
   var form = $('#moveForm');
   var post_url = form.attr('action');
   var post_data = form.serialize();
-  $.ajax({
+  var show = $.ajax({
     type: 'GET',
     url: post_url,
     data: post_data,
@@ -222,7 +223,14 @@ function salvaMove(des){
       },
       error: function(msg){
         $('#articlee').css('cursor', 'default');
-        document.getElementById('responseHere').innerHTML = msg;
+        document.getElementById('responseHere').innerHTML = msg.responseJSON.errors;
+      }
+    });
+    show.done(function(dat){ 
+      //console.log(dat[1]);
+      if(dat[1] == 'revisa'){
+        //console.log(dat[2]);
+        setTimeout(function() {  preparaRevisao(dat[2]);},250);
       }
     });
 }

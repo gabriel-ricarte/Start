@@ -44,18 +44,18 @@ KANBAN
 							<button title="Nova Tarefa" type="button" class="btn btn-info btn-outline btn-lg text-white" onclick="abreFuncao('novaTarefaDiv')">
 								NOVA TAREFA	
 							</button>
-							<button title="Revisão de Tarefa" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="abreFuncao('revisaTarefaDiv')" >
-								<i class="fas fa-tools"></i>
-							</button>
+							<a  href="#" data-toggle="modal" data-target="#tutorial"><button title="Revisão de Tarefa" type="button" class="btn btn-warning btn-outline btn-lg active text-white"  >
+								<i class="fas fa-question-circle"></i>
+							</button></a>
 							<button title="Finalizar Quadro" type="button" class="btn btn-secondary btn-outline btn-lg active" onclick="abreFuncao('finalizarQuadroDiv')" >
 								<i class="fas fa-check-double"></i>
 							</button>
 						@endif	
-						@if($quadros[1]['quadro'] > 0)
+						<!-- @if($quadros[1]['quadro'] > 0)
 							<button title="Pausar Tarefa" type="button" class="btn btn-secondary active btn-outline btn-lg " onclick="abreFuncao('pausaTarefaDiv')" >
 								<i class="fa fa-pause"></i>
 							</button>
-						@endif
+						@endif -->
 						@if($permi->permissao == 0)	
 							<button title="Excluir Tarefa" type="button" class="btn btn-danger btn-outline btn-lg " onclick="abreFuncao('excluiTarefaDiv')" >
 								<i class="fas fa-trash-alt"></i>
@@ -63,7 +63,7 @@ KANBAN
 						@endif	
 						</center>
 						<div class="row" id="responseDiv" style="display: none">
-							<span class="" id="responseHere" style="float: right"></span>	
+							<span class="alert alert-danger" id="responseHere" style="float: right">TEVE ERRO ou NÃO ?</span>	
 						</div>
 						<div class="row" id="formRevisao" style="display: none">
 							
@@ -223,6 +223,7 @@ KANBAN
 </a>
 <!-- Logout Modal-->
 @include('parciais.modal-logout')
+@include('parciais.modal-tutorial')
 @endsection
 
 

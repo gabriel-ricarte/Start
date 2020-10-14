@@ -99,7 +99,7 @@
 		methods: {
 			newplayer(){
 				document.getElementById('texto-pesquisa').innerHTML = '';
-				document.getElementById('texto-pesquisa').innerHTML = 'CADASTRE NOVO PARTICIPANTE';
+				document.getElementById('texto-pesquisa').innerHTML = 'CADASTRE NOVO PARTICIPANTE <span style="float : right;"><button class="btn btn-danger btn-sm" onclick="fecha(\'novo-integrante\')"><span class="far fa-times-circle"></span></button></span>';
 				$('#integranteform').slideUp('fast',function(){});  
 				$('#btn-confirma').slideUp('fast',function(){});  
 

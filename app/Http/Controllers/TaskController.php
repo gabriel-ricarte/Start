@@ -56,13 +56,17 @@ class TaskController extends Controller
         'task' => 'required|exists:task_fatos,id',
         'estado' => 'required|integer',
         ]); 
+        //dd($mensagem);
+
         $user = Auth::user();
         $task = TaskFato::findOrFail($request->task);
         $tarefa = Task::find($task->task_id);
         $verifica = $this->moveTarefa($user , $task, $request);
-        //verifica se movimento é válido
+           // asdf
+       // dd($request->all());
+       //verifica se movimento é válido
         if($request->quadro == $task->quadro_id || $request->estado == $task->estado ){
-            return ['Tarefas somente salvas com movimento entre quadros !','info'];
+            return [' - ', 'light'];
         }
         if(!$verifica[0]){
             event(new MovimentoInvalido($user));
@@ -73,10 +77,14 @@ class TaskController extends Controller
             event(new MovimentoInvalido($user));
             return [$movimento[1],$movimento[2]];
         }
-        //$this->salvaMovimento($user ,$request ,$task ,$tarefa);
         broadcast(new TaskMovida($tarefa,$user))->toOthers();
         event(new TaskMovida($tarefa,$user));
-        return ['Movido com sucesso !','success'];
+        if($movimento[2] == 'revisa'){
+         return [$movimento[1],$movimento[2],$movimento[3]];
+        }
+        //$this->salvaMovimento($user ,$request ,$task ,$tarefa);
+       
+        return [$movimento[1],$movimento[2]];
     }
     public function deltask(Request $request)
     {
@@ -110,6 +118,7 @@ class TaskController extends Controller
     }
     public function revisatask(Request $request)
     {
+        //dd($request->all());
         $request->validate([
         'task' => 'required|exists:task_fatos,id',
         ]);

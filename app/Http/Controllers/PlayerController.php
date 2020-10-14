@@ -84,7 +84,7 @@ class PlayerController extends Controller
 
         //adicionando na equipe 
         $equipe = Equipe::findOrFail($projeto->equipe->first->id->id);
-       EquipeController::adicionaIntegrante($equipe, $player);
+        EquipeController::adicionaIntegrante($equipe, $player);
         \Notification::route('mail', $request->email)
             ->notify(new Convite($request->nome,$projeto->nome,$user->nome));
         session()->flash('msg','Adicionado com sucesso !');

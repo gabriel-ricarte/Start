@@ -16,6 +16,7 @@ use DB;
 use App\Events\NovaTask;
 use App\Events\TaskMovida;
 use App\Events\MovimentoInvalido;
+use App\TempoTask;
 
 trait taskTrait
 {
@@ -41,121 +42,134 @@ trait taskTrait
 	}
 	public function salvaMovimento(User $user, Request $request, TaskFato $task, Task $tarefa){
 		$hoje = date('Y-m-d H:i:s');
-
-		switch ($request->estado) {
-			//finalizar tarefa
+		switch ((int)$request->estado) {
+			//estado de finalizar tarefa
 			case 2:
-				if($task->estado != 3){
-					return [false,'Movimento inválido','danger'];
+				//so recebe tarefas que estavam sendo feitas 
+				if ($task->estado == 3) {
+					$tempo = new TempoTask();
+					$date1=date_create($tarefa->custo);
+					$date2=date_create($hoje);
+					$diff=date_diff($date1,$date2);
+					$dias = $diff->format("%d");
+					$horas = $diff->format("%h");
+					$minutos = $diff->format("%i");
+
+					if($dias > 0){
+						$tempo->task()->associate($task->id);
+						$tempo->tempo = ($dias*24*60)+(($horas*60)+$minutos);
+					}else{
+						$tempo->task()->associate($task->id);
+						$tempo->tempo = (($horas*60)+$minutos);	
+					}
+					$tempo->save();
+					$task->quadro_id = $request->quadro;    
+					$task->estado = $request->estado;
+					$task->save();
+					return [true,'Movimentado com sucesso','success'];
+
 				}
-				$date1=date_create($tarefa->custo);
-				$date2=date_create($hoje);
-				$diff=date_diff($date1,$date2);
-				$dias = $diff->format("%d");
-				$horas = $diff->format("%h");
-				$minutos = $diff->format("%i");
-				if($dias > 0){
-					$tarefa->custo = ($dias*24*60)+(($horas*60)+$minutos);
-				}else{
-					$tarefa->custo = (($horas*60)+$minutos);	
+				if ($task->estado == 4) {
+					$tempo = TempoTask::findOrFail($task->task->tempo[0]->id);
+					$date1=date_create($tarefa->custo);
+					$date2=date_create($hoje);
+					$diff=date_diff($date1,$date2);
+					$dias = $diff->format("%d");
+					$horas = $diff->format("%h");
+					$minutos = $diff->format("%i");
+					if($dias > 0){
+						$tempo->tempo = $tempo->tempo + ($dias*24*60)+(($horas*60)+$minutos);
+						
+					}else{
+						
+							$tempo->tempo = $tempo->tempo + (($horas*60)+$minutos);	
+						
+					}
+					$task->quadro_id = $request->quadro;    
+					$task->estado = $request->estado;
+					$task->save();
+					return [true,'Movimentado com sucesso','success'];	
+					break;
 				}
-				$tarefa->save();
-				$quadro = Quadro::find($request->quadro);
-				$task->quadro_id = $request->quadro;    
-				$task->estado = $request->estado;
-				$task->save(); 
+				return [false,'Movimento inválido','danger'];
+				
 			break;
 			//resolver tarefa
 			case 3:
-				if($task->estado != 0 && $task->estado != 4 ){
-					return [false,'Movimento inválido','danger'];
-				}
-				if($task->estado == 0){
+			//recebe o estado fazendo
+				//verifica a origem
+				if($task->estado == 0 || $task->estado == 4){
 					$tarefa->custo = $hoje;
 					$tarefa->save();
 					$quadro = Quadro::find($request->quadro);
 					$task->quadro_id = $request->quadro;    
 					$task->estado = $request->estado;
-					$task->save();	
+					$task->save();
+					
 				}else{
-					$quadro = Quadro::find($request->quadro);
-					$task->quadro_id = $request->quadro;    
-					$task->estado = $request->estado;
-					$task->save();	
-				}
-				 
-			break;
-			case 0:
-				if($task->estado != 3){
 					return [false,'Movimento inválido','danger'];
 				}
-				//pausa tarefa
-				$task->estado = 4; 
-        		$task->save(); 
-        		$tarefa = Task::find($task->task_id);  
-        		$date1=date_create($tarefa->custo);
-				$date2=date_create($hoje);
-				$diff=date_diff($date1,$date2);
-				$dias = $diff->format("%d");
-				$horas = $diff->format("%h");
-				$minutos = $diff->format("%i");
-				if($dias > 0){
-					$tarefa->custo = ($dias*24*60)+(($horas*60)+$minutos);
-				}else{
-					$tarefa->custo = (($horas*60)+$minutos);	
+				//só deixa receber o estado de quem vem de a fazer
+
+       			return [true,'Tarefa iniciada com sucesso !','success'];
+			break;
+			case 0:
+				if ($task->estado == 2) {
+					//revisao
+					// mudar o estado e o quadro 
+					$task->quadro_id = $request->quadro;    
+					$task->estado = 4;
+					$task->save();
+					return [true,'preparando tarefa para revisão !','revisa',$task->id];
 				}
-				$tarefa->save();
-        		broadcast(new TaskMovida($tarefa,$user))->toOthers();
-       			return ['Tarefa pausada com sucesso !','success'];
+				if($task->estado == 3){
+					//pause
+					if (isset($task->task->tempo[0])) {
+						$tempo = TempoTask::find($task->task->tempo[0]->id);
+					}else{
+						$tempo = new TempoTask();
+						$tempo->task()->associate($task->id);
+					}
+					
+					$date1=date_create($tarefa->custo);
+					$date2=date_create($hoje);
+					$diff=date_diff($date1,$date2);
+					$dias = $diff->format("%d");
+					$horas = $diff->format("%h");
+					$minutos = $diff->format("%i");
+					if($dias > 0){
+						if (isset($task->task->tempo[0])) {
+							$tempo->tempo =(int)$task->task->tempo[0]->tempo + ($dias*24*60)+(($horas*60)+$minutos);
+						}else{
+							$tempo->tempo =($dias*24*60)+(($horas*60)+$minutos);
+						}
+					}else{
+						if (isset($task->task->tempo[0])) {
+							$tempo->tempo = (int)$task->task->tempo[0]->tempo + (($horas*60)+$minutos);	
+						}else{
+							$tempo->tempo = ($horas*60)+$minutos;
+						}
+					}
+					$tempo->save();
+					$task->quadro_id = $request->quadro;    
+					$task->estado = $request->estado;
+					$task->save();
+					
+       			return [true,'Tarefa iniciada com sucesso !','success'];
+				}
+				if($task->estado == 4){
+					//pause
+					$task->quadro_id = $request->quadro;    
+					$task->save();
+					
+       			return [true,'Tarefa iniciada com sucesso !','success'];
+				}
+       			return [false,'Erro na movimentação','danger'];
 			break;
 			default:
-			return null;
+			return [false,'Erro ?','danger'];
 			break;
 		}
-		// if($request->estado == 2){ 
-		// 		$date1=date_create($tarefa->custo);
-		// 		$date2=date_create($hoje);
-		// 		$diff=date_diff($date1,$date2);
-		// 		$dias = $diff->format("%d");
-
-		// 		//dd($dias);
-		// 		$horas = $diff->format("%h");
-		// 		$minutos = $diff->format("%i");
-		// 		if($dias > 0){
-		// 			$tarefa->custo = ($dias*24*60)+(($horas*60)+$minutos);
-		// 			//dd($tarefa->custo);
-		// 		}else{
-		// 			$tarefa->custo = (($horas*60)+$minutos);	
-		// 			//dd($tarefa->custo);
-		// 		}
-		// 		//dd($tarefa->custo);
-		// 		//$tarefa->custo = (($horas*60)+$minutos);	
-		// 		$tarefa->save();
-		// 		$quadro = Quadro::find($request->quadro);
-		// 		$task->quadro_id = $request->quadro;    
-		// 		$task->estado = $request->estado;
-		// 		$task->save(); 
-		// 	}
-		// 	if($request->estado == 3 && $task->estado != 4){ 
-		// 		$tarefa->custo = $hoje;
-		// 		$tarefa->save();
-		// 		$quadro = Quadro::find($request->quadro);
-		// 		$task->quadro_id = $request->quadro;    
-		// 		$task->estado = $request->estado;
-		// 		$task->save(); 
-		// 	}
-
-			// if($request->estado == 4){ 
-			// 	$tarefa->custo = $hoje;
-			// 	$tarefa->save();
-			// }
-			// $quadro = Quadro::find($request->quadro);
-			// $task->quadro_id = $request->quadro;    
-			// $task->estado = $request->estado;
-			// $task->save(); 
-			
-
-
 		
 	}
 }

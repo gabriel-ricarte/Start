@@ -103,7 +103,7 @@ function selecionar(nome,id){
 
 function newplayer(){
 		document.getElementById('texto-pesquisa').innerHTML = '';
-		document.getElementById('texto-pesquisa').innerHTML = 'CADASTRE NOVO PARTICIPANTE';
+		document.getElementById('texto-pesquisa').innerHTML = 'CADASTRE NOVO PARTICIPANTE ';
 		$('#integrante-form').slideUp('fast',function(){});  
 		$('#btn-confirma').slideUp('fast',function(){});  
 

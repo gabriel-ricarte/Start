@@ -38,7 +38,7 @@ EQUIPE
                 <div class="card shadow mb-4">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary" id="texto">Buscando dados ...</h6><span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha()"><span class="far fa-times-circle"></span></button></span>
+                    <h6 class="m-0 font-weight-bold text-primary" id="texto">Buscando dados ...</h6><span style="float: right"><button class="btn btn-danger btn-sm" onclick="fecha('desce')"><span class="far fa-times-circle"></span></button></span>
                   </div>
                   <!-- Card Body -->
                   <div class="card-body" id="exibe">
@@ -163,7 +163,11 @@ EQUIPE
 </a>
  
 <script type="text/javascript">
-
+function fecha(id){
+    $('#'+id).slideUp('fast',function(){});  
+    $('#integranteform').slideDown('fast',function(){});  
+    document.getElementById('texto-pesquisa').innerHTML = "PESQUISE OS INTEGRANTES DISPONÍVEIS";              
+}
 </script>
 <!-- Logout Modal-->
 @include('parciais.modal-logout')

@@ -13,6 +13,7 @@ use App\Kanban;
 use App\EquipeUser;
 use App\Equipe;
 use DB;
+use App\TempoTask;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Notifications\Contato;
@@ -111,7 +112,7 @@ class KanbanController extends Controller
         $quadros = [];
         $projeto = Projeto::find($kanban->projeto->id);
         $equipe = Equipe::find($projeto->equipe->first->id->id);
-        $membros = $equipe->equipeUser;
+        $membros = $equipe->ativos;
         foreach($kanban->quadros as $quad){
             $quadros[] = ['quadro' => $quad->id];
         }
@@ -178,5 +179,11 @@ class KanbanController extends Controller
         $kanban->save();
         return redirect()->route('projeto.index')->with('msg','Quadro fechado com sucesso !');
 
+    }
+
+    public function executa(){
+        $tarefas = TaskFato::find(74);
+        dd($tarefas->task->tempo->first->tempo->tempo);
+        return $tarefas->tempo;
     }
 }
