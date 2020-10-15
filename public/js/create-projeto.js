@@ -70,7 +70,11 @@ function pesquisa(dado){
                       </tbody>
                     </table>
                   </div>
-                  <span class="alert alert-warning">Se integrante não foi encontrado cadastre <button type="button" class="btn btn-warning active btn-sm" onclick="newplayer()">AQUI</button></span>
+                  <span class="alert alert-warning">Se integrante não foi encontrado cadastre 
+                   <a class="btn btn-warning active" href="#" data-toggle="modal" data-target="#modal-newp">
+          
+         aqui</a>
+                  </span>
 `;
       },
       error: function(){

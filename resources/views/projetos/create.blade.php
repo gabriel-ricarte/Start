@@ -63,7 +63,7 @@ NOVO PROJETO
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-6 mb-3 mb-sm-0">
-												<input type="text" class="form-control form-control-user" id="desc" placeholder="Sponsor  (Centro de custo do projeto)" name="spo" required>
+												<input type="text" class="form-control form-control-user" id="spo" placeholder="Sponsor  (Centro de custo do projeto)" name="spo" required>
 											</div>
 											<div class="col-sm-6 mb-3 mb-sm-0" id="change">
 												<input type="text" class="form-control form-control-user" id="vertical" placeholder="Vertical do projeto" name="vertical" required onfocus="muda2()">
