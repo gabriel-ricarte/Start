@@ -55,9 +55,11 @@ EQUIPE
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">INTEGRANTES SELECIONADOS</h6>
                   </div>
-                  
+                    @if($projeto->equipe->count() > 0)
                     <integrantes-selecionados :integrantes="integrantes" :projeto="{{$projeto->id}}" @selecionados="integrantes = $event" :csrf="{{ json_encode(csrf_token()) }}" :time="{{$projeto->equipe->first->id->id}}"></integrantes-selecionados>
-                      
+                    @else
+                    <integrantes-selecionados :integrantes="integrantes" :projeto="{{$projeto->id}}" @selecionados="integrantes = $event" :csrf="{{ json_encode(csrf_token()) }}" :time="0"></integrantes-selecionados>
+                    @endif  
                
                 </div>
               </div>

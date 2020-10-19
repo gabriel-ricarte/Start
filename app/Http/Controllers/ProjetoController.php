@@ -109,7 +109,7 @@ class ProjetoController extends Controller
         $projeto->data_ini = $request->data_ini;
         $projeto->data_fim = $request->data_fim;
         $projeto->info = 'Editável';
-        $prjeto->imagem = 'gears.png';
+        $projeto->imagem = 'gears.png';
         if($request->hasFile('imagem')){
             $image = $request->file('imagem');
             $extension = $image->getClientOriginalExtension();

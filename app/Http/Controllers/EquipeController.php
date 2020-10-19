@@ -46,6 +46,7 @@ class EquipeController extends Controller
     public function criarEquipe()
     {
         $user = Auth::user();
+
         $projeto = $user->projeto_andando->first;
         if($this->acessaEquipe($user->id,$projeto)){
             $integrantes = User::all();
@@ -60,17 +61,24 @@ class EquipeController extends Controller
     {
         $user = Auth::user();
         $projeto = Projeto::findOrFail($id);
-        if($this->acessaEquipe($user->id,$projeto)){
+
+        if($projeto->equipe->count() > 0){
+
+                if($this->acessaEquipe($user->id,$projeto)){
             $equipe = Equipe::find($projeto->equipe->first->id->id);
             $pessoas = [];
             $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();
             foreach($integrantes as $integrante){
                 $pessoas[] = ['id' => $integrante->user->id,'nome' => $integrante->user->nome,'status' => $integrante->status, 'permissao' => $integrante->permissao, 'email' => $integrante->user->email];
             }
-            return $pessoas;
+                return $pessoas;
+            }else{
+                return [false,'Usuário não autorizado !'];
+            }
         }else{
-            return [false,'Usuário não autorizado !'];
+            return null;
         }
+
         
     }
     public function buscaIntegrantesD($id)
@@ -80,22 +88,29 @@ class EquipeController extends Controller
         $usuarios = User::all();
         $nomes = array();
         if($this->acessaEquipe($user->id,$projeto)){
-            $equipe = Equipe::find($projeto->equipe->first->id->id);
-            $pessoas = [];
-            $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();
-            foreach($integrantes as $integrante){
-                $pessoas[] = ['id' => $integrante->user->id];
-            }
-            foreach($usuarios as $key => $value){
+            if($projeto->equipe->count() > 0){
+                    $equipe = Equipe::find($projeto->equipe->first->id->id);
+                    $pessoas = [];
+                    $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();
+                    foreach($integrantes as $integrante){
+                        $pessoas[] = ['id' => $integrante->user->id];
+                    }
+                    foreach($usuarios as $key => $value){
 
-                if($integrantes->contains('user_id',$value->id)){
-                    unset($usuarios[$key]);    
-                }else{
-                    //array_push($nomes,$value->nome);
-                    $nomes[] = ['id' => $value->id, 'nome' => $value->nome, 'email' => $value->email]; 
-                }
-             
+                        if($integrantes->contains('user_id',$value->id)){
+                            unset($usuarios[$key]);    
+                        }else{
+                            //array_push($nomes,$value->nome);
+                            $nomes[] = ['id' => $value->id, 'nome' => $value->nome, 'email' => $value->email]; 
+                        }
+                     
+                    } 
+            }else{
+                    foreach($usuarios as $key => $value){
+                        $nomes[] = ['id' => $value->id, 'nome' => $value->nome, 'email' => $value->email]; 
+                    } 
             }
+           
             return $nomes;
         }else{
             return [false,'Usuário não autorizado !'];
@@ -107,10 +122,12 @@ class EquipeController extends Controller
     {
         $user = Auth::user();
         $projeto = Projeto::findOrFail($id);
+        //dd($projeto);
         if($this->acessaEquipe($user->id,$projeto)){
            if($projeto->equipe->count() == 0){
             $ids = $projeto->equipe->first->id;
              $integrantes = EquipeUser::where('equipe_id',$ids)->get();
+             //dd($projeto->equipe);
              return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);
         }
         $ids = $projeto->equipe->first->id->id;
@@ -297,6 +314,7 @@ class EquipeController extends Controller
         }
         return redirect()->route('perfil')->with('msg','Contato adicionado com sucesso !');
     }
+    
     public function ativaUser($id){
         $user = Auth::user();
         $muda = User::find($id);
