@@ -34,10 +34,18 @@ PERFIL
                     <div class="col-md-4">
                         <div class="profile-img">
                             <img src="{{$user->avatar}}" alt=""/>
-                            <div class="file btn btn-lg btn-primary">
+                            <form action="/profile" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="file btn btn-lg btn-primary">
+                    <input type="file" class="form-control-file" name="avatar" id="avatarFile" aria-describedby="fileHelp">
+                    <small id="fileHelp" class="form-text text-muted">Please upload a valid image file. Size of image should not be more than 2MB.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+                            <!-- <div class="file btn btn-lg btn-primary" >
                                 Mudar Foto
-                                <!-- <input type="file" name="file"/> -->
-                            </div>
+                                 <input type="file" name="file"/>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -110,11 +118,14 @@ PERFIL
                                                 <label>Contato</label>
                                             </div>
                                             <div class="col-md-6">
-                                              @if($user->contatos->count() == 0 )
-                                              <button class="badge badge-primary">ADICIONAR</button>
-                                              @else
-                                              <p>{{$user->contato}}</p>
-                                              @endif 
+                                             
+                                              <a href="" data-toggle="modal" data-target="#modal-contato" class="badge badge-primary">ADICIONAR</a>
+                                              <p>@forelse($user->contatos as $contato)
+                                                {{$contato->tipo}} : {{$contato->contato}}; <button  class="badge badge-danger" type="button"><span class="fas fa-times-circle"></span></button><br>
+                                                @empty
+                                                Ainda sem contatos adicionados !
+                                                @endforelse
+                                              </p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -132,7 +143,7 @@ PERFIL
                                                 <label>Tarefas completas</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>25</p>
+                                                <p>{{$tarefas}}</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -140,7 +151,7 @@ PERFIL
                                                 <label>Horas Trabalhadas</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>10 hrs</p>
+                                                <p>{{$tempo}}</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -202,8 +213,9 @@ PERFIL
   </a>
 
   <!-- Logout Modal-->
-  @include('parciais.modal-logout')
-	@include('parciais.modal-oops')
+@include('parciais.modal-logout')
+@include('parciais.modal-oops')
+@include('parciais.modal-contato')
 
   <script type="text/javascript">
     function roda(){

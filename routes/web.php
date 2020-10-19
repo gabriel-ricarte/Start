@@ -60,8 +60,8 @@ Route::get('projetos-em-andamento','ProjetoController@andamento')->name('andamen
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/contato','HomeController@contato')->name('contact');
-
-
+Route::post('/insere-contato','EquipeController@inserecontato')->name('insere.contato');
+Route::post('profile', 'UserController@update_avatar');
 
 //Route::get('/kanbs','ProjetoController@kanbs');
 

@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"BUTTON",
+				"button"
+			],
+			[
+				"form",
+				"form-group"
+			],
+			[
 				"Task",
 				"TaskFato"
 			],
@@ -86,10 +94,6 @@
 			[
 				"col-",
 				"col-md-4"
-			],
-			[
-				"form",
-				"form-control"
 			],
 			[
 				"tex",
@@ -271,7 +275,7 @@
 			"file": "public/js/create-projeto.js",
 			"settings":
 			{
-				"buffer_size": 4685,
+				"buffer_size": 4921,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -299,10 +303,44 @@
 			"file": "resources/views/kanban/show-quatro.blade.php",
 			"settings":
 			{
-				"buffer_size": 7841,
+				"buffer_size": 7838,
 				"encoding": "UTF-8",
 				"line_ending": "Windows",
 				"name": "show-quatro.blade.php"
+			}
+		},
+		{
+			"contents": "@extends('layouts.dashboard')\n@section('titulo')\nPERFIL\n@endsection\n@section('perfilA','active')\n@section('local','PERFIL')\n@section('css')\n<link rel=\"stylesheet\" type=\"text/css\" href=\"{{asset('css/perfil.css')}}\">\n<!-- <link rel=\"stylesheet\" type=\"text/css\" href=\"{{asset('css/loading.min.css')}}\"> -->\n@endsection\n@section('conteudo')\n\n <!-- Page Wrapper -->\n  <div id=\"wrapper\">\n\n    <!-- Sidebar -->\n    @include('dashboard.side-bar')\n    <!-- End of Sidebar -->\n\n    <!-- Content Wrapper -->\n    <div id=\"content-wrapper\" class=\"d-flex flex-column\">\n\n      <!-- Main Content -->\n      <div id=\"content\">       \n      \t<!-- Topbar -->\n       @include('dashboard.top-bar')\n        <!-- End of Topbar -->\n        <!-- Begin Page Content -->\n\n          <!-- conteudo aqui -->\n<div class=\"container emp-profile\">\n            <form method=\"post\">\n                <div class=\"row\">\n                    <div class=\"col-md-4\">\n                        <div class=\"profile-img\">\n                            <img src=\"{{$user->avatar}}\" alt=\"\"/>\n                            <form action=\"/profile\" method=\"post\" enctype=\"multipart/form-data\">\n                @csrf\n                <div class=\"form-group\">\n                    <input type=\"file\" class=\"form-control-file\" name=\"avatar\" id=\"avatarFile\" aria-describedby=\"fileHelp\">\n                    <small id=\"fileHelp\" class=\"form-text text-muted\">Please upload a valid image file. Size of image should not be more than 2MB.</small>\n                </div>\n                <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n            </form>\n                            <!-- <div class=\"file btn btn-lg btn-primary\" >\n                                Mudar Foto\n                                 <input type=\"file\" name=\"file\"/>\n                            </div> -->\n                        </div>\n                    </div>\n                    <div class=\"col-md-6\">\n                        <div class=\"profile-head\">\n                                    <h5>\n                                        {{$user->nome}}\n                                    </h5>\n                                    <h6>\n                                        {{$user->vertical}}\n                                    </h6>\n                                    <p class=\"proile-rating\">PROJETOS : <span>{{$user->projeto->count()}}</span></p>\n                            <ul class=\"nav nav-tabs\" id=\"myTab\" role=\"tablist\">\n                                <li class=\"nav-item\">\n                                    <a class=\"nav-link active\" id=\"home-tab\" data-toggle=\"tab\" href=\"#home\" role=\"tab\" aria-controls=\"home\" aria-selected=\"true\">Sobre</a>\n                                </li>\n                                <li class=\"nav-item\">\n                                    <a class=\"nav-link\" id=\"profile-tab\" data-toggle=\"tab\" href=\"#profile\" role=\"tab\" aria-controls=\"profile\" aria-selected=\"false\">Projetos</a>\n                                </li>\n                            </ul>\n                        </div>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <input type=\"button\" class=\"profile-edit-btn\" name=\"btnAddMore\" value=\"Editar Perfil\"/>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-md-4\">\n                        <!-- <div class=\"profile-work\">\n                            <p>WORK LINK</p>\n                            <a href=\"\">Website Link</a><br/>\n                            <a href=\"\">Bootsnipp Profile</a><br/>\n                            <a href=\"\">Bootply Profile</a>\n                            <p>SKILLS</p>\n                            <a href=\"\">Web Designer</a><br/>\n                            <a href=\"\">Web Developer</a><br/>\n                            <a href=\"\">WordPress</a><br/>\n                            <a href=\"\">WooCommerce</a><br/>\n                            <a href=\"\">PHP, .Net</a><br/>\n                        </div> -->\n                    </div>\n                    <div class=\"col-md-8\">\n                        <div class=\"tab-content profile-tab\" id=\"myTabContent\">\n                            <div class=\"tab-pane fade show active\" id=\"home\" role=\"tabpanel\" aria-labelledby=\"home-tab\">\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Matrícula Usuário</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$user->matricula}}</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Nome</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$user->nome}}</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Email</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$user->email}}</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Contato</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                             \n                                              <a href=\"\" data-toggle=\"modal\" data-target=\"#modal-contato\" class=\"badge badge-primary\">ADICIONAR</a>\n                                              <p>@forelse($user->contatos as $contato)\n                                                {{$contato->tipo}} : {{$contato->contato}}; <button  class=\"badge badge-danger\" type=\"button\"><span class=\"fas fa-times-circle\"></span></button><br>\n                                                @empty\n                                                Ainda sem contatos adicionados !\n                                                @endforelse\n                                              </p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Setor</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$user->setor}}</p>\n                                            </div>\n                                        </div>\n                            </div>\n                            <div class=\"tab-pane fade\" id=\"profile\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Tarefas completas</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$tarefas}}</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Horas Trabalhadas</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>{{$tempo}}</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Total Projetos</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>2</p>\n                                            </div>\n                                        </div>\n                                        <!-- <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>English Level</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>Expert</p>\n                                            </div>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"col-md-6\">\n                                                <label>Availability</label>\n                                            </div>\n                                            <div class=\"col-md-6\">\n                                                <p>6 months</p>\n                                            </div>\n                                        </div>-->\n                                <div class=\"row\">\n                                    <div class=\"col-md-12\">\n                                        <label>Sua Biografia</label><br/>\n                                        <p>As experiências acumuladas demonstram que o surgimento do comércio virtual exige a precisão e a definição dos métodos utilizados na avaliação de resultados.</p>\n                                    </div>\n                                </div> \n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </form>           \n        </div>\n\n      \n        <!-- /.container-fluid -->\n\n      </div>\n      <!-- End of Main Content -->\n\n      <!-- Footer -->\n      @include('parciais.footer')\n      <!-- End of Footer -->\n\n    </div>\n    <!-- End of Content Wrapper -->\n\n  </div>\n  <!-- End of Page Wrapper -->\n\n  <!-- Scroll to Top Button-->\n  <a class=\"scroll-to-top rounded\" href=\"#page-top\">\n    <i class=\"fas fa-angle-up\"></i>\n  </a>\n\n  <!-- Logout Modal-->\n@include('parciais.modal-logout')\n@include('parciais.modal-oops')\n@include('parciais.modal-contato')\n\n  <script type=\"text/javascript\">\n    function roda(){\n\n      var twoToneButton = document.querySelector('#btn_edit');\n      twoToneButton.classList.add('ld-spin');\n    }\n    \n  </script>\n@endsection",
+			"file": "resources/views/users/perfil.blade.php",
+			"file_size": 11553,
+			"file_write_time": 132473543872543603,
+			"settings":
+			{
+				"buffer_size": 11299,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resources/views/parciais/modal-contato.blade.php",
+			"settings":
+			{
+				"buffer_size": 2448,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "modal-contato.blade.php"
+			}
+		},
+		{
+			"contents": "<?php\n\nnamespace App\\Http\\Controllers;\n\nuse Illuminate\\Http\\Request;\nuse App\\User;\nuse Auth;\nuse App\\Projeto;\nuse App\\Quadro;\nuse App\\TaskFato;\nuse App\\Task;\nuse App\\Kanban;\nuse App\\EquipeUser;\nuse App\\Equipe;\nuse App\\Contato;\nuse DB;\nuse Illuminate\\Support\\Facades\\Storage;\nuse Illuminate\\Support\\Facades\\File;\nuse App\\Notifications\\ContatoEmail;\nuse App\\Traits\\verificaTrait;\n\nclass EquipeController extends Controller\n{\n    use verificaTrait;\n    public function __construct()\n    {\n         $this->middleware(['auth']);\n    }\n    /**\n     * Display a listing of the resource.\n     *\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function index()\n    {\n        $user = Auth::user();\n        $projetos = $user->projeto;\n        return view('equipes.index')->withUser($user)->withProjetos($projetos);\n    }\n\n    /**\n     * Show the form for creating a new resource.\n     *\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function criarEquipe()\n    {\n        $user = Auth::user();\n        $projeto = $user->projeto_andando->first;\n        if($this->acessaEquipe($user->id,$projeto)){\n            $integrantes = User::all();\n            $hoje = date('Y-m-d');\n            return view('equipes.create')->withProjeto($projeto)->withHoje($hoje)->withIntegrantes($integrantes);\n        }else{\n            return redirect()->back()->withErrors('Usuário não autorizado !');\n        }\n        \n    }\n    public function buscaIntegrantes($id)\n    {\n        $user = Auth::user();\n        $projeto = Projeto::findOrFail($id);\n        if($this->acessaEquipe($user->id,$projeto)){\n            $equipe = Equipe::find($projeto->equipe->first->id->id);\n            $pessoas = [];\n            $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();\n            foreach($integrantes as $integrante){\n                $pessoas[] = ['id' => $integrante->user->id,'nome' => $integrante->user->nome,'status' => $integrante->status, 'permissao' => $integrante->permissao, 'email' => $integrante->user->email];\n            }\n            return $pessoas;\n        }else{\n            return [false,'Usuário não autorizado !'];\n        }\n        \n    }\n    public function buscaIntegrantesD($id)\n    {\n        $user = Auth::user();\n        $projeto = Projeto::findOrFail($id);\n        $usuarios = User::all();\n        $nomes = array();\n        if($this->acessaEquipe($user->id,$projeto)){\n            $equipe = Equipe::find($projeto->equipe->first->id->id);\n            $pessoas = [];\n            $integrantes = EquipeUser::where('equipe_id',$id)->where('status',0)->get();\n            foreach($integrantes as $integrante){\n                $pessoas[] = ['id' => $integrante->user->id];\n            }\n            foreach($usuarios as $key => $value){\n\n                if($integrantes->contains('user_id',$value->id)){\n                    unset($usuarios[$key]);    \n                }else{\n                    //array_push($nomes,$value->nome);\n                    $nomes[] = ['id' => $value->id, 'nome' => $value->nome, 'email' => $value->email]; \n                }\n             \n            }\n            return $nomes;\n        }else{\n            return [false,'Usuário não autorizado !'];\n        }\n        \n    }\n\n    public function continueEquipe($id)\n    {\n        $user = Auth::user();\n        $projeto = Projeto::findOrFail($id);\n        if($this->acessaEquipe($user->id,$projeto)){\n           if($projeto->equipe->count() == 0){\n            $ids = $projeto->equipe->first->id;\n             $integrantes = EquipeUser::where('equipe_id',$ids)->get();\n             return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);\n        }\n        $ids = $projeto->equipe->first->id->id;\n        $integrantes = EquipeUser::where('equipe_id',$ids)->where('status',0)->get();\n        return view('equipes.criar-equipe')->withProjeto($projeto)->withIntegrantes($integrantes);      \n        }else{\n             return redirect()->back()->withErrors('Usuário não autorizado !');\n        }\n       \n    }\n    /**\n     * Store a newly created resource in storage.\n     *\n     * @param  \\Illuminate\\Http\\Request  $request\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function store(Request $request)\n    {\n        $user = Auth::user();\n        $projeto = Projeto::find($request->projeto_id);\n        if($projeto->equipe->count() == 0 ){\n            $team = new Equipe();\n            $team->nome = 'SJ CLan '.$projeto->nome;\n            $team->status = true;\n            $team->projeto()->associate($request->projeto_id);    \n            $team->save();\n            $projeto->status = 1;\n            $projeto->save();\n            $pessoa = User::find($request->integrante_id);\n            if($pessoa){\n                $integrante = new EquipeUser();\n                $integrante->status = 0;\n                $integrante->permissao =  0;\n                $integrante->user()->associate($request->integrante_id);\n                $integrante->equipe()->associate($team->id);\n                $integrante->save();\n            }else{\n                return redirect()->back()->withErrors('Usuário inexistente !');\n            }\n            \n        }else{\n            $team = Equipe::find($projeto->equipe->first->id->id);\n            $repete = EquipeUser::where('equipe_id',$team->id)->where('user_id',$request->integrante_id)->where('status',0)->get();\n            if($repete->count() > 0 ){\n                return redirect()->back()->withErrors('Integrante já participa da equipe !');\n            }\n            $escolhido = EquipeUser::where('equipe_id',$team->id)->where('user_id',$request->integrante_id)->where('status',1)->first();\n            if($escolhido){\n                $escolhido->status = 0;\n                $escolhido->save();\n                return redirect()->route('equipe.criando',$projeto->id)->with('msg','usuário reintegrado ao projeto');\n            }\n            $pessoa = User::find($request->integrante_id);\n             if($pessoa){\n                $integrante = new EquipeUser();\n                $integrante->status = 0;\n                $integrante->permissao =  0;\n                $integrante->user()->associate($request->integrante_id);\n                $integrante->equipe()->associate($team->id);\n                $integrante->save();\n            }else{\n                return redirect()->back()->withErrors('Usuário inexistente !');\n            }\n        }\n        return redirect()->route('equipe.criando',$projeto->id);\n        \n    }\n    public static function adicionaIntegrante(Equipe $equipe, User $user){\n        $integrante = new EquipeUser();\n        $integrante->status = 0;\n        $integrante->permissao =  0;\n        $integrante->user()->associate($user->id);\n        $integrante->equipe()->associate($equipe->id);\n        $integrante->save();\n    }\n\n    /**\n     * Display the specified resource.\n     *\n     * @param  int  $id\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function show($id)\n    {\n        $user = Auth::user();\n        $projeto = Projeto::find($id);\n        if($projeto->kanban_ativo){\n            $kanban = $projeto->kanban_ativo[0];\n            session()->flash('msg','Equipe criada com sucesso!');\n            return redirect()->route('kanban.show',$kanban->id);\n        }else{\n            session()->flash('msg','Sem Kanbans ativos no momento !');\n            return redirect()->route('projeto.index');\n        }\n        \n    }\n\n    /**\n     * Show the form for editing the specified resource.\n     *\n     * @param  int  $id\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function edit($id)\n    {\n        //\n    }\n\n    /**\n     * Update the specified resource in storage.\n     *\n     * @param  \\Illuminate\\Http\\Request  $request\n     * @param  int  $id\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function update(Request $request, $id)\n    {\n        //\n    }\n\n    /**\n     * Remove the specified resource from storage.\n     *\n     * @param  int  $id\n     * @return \\Illuminate\\Http\\Response\n     */\n    public function destroy($id)\n    {\n        //\n    }\n    public function usersIndex(){\n        $user = Auth::user();\n        $users = User::all();\n        return view('users.index-admin')->withUser($user)->withUsers($users);\n    }\n    public function perfil(){\n        $user = Auth::user();\n        $horas = 0;\n        $tarefas = $user->tarefas_finalizadas->count();\n        foreach($user->tarefas as $tarefa){\n            if(isset($tarefa->task->tempo[0])){\n                $horas += (int) $tarefa->task->tempo[0]->tempo;\n            }\n        }\n        $tempoHx = gmp_div_q($horas, \"60\");\n        $tempoH = gmp_strval($tempoHx).' Hrs';\n        $tempoMx = gmp_div_r($horas, \"60\");\n        $tempoM = gmp_strval($tempoMx).' Mins';\n        $tempo = $tempoH.' '.$tempoM;\n        ///dd($tempo);\n        //dd($user->tarefas);\n        return view('users.perfil')->withUser($user)->withTempo($tempo)->withTarefas($tarefas);\n    }\n    public function inserecontato(Request $request){\n        $user = Auth::user();\n        //dd($request->all());\n        if($request->contatoE){\n            $contatoE = new Contato();\n            $contatoE->user()->associate($user->id);\n            $contatoE->tipo = 'Email';\n            $contatoE->contato = $request->contatoE;\n            $contatoE->save();\n        }\n        if($request->contatoC){\n            $contatoC = new Contato();\n            $contatoC->user()->associate($user->id);\n            $contatoC->tipo = 'Celular';\n            $contatoC->contato = $request->contatoC;\n            $contatoC->save();\n        }\n        if($request->contatoT){\n            $contatoT = new Contato();\n            $contatoT->user()->associate($user->id);\n            $contatoT->tipo = 'Telefone';\n            $contatoT->contato = $request->contatoT;\n            $contatoT->save();\n        }\n        if($request->contatoR){\n            $contatoR = new Contato();\n            $contatoR->user()->associate($user->id);\n            $contatoR->tipo = 'Ramal';\n            $contatoR->contato = $request->contatoR;\n            $contatoR->save();\n        }\n        return redirect()->route('perfil')->with('msg','Contato adicionado com sucesso !');\n    }\n    \n    public function ativaUser($id){\n        $user = Auth::user();\n        $muda = User::find($id);\n        if($muda->status == 0){\n           $muda->status = 1; \n       }else{\n            $muda->status = 0;\n       }\n        $muda->save();\n        $users = User::all();\n\n        return redirect()->route('admins.index');\n    }\n}\n",
+			"file": "app/Http/Controllers/EquipeController.php",
+			"file_size": 10566,
+			"file_write_time": 132473494967456683,
+			"settings":
+			{
+				"buffer_size": 10559,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -315,29 +353,20 @@
 			}
 		},
 		{
-			"file": "resources/views/projetos/create.blade.php",
-			"settings":
-			{
-				"buffer_size": 5467,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "resources/views/parciais/modal-insere-pessoa.blade.php",
 			"settings":
 			{
-				"buffer_size": 1106,
+				"buffer_size": 1204,
 				"encoding": "UTF-8",
 				"line_ending": "Windows",
 				"name": "modal-insere-pessoa.blade.php"
 			}
 		},
 		{
-			"file": "resources/views/parciais/modal-logout.blade.php",
+			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController 2.php",
 			"settings":
 			{
-				"buffer_size": 1107,
+				"buffer_size": 2525,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -346,16 +375,43 @@
 			"file": "routes/web.php",
 			"settings":
 			{
-				"buffer_size": 3783,
+				"buffer_size": 3926,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/Http/Controllers/PlayerController.php",
+			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
 			"settings":
 			{
-				"buffer_size": 5316,
+				"buffer_size": 20001,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/OuvinteController.php",
+			"settings":
+			{
+				"buffer_size": 13989,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultado.blade.php",
+			"settings":
+			{
+				"buffer_size": 20175,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/User.php",
+			"settings":
+			{
+				"buffer_size": 1246,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -410,20 +466,46 @@
 		"/C/xampp/htdocs/Start/app/Traits",
 		"/C/xampp/htdocs/Start/app/View",
 		"/C/xampp/htdocs/Start/database",
+		"/C/xampp/htdocs/Start/database/migrations",
 		"/C/xampp/htdocs/Start/public",
+		"/C/xampp/htdocs/Start/public/js",
 		"/C/xampp/htdocs/Start/resources",
 		"/C/xampp/htdocs/Start/resources/js",
 		"/C/xampp/htdocs/Start/resources/views",
+		"/C/xampp/htdocs/Start/resources/views/auth",
 		"/C/xampp/htdocs/Start/resources/views/dashboard",
 		"/C/xampp/htdocs/Start/resources/views/equipes",
 		"/C/xampp/htdocs/Start/resources/views/kanban",
 		"/C/xampp/htdocs/Start/resources/views/parciais",
 		"/C/xampp/htdocs/Start/resources/views/projetos",
+		"/C/xampp/htdocs/Start/resources/views/users",
 		"/C/xampp/htdocs/Start/routes"
 	],
 	"file_history":
 	[
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/web.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/.env",
+		"/C/xampp/htdocs/Start/resources/views/dashboard/side-bar.blade.php",
+		"/F/DOWNLOADS CHROME/start_db (3).sql",
+		"/C/xampp/htdocs/Start/resources/views/projetos/create.blade.php",
+		"/C/xampp/htdocs/Start/app/Notifications/ContatoEmail.php",
+		"/C/xampp/htdocs/Start/app/Contato.php",
+		"/C/xampp/htdocs/Start/resources/views/parciais/head-dash.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController 2.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/PlayerController.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/TaskController.php",
+		"/C/xampp/htdocs/Start/app/Http/Controllers/ProjetoController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ProjetoController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/.env 2",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/button.blade.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/validation.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/passwords.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/pagination.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/auth.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/FluxoController.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/FluksuStatus.php",
+		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/email.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relatorio-resp.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/relaFeira.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
@@ -440,7 +522,6 @@
 		"/C/xampp/htdocs/Start/resources/views/kanban/showvue.blade.php",
 		"/C/xampp/htdocs/Start/app/Traits/taskTrait.php",
 		"/C/xampp/htdocs/Start/app/Traits/kanbanTrait.php",
-		"/C/xampp/htdocs/Start/app/Http/Controllers/TaskController.php",
 		"/C/xampp/htdocs/Start/app/Projeto.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/AdminController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/RelatorioController.php",
@@ -456,7 +537,6 @@
 		"/C/xampp/htdocs/Start/app/Traits/verificaTrait.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade.php",
 		"/C/xampp/htdocs/Start/database/migrations/2020_10_09_112654_tempo_task.php",
-		"/C/xampp/htdocs/Start/app/Http/Controllers/PlayerController.php",
 		"/C/xampp/htdocs/Start/resources/js/components/IntegrantesDisponiveis.vue",
 		"/C/xampp/htdocs/Start/resources/js/app.js",
 		"/C/xampp/htdocs/Start/public/js/create-projeto.js",
@@ -473,17 +553,14 @@
 		"/C/xampp/htdocs/Start/resources/views/dashboard/dashboard.blade.php",
 		"/C/xampp/htdocs/Start/app/Traits/projetoTrait.php",
 		"/C/xampp/htdocs/Start/resources/js/components/Revisa.vue",
-		"/C/xampp/htdocs/Start/resources/views/projetos/create.blade.php",
 		"/C/xampp/htdocs/Start/composer.json",
 		"/C/xampp/htdocs/Start/composer.lock",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/ceps2.js",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/register-novo.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/login-novo.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/.env",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/viacep.js",
 		"/C/xampp/htdocs/Start/public/css/app.css",
-		"/C/xampp/htdocs/Start/app/Http/Controllers/ProjetoController.php",
 		"/C/xampp/htdocs/Start/app/Quadro.php",
 		"/C/xampp/htdocs/Start/resources/views/kanban/create.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/loading-page.blade.php",
@@ -507,7 +584,6 @@
 		"/C/xampp/htdocs/Start/resources/views/layouts/home.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/head.blade.php",
 		"/C/xampp/htdocs/Start/app/Events/MovimentoInvalido.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/FormularioController.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteioRes.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/sorteio.blade.php",
@@ -521,9 +597,7 @@
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultado.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/components/card-t.blade.php",
 		"/C/xampp/htdocs/Start/app/View/Components/CardT.php",
-		"/C/xampp/htdocs/Start/resources/views/dashboard/side-bar.blade.php",
 		"/C/xampp/htdocs/Start/resources/views/parciais/headTeste.blade.php",
-		"/C/xampp/htdocs/Start/resources/views/parciais/head-dash.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/home.blade 2.php",
 		"/F/DOWNLOADS CHROME/enderecos.sql",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/HomeController.php",
@@ -536,25 +610,11 @@
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/meus-tickets.blade.php",
 		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/tickets-resolvidos.blade.php",
 		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/HomeController.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/navuser.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/head-auth.blade.php",
-		"/C/Users/bielr/AppData/Local/Temp/fz3temp-2/head.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/app/Http/Controllers/Auth/LoginController.php",
-		"/C/xampp/htdocs/backup/ftp - service/.env",
-		"/C/xampp/htdocs/backup/ftp - service/routes/web.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/usuarios/dashboard.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/tickets/index.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/tickets/create.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/relatorios/index.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/sidebar-info.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/layouts/cliente.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/admin/meus-tickets.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/resources/views/admin/dashboard.blade.php",
-		"/C/xampp/htdocs/backup/ftp - service/config/app.php"
+		"/C/xampp/htdocs/backup/ftp - service/resources/views/parciais/navuser.blade.php"
 	],
 	"find":
 	{
-		"height": 43.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
@@ -568,6 +628,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"endereco",
+			"ouvinteintes",
+			"$ouvintes",
+			"ouvinteintes",
+			"Contato",
+			"butao",
+			"FluksuStatus",
+			"desc",
 			"feira",
 			"myChart2",
 			"vals",
@@ -629,7 +697,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 13,
 			"sheets":
 			[
 				{
@@ -638,15 +706,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4685,
+						"buffer_size": 4921,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3846,
-								3846
+								2430,
+								2430
 							]
 						],
 						"settings":
@@ -656,10 +724,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2376.0,
+						"translation.y": 1063.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -690,7 +758,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -717,10 +785,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 209.0,
+						"translation.y": 433.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -729,31 +797,123 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7841,
+						"buffer_size": 7838,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5531,
-								5531
+								2578,
+								2578
 							]
 						],
 						"settings":
 						{
 							"auto_name": "show-quatro.blade.php",
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 394.0,
+						"translation.y": 486.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
+					"file": "resources/views/users/perfil.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11299,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1186,
+								1196
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "resources/views/parciais/modal-contato.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2448,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								601,
+								601
+							]
+						],
+						"settings":
+						{
+							"auto_name": "modal-contato.blade.php",
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/Http/Controllers/EquipeController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10559,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10230,
+								10230
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7863.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "resources/views/equipes/criar-equipe.blade.php",
 					"semi_transient": false,
 					"settings":
@@ -776,89 +936,32 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1870.0,
+						"translation.y": 655.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "resources/views/projetos/create.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5467,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5446,
-								5446
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3113.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "resources/views/parciais/modal-insere-pessoa.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1106,
+						"buffer_size": 1204,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								40,
-								40
+								1001,
+								1001
 							]
 						],
 						"settings":
 						{
 							"auto_name": "modal-insere-pessoa.blade.php",
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "resources/views/parciais/modal-logout.blade.php",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 1107,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1107,
-								0
-							]
-						],
-						"settings":
-						{
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
@@ -867,52 +970,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "routes/web.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3783,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2259,
-								2259
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 594.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "app/Http/Controllers/PlayerController.php",
+					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/LoginController 2.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5316,
+						"buffer_size": 2525,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3887,
-								3972
+								1223,
+								1223
 							]
 						],
 						"settings":
@@ -922,10 +997,229 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2275.0,
+						"translation.y": 972.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "routes/web.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3926,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3069,
+								3069
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1494.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/TelefonistaController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20001,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 12150.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/OuvinteController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13989,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1158,
+								1158
+							],
+							[
+								1222,
+								1222
+							],
+							[
+								4433,
+								4433
+							],
+							[
+								4829,
+								4829
+							],
+							[
+								5134,
+								5134
+							],
+							[
+								5146,
+								5146
+							],
+							[
+								5254,
+								5254
+							],
+							[
+								5296,
+								5296
+							],
+							[
+								5646,
+								5646
+							],
+							[
+								5817,
+								5817
+							],
+							[
+								10575,
+								10575
+							],
+							[
+								10929,
+								10929
+							],
+							[
+								11230,
+								11230
+							],
+							[
+								11242,
+								11242
+							],
+							[
+								11349,
+								11349
+							],
+							[
+								11391,
+								11391
+							],
+							[
+								11631,
+								11631
+							],
+							[
+								11771,
+								11771
+							],
+							[
+								11942,
+								11942
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1404.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/C/Users/bielr/AppData/Local/Temp/fz3temp-2/resultado.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20175,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8213,
+								8213
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6197.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "app/User.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1246,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1159,
+								1178
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 972.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
 					"type": "text"
 				}
 			]
@@ -933,7 +1227,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 31.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -970,7 +1264,7 @@
 	"project": "projetoStart.sublime-project",
 	"replace":
 	{
-		"height": 58.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1008,7 +1302,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 293.0,
+	"side_bar_width": 389.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

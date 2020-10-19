@@ -13,7 +13,7 @@ use App\Kanban;
 use App\EquipeUser;
 use App\Equipe;
 use DB;
-use App\Notifications\Contato;
+use App\Notifications\ContatoEmail;
 use App\Notifications\Convite;
 use App\Events\NovaTask;
 use App\Events\TaskMovida;

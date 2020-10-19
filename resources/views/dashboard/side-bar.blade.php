@@ -75,12 +75,12 @@
             <h6 class="collapse-header">Seus Projetos:</h6>
 
             <a class="collapse-item" href="" data-toggle="modal" data-target="#oops">Finalizados</a>
-          <a class="collapse-item" href="{{route('andamento')}}" >Em Andamento</a>
-            <a class="collapse-item" href="" data-toggle="modal" data-target="#oops">Novo Projeto</a>
+            <a class="collapse-item" href="{{route('andamento')}}" >Em Andamento</a>
+            <a class="collapse-item" href="{{route('projeto.create')}}">Novo Projeto</a>
             <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Todos os Projetos:</h6>
+           <!--  <h6 class="collapse-header">Todos os Projetos:</h6>
             <a class="collapse-item btn btn-danger text-white" href="#" data-toggle="modal" data-target="#oops">Finalizados</a>
-            <a class="collapse-item btn btn-info text-white" href="" data-toggle="modal" data-target="#oops">Em Andamento</a>
+            <a class="collapse-item btn btn-info text-white" href="" data-toggle="modal" data-target="#oops">Em Andamento</a> -->
           </div>
         </div>
       </li>

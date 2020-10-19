@@ -9,7 +9,7 @@ class Contato extends Model
    	protected $fillable = [
             'user_id', 'tipo','contato',
     ];
-    public function usuarios(){
+    public function user(){
 		return $this->belongsTo('App\User');
 	}
 }

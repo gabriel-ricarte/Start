@@ -45,4 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function projeto_andando() {
         return $this->projeto()->where('status','=', 0);
     }
+    public function tarefas(){
+        return $this->hasMany('App\TaskFato');
+    }
+    public function tarefas_finalizadas(){
+        return $this->tarefas()->where('estado',2);
+    }    
 }

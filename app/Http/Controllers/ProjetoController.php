@@ -15,7 +15,7 @@ use App\Equipe;
 use DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use App\Notifications\Contato;
+use App\Notifications\ContatoEmail;
 use Cache;
 use App\Events\EstadoUser;
 use App\Traits\projetoTrait;
@@ -95,7 +95,7 @@ class ProjetoController extends Controller
         'po_id' => 'required|exists:users,id',
         ]);
 
-        dd($request->all());
+       // dd($request->all());
         $user = Auth::user();
         $hoje = date('Y-m-d');
         $projeto = new Projeto();

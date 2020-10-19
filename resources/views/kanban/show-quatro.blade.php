@@ -5,7 +5,7 @@ KANBAN
 @section('js')
 <script type="text/javascript" src="{{asset('js/jquery-1.9.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jqueryui-certo.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/paineis3.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/paineis4.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset('css/noselect.css')}}">
 @endsection
 @section('css')
@@ -37,7 +37,6 @@ KANBAN
 					<br>
 					<span><b>AÇÕES</b></span><br>
 					<div class="row" id="funcoes">
-
 						<center>	
 						<!-- controle de permissões -->
 						@if($permi->permissao == 0)	
@@ -61,14 +60,13 @@ KANBAN
 							<span class="alert alert-danger" id="responseHere" style="float: right">TEVE ERRO ou NÃO ?</span>	
 						</div>
 						<div class="row" id="formRevisao" style="display: none">
-							
 						</div>
 					</div>
 					@include('parciais.nova-tarefa')
 					@include('parciais.revisa-tarefa')
 					@include('parciais.pausa-tarefa')
 					<style type="text/css">
-.sticky{position:fixed;margin:0;width:30%;top:20%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
+						.sticky{position:fixed;margin:0;width:30%;top:20%;left:55%;-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1000}
 					</style>
 					<div class="row justify-content-center"  id="finalizarQuadroDiv" style="margin-bottom: 10px;display: none;">
 						<div class="col-xl-6 col-md-6 mb-4  bg-light" >

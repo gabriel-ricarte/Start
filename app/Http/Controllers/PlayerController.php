@@ -14,7 +14,7 @@ use App\EquipeUser;
 use App\Equipe;
 use DB;
 use App\Notifications\Convite;
-use App\Notifications\Contato;
+use App\Notifications\ContatoEmail;
 use App\Traits\verificaTrait;
 use App\Http\Controllers\EquipeController;
 

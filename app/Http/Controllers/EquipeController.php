@@ -12,10 +12,11 @@ use App\Task;
 use App\Kanban;
 use App\EquipeUser;
 use App\Equipe;
+use App\Contato;
 use DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use App\Notifications\Contato;
+use App\Notifications\ContatoEmail;
 use App\Traits\verificaTrait;
 
 class EquipeController extends Controller
@@ -247,7 +248,54 @@ class EquipeController extends Controller
     }
     public function perfil(){
         $user = Auth::user();
-        return view('users.perfil')->withUser($user);
+        $horas = 0;
+        $tarefas = $user->tarefas_finalizadas->count();
+        foreach($user->tarefas as $tarefa){
+            if(isset($tarefa->task->tempo[0])){
+                $horas += (int) $tarefa->task->tempo[0]->tempo;
+            }
+        }
+        $tempoHx = gmp_div_q($horas, "60");
+        $tempoH = gmp_strval($tempoHx).' Hrs';
+        $tempoMx = gmp_div_r($horas, "60");
+        $tempoM = gmp_strval($tempoMx).' Mins';
+        $tempo = $tempoH.' '.$tempoM;
+        ///dd($tempo);
+        //dd($user->tarefas);
+        return view('users.perfil')->withUser($user)->withTempo($tempo)->withTarefas($tarefas);
+    }
+    public function inserecontato(Request $request){
+        $user = Auth::user();
+        //dd($request->all());
+        if($request->contatoE){
+            $contatoE = new Contato();
+            $contatoE->user()->associate($user->id);
+            $contatoE->tipo = 'Email';
+            $contatoE->contato = $request->contatoE;
+            $contatoE->save();
+        }
+        if($request->contatoC){
+            $contatoC = new Contato();
+            $contatoC->user()->associate($user->id);
+            $contatoC->tipo = 'Celular';
+            $contatoC->contato = $request->contatoC;
+            $contatoC->save();
+        }
+        if($request->contatoT){
+            $contatoT = new Contato();
+            $contatoT->user()->associate($user->id);
+            $contatoT->tipo = 'Telefone';
+            $contatoT->contato = $request->contatoT;
+            $contatoT->save();
+        }
+        if($request->contatoR){
+            $contatoR = new Contato();
+            $contatoR->user()->associate($user->id);
+            $contatoR->tipo = 'Ramal';
+            $contatoR->contato = $request->contatoR;
+            $contatoR->save();
+        }
+        return redirect()->route('perfil')->with('msg','Contato adicionado com sucesso !');
     }
     public function ativaUser($id){
         $user = Auth::user();
